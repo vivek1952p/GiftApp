@@ -1,0 +1,21 @@
+<section class="contact-page">
+  <div class="contact-card">
+    <h2>Contact our gift concierge</h2>
+    <p>Share your event details and we will help you build the perfect package.</p>
+
+    <form (ngSubmit)="submitForm()" #contactForm="ngForm">
+      <label>Name</label>
+      <input name="name" [(ngModel)]="name" required />
+
+      <label>Email</label>
+      <input name="email" type="email" [(ngModel)]="email" required />
+
+      <label>What are you celebrating?</label>
+      <textarea name="message" [(ngModel)]="message" rows="4"></textarea>
+
+      <button type="submit" class="primary-btn">Send request</button>
+    </form>
+
+    <div class="success" *ngIf="submitted">Thanks, {{ name || 'friend' }}! We will reach out soon.</div>
+  </div>
+</section>

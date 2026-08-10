@@ -1,7 +1,8 @@
 <nav class="nav">
-  <a routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page"
-    >Home</a
-  >
+  <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" ariaCurrentWhenActive="page">Home</a>
+  <a routerLink="/about" routerLinkActive="active" ariaCurrentWhenActive="page">About</a>
+  <a routerLink="/contact" routerLinkActive="active" ariaCurrentWhenActive="page">Contact</a>
+  <a routerLink="/modals" routerLinkActive="active" ariaCurrentWhenActive="page">Modals</a>
   <a routerLink="/cart" routerLinkActive="active" ariaCurrentWhenActive="page">
     <span class="flex">
       <img

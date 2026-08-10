@@ -1,0 +1,41 @@
+.contact-page {
+  padding: 2rem;
+  display: grid;
+  justify-items: center;
+}
+
+.contact-card {
+  width: min(100%, 520px);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background: white;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+form {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+input,
+textarea {
+  padding: 0.7rem 0.8rem;
+  border: 1px solid #d8dff0;
+  border-radius: 0.6rem;
+}
+
+.primary-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 0.75rem 1rem;
+  background: #d86c00;
+  color: white;
+  cursor: pointer;
+}
+
+.success {
+  margin-top: 1rem;
+  color: #1f7a3a;
+  font-weight: 600;
+}

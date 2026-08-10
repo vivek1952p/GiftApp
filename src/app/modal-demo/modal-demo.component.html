@@ -1,0 +1,45 @@
+<section class="demo-shell">
+  <div class="page-card">
+    <h2>Interactive Gift Experience</h2>
+    <p>Use these controls to explore reusable button groups, modal dialogs, and form inputs.</p>
+
+    <div class="button-row">
+      <button type="button" class="primary-btn" (click)="openModal()">Open Welcome Modal</button>
+      <button type="button" class="secondary-btn" (click)="openInputModal()">Open Guest Form</button>
+    </div>
+
+    <div class="info-box" *ngIf="message">{{ message }}</div>
+
+    <div class="theme-picker">
+      <label for="theme">Gift theme</label>
+      <select id="theme" [(ngModel)]="selectedTheme">
+        <option value="classic">Classic</option>
+        <option value="luxury">Luxury</option>
+        <option value="eco">Eco Friendly</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="isModalOpen" (click)="closeModal()">
+    <div class="modal-card" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+      <h3>Welcome to the Gift Studio</h3>
+      <p>Choose a gift card, personalize a note, and ship it in a few clicks.</p>
+      <div class="button-row">
+        <button type="button" class="primary-btn" (click)="closeModal()">Continue</button>
+        <button type="button" class="secondary-btn" (click)="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="isInputModalOpen" (click)="closeInputModal()">
+    <div class="modal-card" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+      <h3>Guest preferences</h3>
+      <label for="guestName">Recipient name</label>
+      <input id="guestName" [(ngModel)]="guestName" placeholder="Enter guest name" />
+      <div class="button-row">
+        <button type="button" class="primary-btn" (click)="submitGuest()">Save preference</button>
+        <button type="button" class="secondary-btn" (click)="closeInputModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</section>

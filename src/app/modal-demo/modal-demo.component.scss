@@ -1,0 +1,78 @@
+.demo-shell {
+  padding: 2rem;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.page-card {
+  background: linear-gradient(135deg, #fff9f3, #f3f7ff);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.button-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+
+.primary-btn,
+.secondary-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.primary-btn {
+  background: #d86c00;
+  color: white;
+}
+
+.secondary-btn {
+  background: #e9eefc;
+  color: #23395d;
+}
+
+.info-box {
+  background: #f8efe5;
+  color: #8a4b00;
+  padding: 0.85rem 1rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.theme-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-width: 220px;
+}
+
+.theme-picker select,
+.theme-picker input,
+.modal-card input {
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #d9dff1;
+  border-radius: 0.6rem;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 24, 40, 0.45);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.modal-card {
+  background: white;
+  width: min(100%, 420px);
+  padding: 1.25rem;
+  border-radius: 1rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+}
