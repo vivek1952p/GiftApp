@@ -1,6 +1,7 @@
 /**
- * UIA tree parser — shared between the old rule-engine/ and the new
- * accessibility-rule-engine/. Extracted so both can import without a cycle.
+ * UIA tree parser used by the Accessibility Rule Engine. Extracted into its
+ * own module (rather than living in engine.ts) so it can be imported without
+ * a circular dependency between the engine and the rule files.
  */
 
 import type { UiaNode, UiaPageResult } from '../types';

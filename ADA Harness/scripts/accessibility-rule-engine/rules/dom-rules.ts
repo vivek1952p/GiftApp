@@ -52,11 +52,13 @@ export const DomContrastRule: DomRule = {
   description: 'Text must meet WCAG 2.1 AA minimum contrast ratio',
   evaluate(el: DomElementStyle): RuleResult | null {
     const fg = parseRgb(el.color ?? '');
-    const bg = parseRgb(el.backgroundColor ?? '');
+    // Prefer the effective (ancestor-composited) background — the element's own
+    // `backgroundColor` is transparent for most real-world text elements (span,
+    // p, li, …), which don't set a background themselves. Falling back to the
+    // raw value only covers the older report shape.
+    const bgSource = el.effectiveBackgroundColor ?? el.backgroundColor ?? '';
+    const bg = parseRgb(bgSource);
     if (!fg || !bg) return null;
-
-    // Fully transparent background — skip (contrast cannot be computed against composite bg).
-    if (el.backgroundColor?.startsWith('rgba') && el.backgroundColor.includes(', 0)')) return null;
 
     const ratio = contrastRatio(fg, bg);
     const required = requiredRatio(el.fontSize ?? '16px', el.fontWeight ?? '400');
@@ -66,7 +68,7 @@ export const DomContrastRule: DomRule = {
       issue: `Insufficient colour contrast ${ratio.toFixed(2)}:1 on "${(el.text ?? '').slice(0, 60)}" (required ${required}:1)`,
       severity: ratio < 3 ? 'serious' : 'moderate',
       wcag: '1.4.3',
-      recommendation: `Darken the foreground (${el.color}) or lighten the background (${el.backgroundColor}) until contrast ≥ ${required}:1.`,
+      recommendation: `Darken the foreground (${el.color}) or lighten the background (${bgSource}) until contrast ≥ ${required}:1.`,
       context: { target: el.target },
     };
   },

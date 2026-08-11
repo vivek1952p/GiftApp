@@ -125,9 +125,11 @@ export interface Summary {
 // ===========================================================================
 
 /**
- * A node in the Playwright accessibility tree. Mirrors the structure returned
- * by `page.accessibility.snapshot()` — roles, accessible names, values and the
- * child hierarchy exactly as the browser exposes them to assistive tech.
+ * A node in the Playwright accessibility tree, captured via the Chrome
+ * DevTools Protocol (`Accessibility.getFullAXTree`) since Playwright removed
+ * the legacy `page.accessibility.snapshot()` API — roles, accessible names,
+ * values and the child hierarchy exactly as the browser exposes them to
+ * assistive tech.
  */
 export interface A11yTreeNode {
   /** ARIA role, e.g. "button", "link", "img", "textbox". */
@@ -286,8 +288,14 @@ export interface DomElementStyle {
   target: string;
   /** Computed foreground colour. */
   color?: string;
-  /** Computed background colour. */
+  /** The element's OWN computed background colour — often transparent, since most
+   *  text elements (span, p, li, …) don't set a background themselves. */
   backgroundColor?: string;
+  /** Effective background colour actually rendered behind the element, found by
+   *  walking up through ancestors and alpha-compositing every non-transparent
+   *  background onto a white canvas default. Use THIS for contrast calculations —
+   *  `backgroundColor` alone is transparent for most real-world text elements. */
+  effectiveBackgroundColor?: string;
   /** Computed font size. */
   fontSize?: string;
   /** Computed font weight. */

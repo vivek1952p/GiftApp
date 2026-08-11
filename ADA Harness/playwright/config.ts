@@ -94,7 +94,8 @@ export interface UiaConfig {
 /** Configuration for the full DOM snapshot capture (Technology 5). */
 export interface DomConfig {
   /** When false the DOM snapshot is skipped. */
-  enabled: boolean;  /** When true, the full serialized DOM (outerHTML) is stored per page. */
+  enabled: boolean;
+  /** When true, the full serialized DOM (outerHTML) is stored per page. */
   fullHtml: boolean;
 }
 
@@ -114,12 +115,56 @@ export interface KeyboardConfig {
 }
 
 /**
+ * How the specialized engines (widget behavior, focus management, interaction
+ * prediction) move between configured pages.
+ */
+export interface NavigationConfig {
+  /**
+   * `"reload"` calls `page.goto()` for every route — works for any application,
+   * SPA or multi-page, with no framework assumptions. `"spa"` performs a
+   * same-document `history.pushState` + `popstate` navigation after the first
+   * page, which is faster but only correct for apps with a real client-side
+   * router. Defaults to `"reload"` so behavior is correct out of the box.
+   */
+  mode: 'reload' | 'spa';
+}
+
+/** CSS selectors the Widget Behavior Engine uses to find app widgets. */
+export interface WidgetsConfig {
+  /** Selector(s) for accordion headers, comma-separated (Playwright `locator` syntax). */
+  accordionSelector: string;
+}
+
+/**
+ * Optional interactive authentication flow (`npm run save-auth`) for apps that
+ * require a real login (SSO, ADFS, OAuth, …) before scanning. Independent of
+ * the scripted `LoginConfig` above, which only supports simple username/password
+ * forms with known selectors.
+ */
+export interface AuthConfig {
+  /** When false, `save-auth` still runs but skips the readiness wait. */
+  enabled: boolean;
+  /** Max time to wait for the user to complete login manually. */
+  manualLoginTimeoutMs: number;
+  /** CSS selector that only appears once login has succeeded. Optional. */
+  readySelector: string;
+}
+
+/** Configuration for the auto-fix engine's project layout assumptions. */
+export interface AutoFixConfig {
+  /** File extensions (with leading dot) eligible for automatic source fixes. */
+  sourceExtensions: string[];
+  /** Candidate paths (relative to the application root, i.e. the parent of `appSrcDir`) for the `<html lang>` fix, tried in order. */
+  htmlEntryPoints: string[];
+}
+
+/**
  * Canonical, absolute filesystem paths for every artifact the harness reads
  * or writes. Centralising these avoids brittle relative-path bugs when scripts
  * are executed from different working directories.
  */
 export interface HarnessPaths {
-  /** Root directory of the ada-harness package. */
+  /** Root directory of the harness package. */
   root: string;
   /** Directory where all generated reports live. */
   reportsDir: string;
@@ -143,8 +188,19 @@ export interface HarnessPaths {
   domSnapshot: string;
   /** Keyboard / Tab-order navigation report. */
   keyboardReport: string;
+  /** Expected Focus Engine report. */
+  expectedFocusReport: string;
+  /** Widget Behavior Engine report. */
+  widgetBehaviorReport: string;
+  /** Focus Management Engine report. */
+  focusManagementReport: string;
+  /** Interaction Prediction Engine report. */
+  interactionReport: string;
   /** Correlated, cross-scanner merged report. */
   merged: string;
+  /** Snapshot of the previous merged report — the basis for comparing ALL 7
+   *  scanners across scans (not just axe-core, unlike `previousSummary`). */
+  mergedPrevious: string;
   /** Auto-fix audit log. */
   fixes: string;
   /** Human-readable Markdown fix report. */
@@ -195,6 +251,14 @@ export interface AdaConfig {
   keyboard: KeyboardConfig;
   /** Screenshot capture settings. */
   screenshots: ScreenshotConfig;
+  /** Multi-page navigation strategy for the specialized engines. */
+  navigation: NavigationConfig;
+  /** Selectors used by the Widget Behavior Engine. */
+  widgets: WidgetsConfig;
+  /** Optional interactive authentication flow (`npm run save-auth`). */
+  auth: AuthConfig;
+  /** Auto-fix engine's project-layout assumptions. */
+  autoFix: AutoFixConfig;
   /** Absolute artifact paths. */
   paths: HarnessPaths;
 }
@@ -218,9 +282,13 @@ interface RawConfig {
   uia: UiaConfig;
   dom: DomConfig;
   keyboard: KeyboardConfig;
+  navigation?: NavigationConfig;
+  widgets?: WidgetsConfig;
+  auth?: AuthConfig;
+  autoFix?: AutoFixConfig;
 }
 
-/** Absolute root of the ada-harness package (…/ada-harness). */
+/** Absolute root of the harness package. */
 const HARNESS_ROOT = path.resolve(__dirname, '..');
 
 /** Absolute path to the project-specific configuration file. */
@@ -274,6 +342,15 @@ export const adaConfig: AdaConfig = {
   dom: raw.dom ?? { enabled: true, fullHtml: true },
   keyboard: raw.keyboard ?? { enabled: true, maxTabs: 200 },
   screenshots: raw.screenshots,
+  navigation: raw.navigation ?? { mode: 'reload' },
+  widgets: raw.widgets ?? {
+    accordionSelector: 'details > summary, [role="button"][aria-expanded]',
+  },
+  auth: raw.auth ?? { enabled: false, manualLoginTimeoutMs: 300000, readySelector: '' },
+  autoFix: raw.autoFix ?? {
+    sourceExtensions: ['.tsx', '.ts', '.jsx', '.js', '.vue', '.html'],
+    htmlEntryPoints: ['public/index.html', 'src/index.html', 'index.html'],
+  },
 
   paths: {
     root: HARNESS_ROOT,
@@ -288,7 +365,12 @@ export const adaConfig: AdaConfig = {
     uiaFindings: path.join(REPORTS_DIR, 'uia-findings.json'),
     domSnapshot: path.join(REPORTS_DIR, 'dom-snapshot.json'),
     keyboardReport: path.join(REPORTS_DIR, 'keyboard-report.json'),
+    expectedFocusReport: path.join(REPORTS_DIR, 'expected-focus-report.json'),
+    widgetBehaviorReport: path.join(REPORTS_DIR, 'widget-behavior-report.json'),
+    focusManagementReport: path.join(REPORTS_DIR, 'focus-management-report.json'),
+    interactionReport: path.join(REPORTS_DIR, 'interaction-report.json'),
     merged: path.join(REPORTS_DIR, 'merged-report.json'),
+    mergedPrevious: path.join(REPORTS_DIR, 'merged-report.previous.json'),
     fixes: path.join(REPORTS_DIR, 'fixes.json'),
     fixesMd: path.join(REPORTS_DIR, 'fixes.md'),
     resolvedIssues: path.join(REPORTS_DIR, 'resolved-issues.json'),
@@ -309,7 +391,7 @@ const DEVICE_BY_BROWSER: Record<BrowserName, typeof devices[string]> = {
 /**
  * Playwright configuration (default export).
  *
- * Run with:  npx playwright test --config ada-harness/playwright/config.ts
+ * Run with:  npx playwright test --config "ADA Harness/playwright/config.ts"
  */
 export default defineConfig({
   // The spec lives alongside this config file.

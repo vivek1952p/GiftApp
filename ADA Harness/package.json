@@ -2,7 +2,7 @@
   "name": "ada-harness",
   "version": "1.0.0",
   "private": true,
-  "description": "Production-ready ADA accessibility harness (Playwright + axe-core + Copilot Agent Mode) for the React app.",
+  "description": "Production-ready, framework-independent accessibility harness (Playwright + axe-core + Windows UI Automation + Copilot Agent Mode) — reusable across any web application via config.json.",
   "scripts": {
     "scan": "npx tsx scripts/analyze.ts",
     "summary": "npx tsx scripts/generate-summary.ts",
@@ -11,7 +11,9 @@
     "merge": "npx tsx scripts/merge-report.ts",
     "compare": "npx tsx scripts/compare.ts",
     "dashboard": "npx tsx scripts/dashboard.ts",
-    "ada": "npm run scan && npm run dashboard"
+    "auto-fix": "npx tsx scripts/auto-fix.ts",
+    "save-auth": "npx tsx scripts/save-auth.ts",
+    "ada": "npm run scan && npm run compare && npm run dashboard"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",

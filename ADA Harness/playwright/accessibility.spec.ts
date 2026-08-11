@@ -28,6 +28,7 @@ import AxeBuilder from '@axe-core/playwright';
 import fs from 'fs';
 import path from 'path';
 import { adaConfig } from './config';
+import { INTERACTIVE_ELEMENT_SELECTOR } from '../scripts/interactive-elements';
 import type {
   AxeReport,
   AxePageResult,
@@ -137,10 +138,43 @@ async function captureDom(
         target: string;
         color?: string;
         backgroundColor?: string;
+        effectiveBackgroundColor?: string;
         fontSize?: string;
         fontWeight?: string;
         text?: string;
       }> = [];
+
+      // Most text elements (span, p, li, …) never set their own background —
+      // it's inherited visually from an ancestor. Reading only the element's
+      // own computed backgroundColor gives "transparent" for the vast majority
+      // of real-world markup, which makes contrast checks against it useless.
+      // Walk up to <html>, alpha-composite every non-transparent background
+      // found, over a white canvas default (the browser's own default) — this
+      // is what actually renders behind the element.
+      function effectiveBackground(el: Element): string {
+        const layers: Array<{ r: number; g: number; b: number; a: number }> = [];
+        let current: Element | null = el;
+        while (current) {
+          const bg = window.getComputedStyle(current).backgroundColor;
+          const m = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+          if (m) {
+            const a = m[4] !== undefined ? parseFloat(m[4]) : 1;
+            if (a > 0) layers.push({ r: +m[1], g: +m[2], b: +m[3], a });
+          }
+          current = current.parentElement;
+        }
+        // layers[0] = closest to the element (topmost), layers[end] = closest to <html>.
+        // Composite from the outermost layer down to the innermost, over white.
+        let r = 255, g = 255, b = 255;
+        for (let i = layers.length - 1; i >= 0; i--) {
+          const layer = layers[i];
+          r = layer.r * layer.a + r * (1 - layer.a);
+          g = layer.g * layer.a + g * (1 - layer.a);
+          b = layer.b * layer.a + b * (1 - layer.a);
+        }
+        return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
+      }
+
       const seen = new Set<string>();
       for (const sel of sels) {
         if (seen.has(sel)) continue;
@@ -157,6 +191,7 @@ async function captureDom(
           target: sel,
           color: cs.color,
           backgroundColor: cs.backgroundColor,
+          effectiveBackgroundColor: effectiveBackground(el),
           fontSize: cs.fontSize,
           fontWeight: cs.fontWeight,
           text: (el.textContent ?? '').trim().slice(0, 80),
@@ -186,14 +221,19 @@ async function maybeLogin(page: Page): Promise<void> {
   try {
     const loginUrl = new URL(login.loginPath, adaConfig.baseUrl).toString();
     console.log(`[login] Authenticating via ${loginUrl}`);
-    await page.goto(loginUrl, { waitUntil: 'networkidle' });
+    // 'load' + a bounded settle wait, not 'networkidle' — apps with a
+    // persistent websocket/SSE/polling connection (common post-login, e.g. a
+    // live dashboard) never go network-idle, which would otherwise stall
+    // every login attempt for the full navigation timeout.
+    await page.goto(loginUrl, { waitUntil: 'load', timeout: adaConfig.timeouts.navigationMs });
     await page.fill(login.usernameSelector, username);
     await page.fill(login.passwordSelector, password);
     await page.click(login.submitSelector);
     if (login.waitForSelector) {
       await page.waitForSelector(login.waitForSelector, { timeout: adaConfig.timeouts.navigationMs });
     } else {
-      await page.waitForLoadState('networkidle');
+      await page.waitForLoadState('load').catch(() => {});
+      await page.waitForTimeout(adaConfig.settleTimeoutMs);
     }
     console.log('[login] Login flow completed.');
   } catch (err) {
@@ -216,10 +256,7 @@ async function captureKeyboard(
   maxTabs: number
 ): Promise<KeyboardPageResult> {
   // 1. Tag every visible, enabled interactive element and collect descriptors.
-  const interactive = (await page.evaluate(() => {
-    const sel =
-      'a[href], button, input:not([type="hidden"]), select, textarea, [tabindex],' +
-      ' [role="button"], [role="link"], [role="checkbox"], [role="tab"], [contenteditable="true"]';
+  const interactive = (await page.evaluate((sel: string) => {
     const out: Array<{ index: number; tag: string; name: string; tabindex: string | null }> = [];
     let i = 0;
     for (const el of Array.from(document.querySelectorAll(sel))) {
@@ -239,7 +276,7 @@ async function captureKeyboard(
       i++;
     }
     return out;
-  })) as KeyboardInteractive[];
+  }, INTERACTIVE_ELEMENT_SELECTOR)) as KeyboardInteractive[];
 
   // 2. Start clean so the first Tab lands on the first tabbable element.
   await page.evaluate(() => {
@@ -340,9 +377,13 @@ test.describe('ADA Accessibility Scan', () => {
       console.log(`[scan] Visiting ${target.name} -> ${url}`);
 
       try {
-        // Technology 1: navigate + wait for hydration.
-        await page.goto(url, { waitUntil: 'networkidle' });
-        await page.waitForLoadState('domcontentloaded');
+        // Technology 1: navigate + wait for hydration. 'load', not
+        // 'networkidle' — apps with a persistent websocket/SSE/polling
+        // connection (live dashboards, chat widgets, notifications: common
+        // in enterprise apps) never go network-idle, which would otherwise
+        // stall every page for the full navigation timeout and silently
+        // produce an empty report for it.
+        await page.goto(url, { waitUntil: 'load', timeout: adaConfig.timeouts.navigationMs });
         await page.waitForTimeout(adaConfig.settleTimeoutMs);
 
         // Technology 1: capture a screenshot for the report (optional).

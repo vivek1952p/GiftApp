@@ -55,7 +55,16 @@ def _safe(getter, default=None):
 
 
 def walk(control, depth, max_depth):
-    """Recursively convert a UIA control into a plain dict node."""
+    """Recursively convert a UIA control into a plain dict node.
+
+    Every property read is defensive (via _safe): on a real, dynamic web page
+    a control can go stale mid-walk (removed/replaced by app JS while we're
+    reading it), and Name/ControlTypeName/AutomationId/ClassName can raise
+    just as readily as the properties already wrapped below. An unhandled
+    exception here previously aborted the ENTIRE capture for the page (losing
+    every other node already walked), instead of just skipping the one bad
+    control.
+    """
     rect = _safe(lambda: control.BoundingRectangle)
     bounding = None
     if rect is not None:
@@ -66,10 +75,10 @@ def walk(control, depth, max_depth):
             "bottom": getattr(rect, "bottom", 0),
         }
     node = {
-        "name": control.Name or "",
-        "role": control.ControlTypeName or "",
-        "automationId": control.AutomationId or "",
-        "className": control.ClassName or "",
+        "name": _safe(lambda: control.Name, "") or "",
+        "role": _safe(lambda: control.ControlTypeName, "") or "",
+        "automationId": _safe(lambda: control.AutomationId, "") or "",
+        "className": _safe(lambda: control.ClassName, "") or "",
         # Extra properties consumed by the accessibility Rule Engine.
         "isEnabled": _safe(lambda: bool(control.IsEnabled)),
         "isKeyboardFocusable": _safe(lambda: bool(control.IsKeyboardFocusable)),
@@ -103,7 +112,7 @@ def find_window(window_class, title_contains):
             same_class = False
         if not same_class:
             continue
-        name = (window.Name or "").lower()
+        name = (_safe(lambda: window.Name, "") or "").lower()
         if not title_contains or title_contains.lower() in name:
             return window
         if fallback is None:
@@ -136,11 +145,16 @@ def main():
         }))
         return
 
+    # Capture the window name BEFORE the walk, not after — the walk of a large
+    # tree takes real time, during which the window can close or navigate away,
+    # so re-reading window.Name afterwards is exactly the kind of stale-control
+    # access this script otherwise guards against.
+    window_name = _safe(lambda: window.Name, "") or ""
     tree = walk(window, 0, args.max_depth)
     print(json.dumps({
         "available": True,
         "found": True,
-        "window": window.Name or "",
+        "window": window_name,
         "nodeCount": count_nodes(tree),
         "tree": tree,
     }))

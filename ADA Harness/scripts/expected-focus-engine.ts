@@ -10,9 +10,13 @@
  * Three checks:
  *   1. Tab-navigable AX nodes that were never reached by Tab
  *      â†’ only roles that belong in the natural Tab order (button, link,
- *        checkbox, combobox, textbox, â€¦). Roles that use arrow-key navigation
+ *        checkbox, combobox, textbox, …). Roles that use arrow-key navigation
  *        inside composite widgets (option, menuitem, treeitem, gridcell, tab)
- *        are intentionally excluded â€” they do NOT belong in the Tab order.
+ *        are intentionally excluded — they do NOT belong in the Tab order.
+ *        Compared by COUNT per normalised name, not "was this name seen at
+ *        least once": on a page with 20 identically-named row-action buttons
+ *        where only 1 is reachable, a presence-only check would treat all 20
+ *        as fine. Counting surfaces the numeric deficit instead.
  *   2. Elements in the Tab order with no accessible name
  *      â†’ screen reader users will hear "button" with no context.
  *   3. Elements using a positive tabindex (disrupts natural order)
@@ -38,12 +42,12 @@ import type {
 
 const log = createLogger('expected-focus');
 
-// â”€â”€ Role classification â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Role classification ─────────────────────────────────────────────────────
 
 /**
  * Roles that SHOULD appear in the natural Tab order.
  * Excludes roles that use arrow-key navigation WITHIN composite widgets
- * (option, menuitem, treeitem, gridcell, tab) â€” these must NOT be in Tab order.
+ * (option, menuitem, treeitem, gridcell, tab) — these must NOT be in Tab order.
  */
 const TAB_NAVIGABLE_ROLES = new Set([
   'button',
@@ -72,7 +76,7 @@ const COMPOSITE_CONTAINER_ROLES = new Set([
   'tablist',    // only the active/selected tab is in the Tab order
 ]);
 
-// â”€â”€ Tree traversal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Tree traversal ──────────────────────────────────────────────────────────
 
 /**
  * Collect nodes whose role is Tab-navigable, excluding children of composite
@@ -91,7 +95,7 @@ function collectTabNavigable(
 
   const role = node.role ?? '';
 
-  // Nodes inside composite widgets use arrow-key navigation â€” skip them.
+  // Nodes inside composite widgets use arrow-key navigation — skip them.
   if (!insideWidget && TAB_NAVIGABLE_ROLES.has(role)) {
     // Only collect named elements: unnamed ones will be flagged by check #2.
     if ((node.name ?? '').trim()) out.push(node);
@@ -105,7 +109,7 @@ function collectTabNavigable(
   return out;
 }
 
-// â”€â”€ Name matching â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Name matching ────────────────────────────────────────────────────────────
 
 /** Normalise a name for comparison (lowercase, collapsed whitespace, max 60 chars). */
 function norm(name: string | undefined | null): string {
@@ -113,61 +117,92 @@ function norm(name: string | undefined | null): string {
 }
 
 /**
- * Build a lookup from the keyboard tab order. Supports partial/substring
- * matching: if the AX tree name is a prefix of the tab-order name (or vice
- * versa), they are considered the same element.
+ * Count how many times each normalised name appears in the keyboard tab
+ * order. Counting — not a Set — matters: on a page with 20 "Edit" row-action
+ * buttons where only 1 is actually reachable, a Set would contain "edit"
+ * once and make every one of the 20 AX-tree nodes look "reached" even though
+ * 19 are real gaps. Counting lets Check 1 compare AX-tree occurrences against
+ * tab-order occurrences per name and surface the numeric deficit.
  */
-function buildTabNameSet(kbPage: KeyboardPageResult): Set<string> {
-  const names = new Set<string>();
+function buildTabNameCounts(kbPage: KeyboardPageResult): Map<string, number> {
+  const counts = new Map<string, number>();
   for (const step of kbPage.tabOrder ?? []) {
     const n = norm(step.name);
-    if (n) names.add(n);
+    if (n) counts.set(n, (counts.get(n) ?? 0) + 1);
   }
-  return names;
+  return counts;
 }
 
-/** True when `axName` has a reasonable match in the set of keyboard-reached names. */
-function isReachedByTab(axName: string, tabNames: Set<string>): boolean {
+/**
+ * True when `axName` has a reasonable match somewhere in the tab order.
+ * Substring matching absorbs minor truncation differences between how the AX
+ * tree computes a name and how the keyboard scan reads DOM text/aria-label —
+ * used only as a last-resort fallback when the exact-count comparison in
+ * Check 1 finds zero exact matches, never as the primary signal (that would
+ * reintroduce the Set-collapsing problem above).
+ */
+function hasSubstringMatch(axName: string, tabNames: Iterable<string>): boolean {
   const ax = norm(axName);
   if (!ax) return true; // unnamed elements not checked here
-  // Exact match
-  if (tabNames.has(ax)) return true;
-  // Substring match: keyboard-report name contains the AX name or vice versa
   for (const t of tabNames) {
     if (t.includes(ax) || ax.includes(t)) return true;
   }
   return false;
 }
 
-// â”€â”€ Per-page analysis â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Per-page analysis ────────────────────────────────────────────────────────
 
 function analyseGaps(
   a11yPage: { page: string; url: string; tree: A11yTreeNode | null },
   kbPage: KeyboardPageResult | undefined
 ): ExpectedFocusGap[] {
   const gaps: ExpectedFocusGap[] = [];
-  const tabNames = kbPage ? buildTabNameSet(kbPage) : new Set<string>();
+  const tabCounts = kbPage ? buildTabNameCounts(kbPage) : new Map<string, number>();
+  const tabNames = new Set(tabCounts.keys());
   const tabNavigable = collectTabNavigable(a11yPage.tree);
 
-  // â”€â”€ Check 1: Tab-navigable AX nodes not reached by Tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Check 1: Tab-navigable AX nodes not reached by Tab ──────────────────
+  // Grouped by normalised name so repeated components (data-table row
+  // actions, list items, …) are compared by COUNT, not "was this name seen
+  // at least once" — the latter hides gaps whenever any one instance happens
+  // to be reachable.
+  const axByName = new Map<string, { role: string; name: string; count: number }>();
   for (const node of tabNavigable) {
-    if (!isReachedByTab(node.name ?? '', tabNames)) {
-      gaps.push({
-        page: a11yPage.page,
-        url: a11yPage.url,
-        role: node.role ?? '',
-        name: (node.name ?? '').trim(),
-        issue: `${node.role} "${(node.name ?? '').slice(0, 50)}" is Tab-navigable in the AX tree but was never reached during Tab traversal`,
-        severity: 'serious',
-        wcag: '2.1.1',
-        recommendation:
-          'Check: (1) tabindex="-1" making it unreachable, (2) CSS visibility:hidden/display:none, ' +
-          '(3) aria-hidden="true" on an ancestor, (4) a focus trap preventing Tab from leaving a widget.',
-      });
+    const key = norm(node.name);
+    const existing = axByName.get(key);
+    if (existing) {
+      existing.count++;
+    } else {
+      axByName.set(key, { role: node.role ?? '', name: (node.name ?? '').trim(), count: 1 });
     }
   }
 
-  // â”€â”€ Check 2: Elements in Tab order with no accessible name â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  for (const [key, { role, name, count: axCount }] of axByName) {
+    let tabCount = tabCounts.get(key) ?? 0;
+    if (tabCount === 0 && hasSubstringMatch(name, tabNames)) tabCount = 1; // truncation fallback
+
+    const deficit = axCount - tabCount;
+    if (deficit <= 0) continue;
+
+    gaps.push({
+      page: a11yPage.page,
+      url: a11yPage.url,
+      role,
+      name,
+      issue:
+        axCount === 1
+          ? `${role} "${name.slice(0, 50)}" is Tab-navigable in the AX tree but was never reached during Tab traversal`
+          : `${deficit} of ${axCount} "${role}" elements named "${name.slice(0, 50)}" are Tab-navigable in the AX tree, but only ${tabCount} instance(s) were reached during Tab traversal — likely a repeated component (e.g. a data-table row action) where some instances are unreachable`,
+      severity: 'serious',
+      wcag: '2.1.1',
+      recommendation:
+        'Check: (1) tabindex="-1" making it unreachable, (2) CSS visibility:hidden/display:none, ' +
+        '(3) aria-hidden="true" on an ancestor, (4) a focus trap preventing Tab from leaving a widget. ' +
+        'If this is a repeated component, verify EVERY instance, not just the first.',
+    });
+  }
+
+  // ── Check 2: Elements in Tab order with no accessible name ───────────────
   for (const step of kbPage?.tabOrder ?? []) {
     if (!step.name || step.name.trim() === '') {
       gaps.push({
@@ -175,7 +210,7 @@ function analyseGaps(
         url: a11yPage.url,
         role: step.tag,
         name: '',
-        issue: `<${step.tag}> at Tab position ${step.order} is reachable by keyboard but has no accessible name â€” screen readers will announce the role only`,
+        issue: `<${step.tag}> at Tab position ${step.order} is reachable by keyboard but has no accessible name — screen readers will announce the role only`,
         severity: 'serious',
         wcag: '4.1.2',
         recommendation:
@@ -184,14 +219,14 @@ function analyseGaps(
     }
   }
 
-  // â”€â”€ Check 3: Positive tabindex â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Check 3: Positive tabindex ───────────────────────────────────────────
   for (const el of kbPage?.positiveTabindex ?? []) {
     gaps.push({
       page: a11yPage.page,
       url: a11yPage.url,
       role: el.tag,
       name: el.name ?? '',
-      issue: `<${el.tag}> "${el.name ?? ''}" uses tabindex="${el.tabindex}" â€” positive values disrupt the natural DOM tab order`,
+      issue: `<${el.tag}> "${el.name ?? ''}" uses tabindex="${el.tabindex}" — positive values disrupt the natural DOM tab order`,
       severity: 'moderate',
       wcag: '2.4.3',
       recommendation:
@@ -202,7 +237,7 @@ function analyseGaps(
   return gaps;
 }
 
-// â”€â”€ Cross-page deduplication â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Cross-page deduplication ─────────────────────────────────────────────────
 
 /**
  * Stable key for deduplication. Shared-component findings (same role+name
@@ -227,15 +262,15 @@ function deduplicateAcrossPages(allGaps: ExpectedFocusGap[]): ExpectedFocusGap[]
     if (pages.size > 1) {
       return {
         ...gap,
-        page: `(${pages.size} pages: ${[...pages].slice(0, 4).join(', ')}${pages.size > 4 ? ', â€¦' : ''})`,
-        issue: `[Shared component â€” ${pages.size} pages] ${gap.issue}`,
+        page: `(${pages.size} pages: ${[...pages].slice(0, 4).join(', ')}${pages.size > 4 ? ', …' : ''})`,
+        issue: `[Shared component — ${pages.size} pages] ${gap.issue}`,
       };
     }
     return gap;
   });
 }
 
-// â”€â”€ Entry point â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Entry point ──────────────────────────────────────────────────────────────
 
 function main(): void {
   try {
@@ -243,7 +278,7 @@ function main(): void {
     const kbPath   = adaConfig.paths.keyboardReport;
 
     if (!fs.existsSync(a11yPath)) {
-      log.warn('playwright-accessibility-tree.json not found â€” skipping Expected Focus Engine.');
+      log.warn('playwright-accessibility-tree.json not found — skipping Expected Focus Engine.');
       return;
     }
 

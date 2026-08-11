@@ -12,18 +12,22 @@
  * ============================================================================
  */
 
-import type { Summary } from './types';
+import type { SeverityCounts } from './types';
 
 /** Points deducted per violation, keyed by impact. */
 const WEIGHTS = { critical: 10, serious: 5, moderate: 2, minor: 1 } as const;
 
 /**
- * Compute the weighted accessibility score for a summary.
- * @param summary The scan summary to score.
+ * Compute a weighted accessibility score from severity counts. Takes
+ * `SeverityCounts` directly (not a full `Summary`) so callers can score
+ * axe-only totals (`Summary.severityCounts`) or an aggregate spanning every
+ * scanner — the score itself doesn't care where the counts came from, only
+ * that undercounting severities from any source silently inflates it.
+ * @param counts Severity counts to score.
  * @returns Integer score in the range [0, 100].
  */
-export function computeScore(summary: Summary): number {
-  const { critical, serious, moderate, minor } = summary.severityCounts;
+export function computeScore(counts: SeverityCounts): number {
+  const { critical, serious, moderate, minor } = counts;
   const penalty =
     critical * WEIGHTS.critical +
     serious * WEIGHTS.serious +

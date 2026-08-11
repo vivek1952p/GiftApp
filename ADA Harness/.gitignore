@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Generated artifacts — regenerated on every run, safe to delete.
+reports/
+test-results/
+playwright-report/
+
+# Saved authentication session — contains real cookies/localStorage from
+# `npm run save-auth`. Never commit this; it's a credential, not a config file.
+auth/
+
+# Logs
+*.log

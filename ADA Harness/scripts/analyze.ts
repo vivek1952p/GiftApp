@@ -88,7 +88,7 @@ export function analyze(): void {
   // 5. Widget Behavior Engine — WAI-ARIA pattern interaction tests.
   runOptional('npx', ['tsx', path.join(SCRIPTS_DIR, 'widget-behavior-engine.ts')], 'widget-behavior');
 
-  // 6. Focus Management Engine — focus after Angular route navigation.
+  // 6. Focus Management Engine — focus after client-side route navigation.
   runOptional('npx', ['tsx', path.join(SCRIPTS_DIR, 'focus-management-engine.ts')], 'focus-management');
 
   // 7. Interaction Prediction Engine — keyboard key response tests.

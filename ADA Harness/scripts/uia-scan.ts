@@ -27,6 +27,7 @@ import os from 'os';
 import path from 'path';
 import { adaConfig } from '../playwright/config';
 import { createLogger } from './logger';
+import { gotoPage } from './navigate';
 import type { UiaNode, UiaPageResult, UiaReport } from './types';
 
 const log = createLogger('uia');
@@ -149,8 +150,7 @@ async function main(): Promise<void> {
   let { br: browser, pg: page } = await launchPage();
 
   let anyAvailable = false;
-  let spaLoaded = false; // track whether Home was loaded for SPA navigation
-  const SPA_BASE = adaConfig.spaBase;
+  let firstPage = true;
 
   try {
     for (const target of adaConfig.pages) {
@@ -158,22 +158,8 @@ async function main(): Promise<void> {
       log.info(`Capturing UIA for ${target.name} -> ${url}`);
 
       try {
-        // First page: full page.goto() to initialise the Angular SPA.
-        // Subsequent pages: SPA navigation so the server-side redirect to
-        // ErrorPage is bypassed (Angular's router handles routing client-side).
-        if (!spaLoaded) {
-          await page.goto(url, { waitUntil: 'load', timeout: adaConfig.timeouts.navigationMs });
-          spaLoaded = true;
-        } else {
-          const spaPath = `${SPA_BASE}${target.path}`;
-          await page.evaluate((p) => {
-            window.history.pushState({}, '', p);
-            window.dispatchEvent(new PopStateEvent('popstate', { state: window.history.state }));
-          }, spaPath);
-          await page.waitForTimeout(adaConfig.settleTimeoutMs + 500);
-          await page.waitForLoadState('networkidle').catch(() => {});
-        }
-        await page.waitForTimeout(adaConfig.settleTimeoutMs);
+        await gotoPage(page, target, adaConfig, firstPage);
+        firstPage = false;
         await page.bringToFront();
 
         const title = await page.title();

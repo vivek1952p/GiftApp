@@ -163,7 +163,10 @@ export class AccessibilityRuleEngine {
 
   /**
    * Run all rule sets against all available data sources and return the
-   * combined, deduplicated finding list.
+   * combined finding list. Not deduplicated by design: the same underlying
+   * issue reported independently by two sources (e.g. an AX-tree rule and a
+   * UIA rule both flagging a missing name) is intentionally kept as two
+   * findings — that cross-source corroboration is the signal, not noise.
    */
   evaluateAll(opts: {
     uia?: UiaReport;

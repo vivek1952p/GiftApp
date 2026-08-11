@@ -1,13 +1,1337 @@
 {
-  "generatedAt": "2026-07-30T10:53:57.185Z",
-  "baseUrl": "http://localhost:3001",
-  "totalViolations": 0,
+  "generatedAt": "2026-08-11T10:22:16.941Z",
+  "baseUrl": "http://localhost:4200",
+  "totalViolations": 73,
   "pagesScanned": 7,
   "severityCounts": {
-    "critical": 0,
-    "serious": 0,
-    "moderate": 0,
+    "critical": 11,
+    "serious": 14,
+    "moderate": 48,
     "minor": 0
   },
-  "violations": []
+  "violations": [
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": ".card:nth-child(1) > .content > .price-rating > h2",
+      "html": "<h2 _ngcontent-ng-c1983750911=\"\">$29.99</h2>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": ".card:nth-child(2) > .content > .price-rating > h2",
+      "html": "<h2 _ngcontent-ng-c1983750911=\"\">$139.99</h2>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": ".card:nth-child(3) > .content > .price-rating > h2",
+      "html": "<h2 _ngcontent-ng-c1983750911=\"\">$99.99</h2>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": ".card:nth-child(4) > .content > .price-rating > h2",
+      "html": "<h2 _ngcontent-ng-c1983750911=\"\">$219.99</h2>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": ".card:nth-child(5) > .content > .price-rating > h2",
+      "html": "<h2 _ngcontent-ng-c1983750911=\"\">$59.99</h2>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": ".card:nth-child(6) > .content > .price-rating > h2",
+      "html": "<h2 _ngcontent-ng-c1983750911=\"\">$21.99</h2>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "image-alt",
+      "wcagRuleIds": [
+        "cat.text-alternatives",
+        "wcag2a",
+        "wcag111",
+        "section508",
+        "section508.22.a",
+        "TTv5",
+        "TT7.a",
+        "TT7.b",
+        "EN-301-549",
+        "EN-9.1.1.1",
+        "ACT",
+        "RGAAv4",
+        "RGAA-1.1.1"
+      ],
+      "description": "Ensure <img> elements have alternative text or a role of none or presentation",
+      "impact": "critical",
+      "target": "span > img",
+      "html": "<img _ngcontent-ng-c40394...=\"\" src=\"data:image/png;base6...\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/image-alt?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "landmark-one-main",
+      "wcagRuleIds": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "description": "Ensure the document has a main landmark",
+      "impact": "moderate",
+      "target": "html",
+      "html": "<html lang=\"en\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/landmark-one-main?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": "h1",
+      "html": "<h1 _ngcontent-ng-c1983750911=\"\" class=\"text-3xl font-bold underline\">Hello world!</h1>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".search-sort-bar",
+      "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"search-sort-bar pl-5 flex justify-start gap-4\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".card:nth-child(1) > .imgBx",
+      "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"imgBx\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".card:nth-child(1) > .content > .productName",
+      "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"productName\">Instant Print Camera</div>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".card:nth-child(1) > .content > .price-rating > h2",
+      "html": "<h2 _ngcontent-ng-c1983750911=\"\">$29.99</h2>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".card:nth-child(2) > .imgBx",
+      "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"imgBx\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".card:nth-child(2) > .content > .productName",
+      "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"productName\">Prestige Grill Sandwich Toaster</div>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".card:nth-child(2) > .content > .price-rating > h2",
+      "html": "<h2 _ngcontent-ng-c1983750911=\"\">$139.99</h2>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".card:nth-child(3) > .imgBx",
+      "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"imgBx\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".card:nth-child(3) > .content > .productName",
+      "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"productName\">Sweets</div>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".card:nth-child(3) > .content > .price-rating > h2",
+      "html": "<h2 _ngcontent-ng-c1983750911=\"\">$99.99</h2>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".card:nth-child(4) > .imgBx",
+      "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"imgBx\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".card:nth-child(4) > .content > .productName",
+      "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"productName\">Amazon Fire HD 10 Kids Pro tablet</div>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".card:nth-child(4) > .content > .price-rating > h2",
+      "html": "<h2 _ngcontent-ng-c1983750911=\"\">$219.99</h2>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".card:nth-child(5) > .imgBx",
+      "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"imgBx\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".card:nth-child(5) > .content > .productName",
+      "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"productName\">Amazon Echo Dot Kids</div>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".card:nth-child(5) > .content > .price-rating > h2",
+      "html": "<h2 _ngcontent-ng-c1983750911=\"\">$59.99</h2>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".card:nth-child(6) > .imgBx",
+      "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"imgBx\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".card:nth-child(6) > .content > .productName",
+      "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"productName\">Fire TV Stick with Alexa Voice</div>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".card:nth-child(6) > .content > .price-rating > h2",
+      "html": "<h2 _ngcontent-ng-c1983750911=\"\">$21.99</h2>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "ruleId": "select-name",
+      "wcagRuleIds": [
+        "cat.forms",
+        "wcag2a",
+        "wcag412",
+        "section508",
+        "section508.22.n",
+        "TTv5",
+        "TT5.c",
+        "EN-301-549",
+        "EN-9.4.1.2",
+        "ACT",
+        "RGAAv4",
+        "RGAA-11.1.1"
+      ],
+      "description": "Ensure select element has an accessible name",
+      "impact": "critical",
+      "target": "select",
+      "html": "<select _ngcontent-ng-c1983750911=\"\" class=\"p-2 border rounded ml-2 ng-untouched ng-pristine ng-valid\" ng-reflect-model=\"name\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/select-name?application=playwright"
+    },
+    {
+      "page": "Product Detail",
+      "url": "http://localhost:4200/product/1",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": ".price_original",
+      "html": "<span _ngcontent-ng-c157748587=\"\" class=\"price_original\">$4000</span>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "Product Detail",
+      "url": "http://localhost:4200/product/1",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": ".offer",
+      "html": "<span _ngcontent-ng-c157748587=\"\" class=\"offer\"> 79% OFF</span>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "Product Detail",
+      "url": "http://localhost:4200/product/1",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": ".other",
+      "html": "<p _ngcontent-ng-c157748587=\"\" class=\"other\">inclusive of all taxes</p>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "Product Detail",
+      "url": "http://localhost:4200/product/1",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": ".product_description > p:nth-child(2)",
+      "html": "<p _ngcontent-ng-c157748587=\"\"> Instant Print Camera for Kids, 1080P HD Instant Print Photo, Birthday Gifts for Age 4 5 6 7 8 9 10 Girls Boys, Portable Toy with 1 Roll Photo Paper, HD Digital Video Cameras. High Definition Dual Cameras </p>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "Product Detail",
+      "url": "http://localhost:4200/product/1",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": ".product_description > p:nth-child(3)",
+      "html": "<p _ngcontent-ng-c157748587=\"\"><span _ngcontent-ng-c157748587=\"\" class=\"highlight\">Country of Origin -</span> India </p>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "Product Detail",
+      "url": "http://localhost:4200/product/1",
+      "ruleId": "image-alt",
+      "wcagRuleIds": [
+        "cat.text-alternatives",
+        "wcag2a",
+        "wcag111",
+        "section508",
+        "section508.22.a",
+        "TTv5",
+        "TT7.a",
+        "TT7.b",
+        "EN-301-549",
+        "EN-9.1.1.1",
+        "ACT",
+        "RGAAv4",
+        "RGAA-1.1.1"
+      ],
+      "description": "Ensure <img> elements have alternative text or a role of none or presentation",
+      "impact": "critical",
+      "target": "img",
+      "html": "<img _ngcontent-ng-c40394...=\"\" src=\"data:image/png;base6...\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/image-alt?application=playwright"
+    },
+    {
+      "page": "Product Detail",
+      "url": "http://localhost:4200/product/1",
+      "ruleId": "landmark-one-main",
+      "wcagRuleIds": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "description": "Ensure the document has a main landmark",
+      "impact": "moderate",
+      "target": "html",
+      "html": "<html lang=\"en\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/landmark-one-main?application=playwright"
+    },
+    {
+      "page": "Product Detail",
+      "url": "http://localhost:4200/product/1",
+      "ruleId": "page-has-heading-one",
+      "wcagRuleIds": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+      "impact": "moderate",
+      "target": "html",
+      "html": "<html lang=\"en\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/page-has-heading-one?application=playwright"
+    },
+    {
+      "page": "Product Detail",
+      "url": "http://localhost:4200/product/1",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".left",
+      "html": "<div _ngcontent-ng-c157748587=\"\" class=\"left\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Product Detail",
+      "url": "http://localhost:4200/product/1",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".product_description > h4",
+      "html": "<h4 _ngcontent-ng-c157748587=\"\">PRODUCT DESCRIPTION</h4>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Product Detail",
+      "url": "http://localhost:4200/product/1",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".product_description > p:nth-child(2)",
+      "html": "<p _ngcontent-ng-c157748587=\"\"> Instant Print Camera for Kids, 1080P HD Instant Print Photo, Birthday Gifts for Age 4 5 6 7 8 9 10 Girls Boys, Portable Toy with 1 Roll Photo Paper, HD Digital Video Cameras. High Definition Dual Cameras </p>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Product Detail",
+      "url": "http://localhost:4200/product/1",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".product_description > p:nth-child(3)",
+      "html": "<p _ngcontent-ng-c157748587=\"\"><span _ngcontent-ng-c157748587=\"\" class=\"highlight\">Country of Origin -</span> India </p>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Cart",
+      "url": "http://localhost:4200/cart",
+      "ruleId": "image-alt",
+      "wcagRuleIds": [
+        "cat.text-alternatives",
+        "wcag2a",
+        "wcag111",
+        "section508",
+        "section508.22.a",
+        "TTv5",
+        "TT7.a",
+        "TT7.b",
+        "EN-301-549",
+        "EN-9.1.1.1",
+        "ACT",
+        "RGAAv4",
+        "RGAA-1.1.1"
+      ],
+      "description": "Ensure <img> elements have alternative text or a role of none or presentation",
+      "impact": "critical",
+      "target": "img",
+      "html": "<img _ngcontent-ng-c40394...=\"\" src=\"data:image/png;base6...\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/image-alt?application=playwright"
+    },
+    {
+      "page": "Cart",
+      "url": "http://localhost:4200/cart",
+      "ruleId": "landmark-one-main",
+      "wcagRuleIds": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "description": "Ensure the document has a main landmark",
+      "impact": "moderate",
+      "target": "html",
+      "html": "<html lang=\"en\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/landmark-one-main?application=playwright"
+    },
+    {
+      "page": "Cart",
+      "url": "http://localhost:4200/cart",
+      "ruleId": "page-has-heading-one",
+      "wcagRuleIds": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+      "impact": "moderate",
+      "target": "html",
+      "html": "<html lang=\"en\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/page-has-heading-one?application=playwright"
+    },
+    {
+      "page": "Cart",
+      "url": "http://localhost:4200/cart",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".total-price",
+      "html": "<div _ngcontent-ng-c1991298975=\"\" class=\"total-price\"><h3 _ngcontent-ng-c1991298975=\"\">Total Cost: $0.00</h3></div>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Checkout",
+      "url": "http://localhost:4200/checkout",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": "button",
+      "html": "<button _ngcontent-ng-c3897168723=\"\" type=\"submit\">Checkout</button>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "Checkout",
+      "url": "http://localhost:4200/checkout",
+      "ruleId": "image-alt",
+      "wcagRuleIds": [
+        "cat.text-alternatives",
+        "wcag2a",
+        "wcag111",
+        "section508",
+        "section508.22.a",
+        "TTv5",
+        "TT7.a",
+        "TT7.b",
+        "EN-301-549",
+        "EN-9.1.1.1",
+        "ACT",
+        "RGAAv4",
+        "RGAA-1.1.1"
+      ],
+      "description": "Ensure <img> elements have alternative text or a role of none or presentation",
+      "impact": "critical",
+      "target": "img",
+      "html": "<img _ngcontent-ng-c40394...=\"\" src=\"data:image/png;base6...\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/image-alt?application=playwright"
+    },
+    {
+      "page": "Checkout",
+      "url": "http://localhost:4200/checkout",
+      "ruleId": "page-has-heading-one",
+      "wcagRuleIds": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+      "impact": "moderate",
+      "target": "html",
+      "html": "<html lang=\"en\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/page-has-heading-one?application=playwright"
+    },
+    {
+      "page": "Login",
+      "url": "http://localhost:4200/login",
+      "ruleId": "image-alt",
+      "wcagRuleIds": [
+        "cat.text-alternatives",
+        "wcag2a",
+        "wcag111",
+        "section508",
+        "section508.22.a",
+        "TTv5",
+        "TT7.a",
+        "TT7.b",
+        "EN-301-549",
+        "EN-9.1.1.1",
+        "ACT",
+        "RGAAv4",
+        "RGAA-1.1.1"
+      ],
+      "description": "Ensure <img> elements have alternative text or a role of none or presentation",
+      "impact": "critical",
+      "target": "img",
+      "html": "<img _ngcontent-ng-c40394...=\"\" src=\"data:image/png;base6...\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/image-alt?application=playwright"
+    },
+    {
+      "page": "Login",
+      "url": "http://localhost:4200/login",
+      "ruleId": "landmark-one-main",
+      "wcagRuleIds": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "description": "Ensure the document has a main landmark",
+      "impact": "moderate",
+      "target": "html",
+      "html": "<html lang=\"en\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/landmark-one-main?application=playwright"
+    },
+    {
+      "page": "Login",
+      "url": "http://localhost:4200/login",
+      "ruleId": "page-has-heading-one",
+      "wcagRuleIds": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+      "impact": "moderate",
+      "target": "html",
+      "html": "<html lang=\"en\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/page-has-heading-one?application=playwright"
+    },
+    {
+      "page": "About",
+      "url": "http://localhost:4200/about",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": "button",
+      "html": "<button _ngcontent-ng-c3502410312=\"\" type=\"button\" class=\"primary-btn\">Discover collections</button>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "About",
+      "url": "http://localhost:4200/about",
+      "ruleId": "image-alt",
+      "wcagRuleIds": [
+        "cat.text-alternatives",
+        "wcag2a",
+        "wcag111",
+        "section508",
+        "section508.22.a",
+        "TTv5",
+        "TT7.a",
+        "TT7.b",
+        "EN-301-549",
+        "EN-9.1.1.1",
+        "ACT",
+        "RGAAv4",
+        "RGAA-1.1.1"
+      ],
+      "description": "Ensure <img> elements have alternative text or a role of none or presentation",
+      "impact": "critical",
+      "target": "img",
+      "html": "<img _ngcontent-ng-c40394...=\"\" src=\"data:image/png;base6...\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/image-alt?application=playwright"
+    },
+    {
+      "page": "About",
+      "url": "http://localhost:4200/about",
+      "ruleId": "landmark-one-main",
+      "wcagRuleIds": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "description": "Ensure the document has a main landmark",
+      "impact": "moderate",
+      "target": "html",
+      "html": "<html lang=\"en\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/landmark-one-main?application=playwright"
+    },
+    {
+      "page": "About",
+      "url": "http://localhost:4200/about",
+      "ruleId": "page-has-heading-one",
+      "wcagRuleIds": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+      "impact": "moderate",
+      "target": "html",
+      "html": "<html lang=\"en\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/page-has-heading-one?application=playwright"
+    },
+    {
+      "page": "About",
+      "url": "http://localhost:4200/about",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": "h2",
+      "html": "<h2 _ngcontent-ng-c3502410312=\"\">About Our Gift Studio</h2>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "About",
+      "url": "http://localhost:4200/about",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".hero-card > p",
+      "html": "<p _ngcontent-ng-c3502410312=\"\">We craft thoughtful gift experiences for birthdays, anniversaries, holidays, and corporate celebrations.</p>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "About",
+      "url": "http://localhost:4200/about",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": ".feature-grid",
+      "html": "<div _ngcontent-ng-c3502410312=\"\" class=\"feature-grid\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Contact",
+      "url": "http://localhost:4200/contact",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": "button",
+      "html": "<button _ngcontent-ng-c1629846053=\"\" type=\"submit\" class=\"primary-btn\">Send request</button>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "Contact",
+      "url": "http://localhost:4200/contact",
+      "ruleId": "image-alt",
+      "wcagRuleIds": [
+        "cat.text-alternatives",
+        "wcag2a",
+        "wcag111",
+        "section508",
+        "section508.22.a",
+        "TTv5",
+        "TT7.a",
+        "TT7.b",
+        "EN-301-549",
+        "EN-9.1.1.1",
+        "ACT",
+        "RGAAv4",
+        "RGAA-1.1.1"
+      ],
+      "description": "Ensure <img> elements have alternative text or a role of none or presentation",
+      "impact": "critical",
+      "target": "img",
+      "html": "<img _ngcontent-ng-c40394...=\"\" src=\"data:image/png;base6...\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/image-alt?application=playwright"
+    },
+    {
+      "page": "Contact",
+      "url": "http://localhost:4200/contact",
+      "ruleId": "label",
+      "wcagRuleIds": [
+        "cat.forms",
+        "wcag2a",
+        "wcag412",
+        "section508",
+        "section508.22.n",
+        "TTv5",
+        "TT5.c",
+        "EN-301-549",
+        "EN-9.4.1.2",
+        "ACT",
+        "RGAAv4",
+        "RGAA-11.1.1"
+      ],
+      "description": "Ensure every form element has a label",
+      "impact": "critical",
+      "target": "input[name=\"name\"]",
+      "html": "<input _ngcontent-ng-c1629846053=\"\" name=\"name\" required=\"\" ng-reflect-required=\"\" ng-reflect-name=\"name\" ng-reflect-model=\"\" class=\"ng-untouched ng-pristine ng-invalid\" style=\"\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/label?application=playwright"
+    },
+    {
+      "page": "Contact",
+      "url": "http://localhost:4200/contact",
+      "ruleId": "label",
+      "wcagRuleIds": [
+        "cat.forms",
+        "wcag2a",
+        "wcag412",
+        "section508",
+        "section508.22.n",
+        "TTv5",
+        "TT5.c",
+        "EN-301-549",
+        "EN-9.4.1.2",
+        "ACT",
+        "RGAAv4",
+        "RGAA-11.1.1"
+      ],
+      "description": "Ensure every form element has a label",
+      "impact": "critical",
+      "target": "input[name=\"email\"]",
+      "html": "<input _ngcontent-ng-c1629846053=\"\" name=\"email\" type=\"email\" required=\"\" ng-reflect-required=\"\" ng-reflect-name=\"email\" ng-reflect-model=\"\" class=\"ng-untouched ng-pristine ng-invalid\" style=\"\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/label?application=playwright"
+    },
+    {
+      "page": "Contact",
+      "url": "http://localhost:4200/contact",
+      "ruleId": "label",
+      "wcagRuleIds": [
+        "cat.forms",
+        "wcag2a",
+        "wcag412",
+        "section508",
+        "section508.22.n",
+        "TTv5",
+        "TT5.c",
+        "EN-301-549",
+        "EN-9.4.1.2",
+        "ACT",
+        "RGAAv4",
+        "RGAA-11.1.1"
+      ],
+      "description": "Ensure every form element has a label",
+      "impact": "critical",
+      "target": "textarea",
+      "html": "<textarea _ngcontent-ng-c1629846053=\"\" name=\"message\" rows=\"4\" ng-reflect-name=\"message\" ng-reflect-model=\"\" class=\"ng-untouched ng-pristine ng-valid\" style=\"\"></textarea>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/label?application=playwright"
+    },
+    {
+      "page": "Contact",
+      "url": "http://localhost:4200/contact",
+      "ruleId": "landmark-one-main",
+      "wcagRuleIds": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "description": "Ensure the document has a main landmark",
+      "impact": "moderate",
+      "target": "html",
+      "html": "<html lang=\"en\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/landmark-one-main?application=playwright"
+    },
+    {
+      "page": "Contact",
+      "url": "http://localhost:4200/contact",
+      "ruleId": "page-has-heading-one",
+      "wcagRuleIds": [
+        "cat.semantics",
+        "best-practice"
+      ],
+      "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+      "impact": "moderate",
+      "target": "html",
+      "html": "<html lang=\"en\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/page-has-heading-one?application=playwright"
+    },
+    {
+      "page": "Contact",
+      "url": "http://localhost:4200/contact",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": "h2",
+      "html": "<h2 _ngcontent-ng-c1629846053=\"\">Contact our gift concierge</h2>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Contact",
+      "url": "http://localhost:4200/contact",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": "p",
+      "html": "<p _ngcontent-ng-c1629846053=\"\">Share your event details and we will help you build the perfect package.</p>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Contact",
+      "url": "http://localhost:4200/contact",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": "label:nth-child(1)",
+      "html": "<label _ngcontent-ng-c1629846053=\"\">Name</label>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Contact",
+      "url": "http://localhost:4200/contact",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": "input[name=\"name\"]",
+      "html": "<input _ngcontent-ng-c1629846053=\"\" name=\"name\" required=\"\" ng-reflect-required=\"\" ng-reflect-name=\"name\" ng-reflect-model=\"\" class=\"ng-untouched ng-pristine ng-invalid\" style=\"\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Contact",
+      "url": "http://localhost:4200/contact",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": "label:nth-child(3)",
+      "html": "<label _ngcontent-ng-c1629846053=\"\">Email</label>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Contact",
+      "url": "http://localhost:4200/contact",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": "input[name=\"email\"]",
+      "html": "<input _ngcontent-ng-c1629846053=\"\" name=\"email\" type=\"email\" required=\"\" ng-reflect-required=\"\" ng-reflect-name=\"email\" ng-reflect-model=\"\" class=\"ng-untouched ng-pristine ng-invalid\" style=\"\">",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Contact",
+      "url": "http://localhost:4200/contact",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": "label:nth-child(5)",
+      "html": "<label _ngcontent-ng-c1629846053=\"\">What are you celebrating?</label>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    },
+    {
+      "page": "Contact",
+      "url": "http://localhost:4200/contact",
+      "ruleId": "region",
+      "wcagRuleIds": [
+        "cat.keyboard",
+        "best-practice",
+        "RGAAv4",
+        "RGAA-9.2.1"
+      ],
+      "description": "Ensure all page content is contained by landmarks",
+      "impact": "moderate",
+      "target": "textarea",
+      "html": "<textarea _ngcontent-ng-c1629846053=\"\" name=\"message\" rows=\"4\" ng-reflect-name=\"message\" ng-reflect-model=\"\" class=\"ng-untouched ng-pristine ng-valid\" style=\"\"></textarea>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright"
+    }
+  ]
 }

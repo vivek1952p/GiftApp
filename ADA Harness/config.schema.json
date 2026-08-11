@@ -1,0 +1,176 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ADA Harness Configuration",
+  "description": "Project-specific configuration for the ADA Harness. This is the only file you edit to point the harness at a new application.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["baseUrl", "browser", "viewport", "routes", "appSrcDir", "reportDir"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "//": { "type": "string", "description": "Free-text comment. Ignored by the harness." },
+
+    "baseUrl": {
+      "type": "string",
+      "description": "Base URL of the running application under test. Overridable via the ADA_BASE_URL environment variable."
+    },
+    "browser": {
+      "type": "string",
+      "enum": ["chromium", "firefox", "webkit"],
+      "description": "Browser engine used for the axe-core / accessibility-snapshot scan."
+    },
+    "channel": {
+      "type": "string",
+      "description": "Optional Chromium channel, e.g. \"msedge\" or \"chrome\"."
+    },
+    "viewport": {
+      "type": "object",
+      "required": ["width", "height"],
+      "properties": {
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "settleTimeoutMs": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Milliseconds to wait for hydration/network idle before scanning a page. Overridable via ADA_SETTLE_MS."
+    },
+    "timeouts": {
+      "type": "object",
+      "properties": {
+        "navigationMs": { "type": "integer", "minimum": 0 },
+        "testMs": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "appSrcDir": {
+      "type": "string",
+      "description": "Application source root (relative to this file) that auto-fixes are applied to."
+    },
+    "reportDir": {
+      "type": "string",
+      "description": "Directory (relative to this file) where every generated artifact is written."
+    },
+    "screenshots": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "dir": { "type": "string" }
+      }
+    },
+    "wcagTags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "WCAG / best-practice tags passed to axe-core's withTags()."
+    },
+    "ignoredRules": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "axe rule ids to disable."
+    },
+    "routes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "path"],
+        "properties": {
+          "name": { "type": "string" },
+          "path": { "type": "string" }
+        }
+      }
+    },
+    "ignoredRoutes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "login": {
+      "type": "object",
+      "description": "Scripted login for simple username/password forms with known selectors.",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "loginPath": { "type": "string" },
+        "usernameSelector": { "type": "string" },
+        "passwordSelector": { "type": "string" },
+        "submitSelector": { "type": "string" },
+        "usernameEnv": { "type": "string" },
+        "passwordEnv": { "type": "string" },
+        "waitForSelector": { "type": "string" }
+      }
+    },
+    "uia": {
+      "type": "object",
+      "description": "Windows UI Automation capture settings.",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "python": { "type": "string" },
+        "maxDepth": { "type": "integer", "minimum": 1 },
+        "windowClass": { "type": "string" },
+        "documentOnly": { "type": "boolean" }
+      }
+    },
+    "dom": {
+      "type": "object",
+      "description": "Full DOM snapshot settings.",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "fullHtml": { "type": "boolean" }
+      }
+    },
+    "keyboard": {
+      "type": "object",
+      "description": "Keyboard / Tab-order navigation scan settings.",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "maxTabs": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "navigation": {
+      "type": "object",
+      "description": "Multi-page navigation strategy for the specialized engines.",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["reload", "spa"],
+          "description": "\"reload\" calls page.goto() for every route (default, works for any app). \"spa\" uses history.pushState navigation after the first page (opt-in, requires a real client-side router)."
+        }
+      }
+    },
+    "widgets": {
+      "type": "object",
+      "description": "Selectors used by the Widget Behavior Engine.",
+      "properties": {
+        "accordionSelector": {
+          "type": "string",
+          "description": "Playwright locator selector for accordion/disclosure headers."
+        }
+      }
+    },
+    "auth": {
+      "type": "object",
+      "description": "Optional interactive session capture (npm run save-auth) for apps needing a real login (SSO/ADFS/OAuth/etc.) before scanning.",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "manualLoginTimeoutMs": { "type": "integer", "minimum": 0 },
+        "readySelector": {
+          "type": "string",
+          "description": "CSS selector that only exists once login has succeeded. Leave empty to confirm via a terminal prompt instead."
+        }
+      }
+    },
+    "autoFix": {
+      "type": "object",
+      "description": "Project-layout assumptions for the auto-fix engine.",
+      "properties": {
+        "sourceExtensions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "File extensions (with leading dot) eligible for automatic source fixes."
+        },
+        "htmlEntryPoints": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Candidate paths (relative to the application root) for the <html lang> fix, tried in order."
+        }
+      }
+    }
+  }
+}

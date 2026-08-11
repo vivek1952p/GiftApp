@@ -3,19 +3,16 @@
  * ADA Harness — Markdown Dashboard (Step 7)
  * ============================================================================
  *
- * Renders reports/dashboard.md from the current summary.json:
- *
- *   - Pages Scanned
- *   - Total Violations
- *   - Critical / Serious / Moderate / Minor counts
- *   - Resolved (vs previous scan, if available)
- *   - Accessibility Score
- *   - Per-page and per-rule breakdown tables
+ * Renders reports/dashboard.md covering all 7 scanners (axe-core + the
+ * Accessibility Rule Engine + keyboard + all 4 specialized engines) for the
+ * CURRENT scan — the same population of findings that comparison.md diffs
+ * across scans (see all-findings.ts, shared by both).
  * ============================================================================
  */
 
 import fs from 'fs';
 import path from 'path';
+import { collectAllFindings, groupCount, severityCountsOf } from './all-findings';
 import { adaConfig } from '../playwright/config';
 import { createLogger } from './logger';
 import { computeScore } from './score';
@@ -39,38 +36,27 @@ function readMerged(file: string): MergedReport | null {
   }
 }
 
-/** Count violations grouped by an arbitrary key selector. */
-function groupCount(summary: Summary, key: (v: Summary['violations'][number]) => string): Map<string, number> {
-  const map = new Map<string, number>();
-  for (const v of summary.violations) {
-    map.set(key(v), (map.get(key(v)) ?? 0) + 1);
-  }
-  return map;
-}
-
 /**
- * Entry point: generate dashboard.md from the current summary.
+ * Entry point: generate dashboard.md from the current summary + merged report.
  */
 function main(): void {
   try {
     const summary = readSummary(adaConfig.paths.summary);
     if (!summary) throw new Error('summary.json not found. Run "npm run ada" first.');
 
-    const previous = readSummary(adaConfig.paths.previousSummary);
-    const resolved = previous ? Math.max(0, previous.totalViolations - summary.totalViolations) : 0;
-    const score = computeScore(summary);
-    const { critical, serious, moderate, minor } = summary.severityCounts;
-
-    const byPage = groupCount(summary, (v) => v.page);
-    const byRule = groupCount(summary, (v) => v.ruleId);
-
-    // Optional cross-scanner coverage from the merged report.
     const merged = readMerged(adaConfig.paths.merged);
+    const allFindings = collectAllFindings(summary, merged);
+    const allSeverity = severityCountsOf(allFindings);
+    const score = computeScore(allSeverity);
+
     const confirmedByAll = merged
       ? merged.findings.filter(
           (f) => f.verifiedIn.playwrightTree === 'confirmed' && f.verifiedIn.uia === 'confirmed'
         ).length
       : 0;
+
+    const byPage = groupCount(allFindings, (f) => f.page);
+    const byRule = groupCount(allFindings, (f) => f.rule);
 
     const pageRows =
       [...byPage.entries()].map(([page, count]) => `| ${page} | ${count} |`).join('\n') || '| _none_ | 0 |';
@@ -91,13 +77,16 @@ function main(): void {
       '| Metric | Value |',
       '| --- | --- |',
       `| Pages Scanned | ${summary.pagesScanned} |`,
-      `| Total Violations | ${summary.totalViolations} |`,
-      `| Critical | ${critical} |`,
-      `| Serious | ${serious} |`,
-      `| Moderate | ${moderate} |`,
-      `| Minor | ${minor} |`,
-      `| Resolved (vs previous) | ${resolved} |`,
+      `| Total Findings | ${allFindings.length} |`,
+      `| Critical | ${allSeverity.critical} |`,
+      `| Serious | ${allSeverity.serious} |`,
+      `| Moderate | ${allSeverity.moderate} |`,
+      `| Minor | ${allSeverity.minor} |`,
       `| **Accessibility Score** | **${score}/100** |`,
+      '',
+      '_Covers all 7 scanners (axe-core + the Accessibility Rule Engine + keyboard + all 4' +
+        ' specialized engines). See_ `comparison.md` _for how this total changed since the' +
+        ' previous scan._',
       '',
       '## Scanner Coverage',
       '',
@@ -115,13 +104,17 @@ function main(): void {
       `| Interaction Prediction Engine | ${merged?.sources.interactionPrediction ? `✅ ${merged.trees.interactionFindingCount} finding(s)` : '—'} |`,
       `| Findings confirmed by all scanners | ${confirmedByAll} |`,
       '',
-      '## Violations by Page',
+      '## Findings by Page (All Scanners)',
       '',
-      '| Page | Violations |',
+      '| Page | Findings |',
       '| --- | --- |',
       pageRows,
       '',
-      '## Violations by Rule',
+      '## Findings by Rule / Category (All Scanners)',
+      '',
+      '_Rows prefixed_ `expected-focus:` / `widget-behavior:` / `focus-management:` /' +
+        ' `interaction:` _come from the specialized engines, which don\'t use axe rule ids —' +
+        ' the suffix is that engine\'s own scenario/widget/role label instead._',
       '',
       '| Rule | Count |',
       '| --- | --- |',
@@ -131,7 +124,7 @@ function main(): void {
 
     fs.writeFileSync(adaConfig.paths.dashboard, md, 'utf-8');
     log.info(
-      `Dashboard written: score ${score}/100, ${summary.totalViolations} violation(s) -> ` +
+      `Dashboard written: score ${score}/100, ${allFindings.length} finding(s) across all scanners -> ` +
         path.relative(process.cwd(), adaConfig.paths.dashboard)
     );
   } catch (err) {

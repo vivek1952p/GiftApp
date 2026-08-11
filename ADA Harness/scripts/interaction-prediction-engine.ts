@@ -1,24 +1,28 @@
 ﻿/**
  * ============================================================================
- * Interaction Prediction Engine â€” v2
+ * Interaction Prediction Engine — v2
  * ============================================================================
  *
  * Predicts expected keyboard interactions per ARIA role, then verifies them
  * against actual browser behaviour using THREE independent signals:
  *
- *   1. Click-event interception  â€” Enter/Space must fire a synthetic click on
+ *   1. Click-event interception  — Enter/Space must fire a synthetic click on
  *      interactive elements (WAI-ARIA Â§6.6 "activation").
- *   2. ARIA state monitoring     â€” aria-checked / aria-expanded / aria-selected
+ *   2. ARIA state monitoring     — aria-checked / aria-expanded / aria-selected
  *      must change for toggle/expand controls.
- *   3. DOM MutationObserver      â€” detects menus opening, dialogs appearing,
+ *   3. DOM MutationObserver      — detects menus opening, dialogs appearing,
  *      panels expanding even when ARIA state is not updated.
  *
  * Only CUSTOM interactive elements are tested (non-native HTML). Native
  * <button>, <a href>, <input> are keyboard-operable by browsers without
  * any JavaScript.
  *
- * Findings are deduplicated per page: one finding per failing role+key
- * combination (not one per element instance).
+ * Up to MAX_PER_SPEC instances are sampled per role+key per page, and EVERY
+ * sampled instance is tested (a passing instance does not stop testing or
+ * discard earlier failures) -- a finding is raised if any sampled instance
+ * fails, noting how many of the sample failed. Findings are still
+ * deduplicated per page: one finding per failing role+key combination, not
+ * one per element instance.
  *
  * WCAG 2.1.1 (Keyboard), 4.1.2 (Name, Role, Value).
  * ============================================================================
@@ -29,6 +33,7 @@ import fs from 'fs';
 import path from 'path';
 import { adaConfig } from '../playwright/config';
 import { createLogger } from './logger';
+import { gotoPage } from './navigate';
 import type { InteractionFinding, InteractionReport, UiaSeverity } from './types';
 
 const log = createLogger('interaction');
@@ -37,7 +42,7 @@ const SESSION_FILE = path.join(adaConfig.paths.root, 'auth', 'session.json');
 /** Max element instances to test per role spec per page. */
 const MAX_PER_SPEC = 4;
 
-// â”€â”€ Signal types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Signal types ────────────────────────────────────────────────────────────
 
 interface AriaState {
   checked:  string | null;
@@ -57,7 +62,7 @@ interface InteractionSignals {
   focusMoved: boolean;
 }
 
-// â”€â”€ Role spec definition â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Role spec definition ─────────────────────────────────────────────────────
 
 interface RoleSpec {
   /** Short identifier used in deduplication and logging. */
@@ -82,36 +87,37 @@ interface RoleSpec {
   revertAfterTest?: boolean;
 }
 
-// â”€â”€ Role specifications â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Role specifications ──────────────────────────────────────────────────────
 
 const ROLE_SPECS: RoleSpec[] = [
-  // â”€â”€ Custom role="button" (div/span/li â€” not native <button>) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Custom role="button" (any non-native tag, incl. design-system web ────
+  // components like <ds-button role="button">, not just div/span/li) ───────
   {
     name: 'custom-button',
     role: 'button (custom element)',
-    selector: ':is(div, span, li)[role="button"]:not([aria-disabled="true"]):not([disabled])',
+    selector: ':not(button)[role="button"]:not([aria-disabled="true"]):not([disabled])',
     keys: ['Enter', 'Space'],
     severity: 'serious',
     wcag: '2.1.1',
     verifyPass: (s) => s.clickFired || s.domMutated || s.ariaStateChanged,
-    issue: (k) => `Custom role="button" did not fire a click event on ${k} â€” screen reader and keyboard users cannot activate it`,
+    issue: (k) => `Custom role="button" did not fire a click event on ${k} — screen reader and keyboard users cannot activate it`,
     recommendation: 'Add keydown/keyup handlers for Enter (keyCode 13) and Space (keyCode 32) that call element.click() or dispatch a click event. Better: replace the div/span with a native <button>.',
   },
 
-  // â”€â”€ Custom role="link" (div/span â€” not native <a>) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Custom role="link" (any non-native tag — not native <a>) ──────────────
   {
     name: 'custom-link',
     role: 'link (custom element)',
-    selector: ':is(div, span)[role="link"]:not([aria-disabled="true"])',
+    selector: ':not(a)[role="link"]:not([aria-disabled="true"])',
     keys: ['Enter'],
     severity: 'serious',
     wcag: '2.1.1',
     verifyPass: (s) => s.clickFired || s.focusMoved || s.domMutated,
-    issue: () => 'Custom role="link" did not activate on Enter â€” keyboard users cannot follow it',
+    issue: () => 'Custom role="link" did not activate on Enter — keyboard users cannot follow it',
     recommendation: 'Add a keydown handler for Enter that triggers navigation, or replace with a native <a href>.',
   },
 
-  // â”€â”€ Custom checkbox (not native <input type="checkbox">) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Custom checkbox (not native <input type="checkbox">) ───────────────────
   {
     name: 'custom-checkbox',
     role: 'checkbox (custom element)',
@@ -119,15 +125,15 @@ const ROLE_SPECS: RoleSpec[] = [
     keys: ['Space'],
     severity: 'serious',
     wcag: '2.1.1',
-    // aria-checked MUST change â€” click alone is not enough to confirm toggle
+    // aria-checked MUST change — click alone is not enough to confirm toggle
     verifyPass: (_s, before, after) =>
       after !== null && after.checked !== before.checked,
-    issue: () => 'Space did not toggle aria-checked on custom role="checkbox" â€” screen readers will not announce the state change',
+    issue: () => 'Space did not toggle aria-checked on custom role="checkbox" — screen readers will not announce the state change',
     recommendation: 'On Space keydown, toggle aria-checked between "true" and "false" and announce the change.',
     revertAfterTest: true,
   },
 
-  // â”€â”€ Custom switch (not native <input type="checkbox" role="switch">) â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Custom switch (not native <input type="checkbox" role="switch">) ────────
   {
     name: 'custom-switch',
     role: 'switch (custom element)',
@@ -142,23 +148,26 @@ const ROLE_SPECS: RoleSpec[] = [
     revertAfterTest: true,
   },
 
-  // â”€â”€ Expandable controls (accordion headers, disclosure buttons) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-  // Only test NON-native elements (not <button aria-expanded> â€” native buttons work)
+  // ── Expandable controls (accordion headers, disclosure buttons) ─────────
+  // Matches any element with aria-expanded regardless of tag name, so custom
+  // web components (e.g. a design system's own accordion header) are covered —
+  // not just <div>/<span>. Only excludes <button>/<a>, which are native and
+  // already keyboard-operable without a custom handler.
   {
     name: 'expandable-custom',
     role: 'expandable control (non-button)',
-    selector: ':is(div, span, mat-expansion-panel-header)[aria-expanded="false"]:not([aria-disabled="true"]):not([disabled])',
+    selector: '[aria-expanded="false"]:not(button):not(a):not([aria-disabled="true"]):not([disabled])',
     keys: ['Enter', 'Space'],
     severity: 'serious',
     wcag: '2.1.1',
     verifyPass: (s, before, after) =>
       (after !== null && after.expanded !== before.expanded) || s.domMutated,
-    issue: (k) => `${k} did not toggle aria-expanded on the expandable control â€” keyboard users cannot open this panel`,
+    issue: (k) => `${k} did not toggle aria-expanded on the expandable control — keyboard users cannot open this panel`,
     recommendation: 'On Enter/Space keydown, toggle aria-expanded and show/hide the controlled region.',
     revertAfterTest: true,
   },
 
-  // â”€â”€ Custom menuitem (not native <button> or <a>) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Custom menuitem (not native <button> or <a>) ────────────────────────────
   {
     name: 'custom-menuitem',
     role: 'menuitem (custom element)',
@@ -167,11 +176,11 @@ const ROLE_SPECS: RoleSpec[] = [
     severity: 'serious',
     wcag: '2.1.1',
     verifyPass: (s) => s.clickFired || s.domMutated || s.focusMoved,
-    issue: () => 'Enter did not activate custom role="menuitem" â€” screen reader menu navigation will be broken',
+    issue: () => 'Enter did not activate custom role="menuitem" — screen reader menu navigation will be broken',
     recommendation: 'Bind Enter keydown to trigger the menu item action (fire a click event or perform the action directly).',
   },
 
-  // â”€â”€ Custom tab (not native) â€” Enter/Space must select â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Custom tab (not native) — Enter/Space must select ──────────────────────
   {
     name: 'custom-tab',
     role: 'tab (custom element)',
@@ -187,26 +196,51 @@ const ROLE_SPECS: RoleSpec[] = [
   },
 ];
 
-// â”€â”€ Page-level interceptors â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Page-level interceptors ────────────────────────────────────────────────────
 
-/** Inject click and mutation interceptors into the page. */
+const TARGET_MARKER = 'data-ada-interact-target';
+
+/**
+ * Inject click and mutation interceptors into the page, scoped around the
+ * element identified by TARGET_MARKER (set on it by the caller before this
+ * runs). Child-node insertions/removals are counted anywhere in the document
+ * -- many real widgets render their expanded content as a portaled node
+ * appended to <body>, not as a child of the trigger, so this can't be scoped
+ * narrowly. Attribute mutations are only counted when they occur on the
+ * tested element or one of its descendants -- attribute churn elsewhere on
+ * the page (a live clock, a third-party widget, an unrelated hover class) is
+ * unrelated to this interaction and was previously counted as a false
+ * "it responded" signal.
+ */
 async function injectInterceptors(page: Page): Promise<void> {
-  await page.evaluate(() => {
-    // â‘  Click-event interceptor â€” capture phase catches all bubbling/non-bubbling
+  await page.evaluate((marker) => {
+    // ①  Click-event interceptor — capture phase catches all bubbling/non-bubbling
     (window as any).__ada_click = false;
     (window as any).__ada_clickHandler = () => { (window as any).__ada_click = true; };
     document.addEventListener('click', (window as any).__ada_clickHandler, { capture: true });
 
-    // â‘¡ DOM MutationObserver â€” watches child list + key ARIA attributes
+    // ② DOM MutationObserver — watches child list + key ARIA attributes
     (window as any).__ada_mutations = 0;
-    (window as any).__ada_observer = new MutationObserver(() => {
-      (window as any).__ada_mutations++;
+    (window as any).__ada_observer = new MutationObserver((mutations: MutationRecord[]) => {
+      const target = document.querySelector(`[${marker}]`);
+      for (const m of mutations) {
+        if (m.type === 'childList' && (m.addedNodes.length > 0 || m.removedNodes.length > 0)) {
+          (window as any).__ada_mutations++;
+          continue;
+        }
+        if (m.type === 'attributes' && target) {
+          const attrTarget = m.target as Element;
+          if (target === attrTarget || target.contains(attrTarget)) {
+            (window as any).__ada_mutations++;
+          }
+        }
+      }
     });
     (window as any).__ada_observer.observe(document.body, {
       childList: true, subtree: true, attributes: true,
       attributeFilter: ['aria-expanded', 'aria-hidden', 'aria-checked', 'aria-selected', 'class', 'style'],
     });
-  });
+  }, TARGET_MARKER);
 }
 
 /** Read interceptor signals and clean up. */
@@ -235,19 +269,18 @@ async function snapshotAria(page: Page, handle: Awaited<ReturnType<Page['locator
   }));
 }
 
-// â”€â”€ Deduplication helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Deduplication helpers ─────────────────────────────────────────────────────
 
 function dedupKey(page: string, specName: string, key: string): string {
   return `${page}::${specName}::${key}`;
 }
 
-// â”€â”€ Main â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Main ───────────────────────────────────────────────────────────────────────
 
 async function main(): Promise<void> {
   const findings: InteractionFinding[] = [];
   const reported = new Set<string>(); // dedup: page::specName::key
-  let spaLoaded = false;
-  const SPA_BASE = adaConfig.spaBase;
+  let firstPage = true;
 
   const browser = await chromium.launch({
     headless: true,
@@ -266,25 +299,15 @@ async function main(): Promise<void> {
       log.info(`Interaction scan: ${target.name}`);
 
       try {
-        if (!spaLoaded) {
-          await page.goto(url, { waitUntil: 'load', timeout: adaConfig.timeouts.navigationMs });
-          spaLoaded = true;
-        } else {
-          await page.evaluate((p) => {
-            window.history.pushState({}, '', p);
-            window.dispatchEvent(new PopStateEvent('popstate', { state: window.history.state }));
-          }, `${SPA_BASE}${target.path}`);
-          await page.waitForLoadState('networkidle').catch(() => {});
-          await page.waitForTimeout(adaConfig.settleTimeoutMs);
-        }
-        await page.waitForTimeout(adaConfig.settleTimeoutMs);
+        await gotoPage(page, target, adaConfig, firstPage);
+        firstPage = false;
       } catch {
-        log.warn(`Could not load ${target.name} â€” skipping.`);
+        log.warn(`Could not load ${target.name} — skipping.`);
         continue;
       }
 
       for (const spec of ROLE_SPECS) {
-        // Collect elements matching the spec â€” skip non-visible and aria-hidden
+        // Collect elements matching the spec — skip non-visible and aria-hidden
         const allEls = await page
           .locator(`${spec.selector}:not([aria-hidden="true"])`)
           .all();
@@ -298,9 +321,15 @@ async function main(): Promise<void> {
 
         for (const key of spec.keys) {
           const dupKey = dedupKey(target.name, spec.name, key);
-          let anyFailed = false;
+          let failCount = 0;
+          let passCount = 0;
           let failName = '';
 
+          // Test every sampled instance -- do NOT stop at the first pass.
+          // A single working instance does not mean the other 3 sampled
+          // instances work too (e.g. a data-table row action rendered by a
+          // different code path per row); stopping early previously
+          // discarded any failures already seen earlier in this loop.
           for (const el of sample) {
             try {
               // Capture element name for reporting
@@ -318,16 +347,23 @@ async function main(): Promise<void> {
                 document.activeElement?.outerHTML?.slice(0, 80) ?? ''
               );
 
+              // Mark this element so injectInterceptors can scope attribute-
+              // mutation signals to it (and its descendants) instead of the
+              // whole document.
+              await el.evaluate((e, marker) => e.setAttribute(marker, ''), TARGET_MARKER);
+
               // Inject interceptors BEFORE the keypress
               await injectInterceptors(page);
 
               await el.focus();
               await page.keyboard.press(key);
-              await page.waitForTimeout(250); // allow async reactions (Angular CD cycle)
+              await page.waitForTimeout(250); // allow async reactions (framework change-detection/render cycle)
 
               // Read signals
               const signals = await readAndClearInterceptors(page, focusBefore);
               const after = await snapshotAria(page, el).catch(() => null);
+
+              await el.evaluate((e, marker) => e.removeAttribute(marker), TARGET_MARKER).catch(() => {});
 
               // Enrich signals with ARIA state comparison
               signals.ariaStateChanged = after !== null && (
@@ -339,35 +375,27 @@ async function main(): Promise<void> {
               const passed = spec.verifyPass(signals, before, after);
 
               if (!passed) {
-                anyFailed = true;
-                failName = name;
+                failCount++;
+                if (!failName) failName = name;
                 log.debug(`  FAIL ${spec.name} "${name}" key=${key} signals=${JSON.stringify(signals)}`);
               } else {
+                passCount++;
                 log.debug(`  PASS ${spec.name} "${name}" key=${key}`);
-                // If even ONE instance passes, the role is working â€” don't flag
-                anyFailed = false;
-                // Revert state if applicable
-                if (spec.revertAfterTest && signals.ariaStateChanged) {
-                  await el.focus();
-                  await page.keyboard.press(key);
-                  await page.waitForTimeout(150);
-                }
-                break; // One passing instance is enough â€” no false positive
               }
 
-              // Revert if state changed (keep page clean for next tests)
+              // Revert if state changed (keep page clean for next tests), win or lose.
               if (spec.revertAfterTest && signals.ariaStateChanged) {
                 await el.focus();
                 await page.keyboard.press(key);
                 await page.waitForTimeout(150);
               }
 
-            } catch { /* element became stale â€” skip */ }
+            } catch { /* element became stale — skip */ }
           }
 
-          // Only report if ALL tested instances failed AND not already reported for this page
-          if (anyFailed && !reported.has(dupKey)) {
+          if (failCount > 0 && !reported.has(dupKey)) {
             reported.add(dupKey);
+            const totalTested = failCount + passCount;
             findings.push({
               page: target.name,
               url,
@@ -375,7 +403,9 @@ async function main(): Promise<void> {
               role: spec.role,
               name: failName,
               expectedKey: key,
-              issue: spec.issue(key),
+              issue: totalTested > 1
+                ? `${spec.issue(key)} (${failCount} of ${totalTested} sampled instance(s) failed)`
+                : spec.issue(key),
               severity: spec.severity,
               wcag: spec.wcag,
               recommendation: spec.recommendation,

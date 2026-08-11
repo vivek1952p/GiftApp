@@ -221,8 +221,15 @@ function main(): void {
     const domByPage = new Map<string, DomPageSnapshot>((dom?.results ?? []).map((r) => [r.page, r]));
     const uiaAvailable = uia?.available ?? false;
 
-    // Index UIA Rule-Engine findings by `${page}::${baseControlType}` so an axe
-    // finding can be correlated to an independent UIA-inferred finding.
+    // Index Accessibility Rule Engine findings by `${page}::${baseControlType}`
+    // so an axe finding can be correlated to an independent corroborating
+    // finding. Despite the `uiaFindings`/`uia-findings.json` name (kept from
+    // before the rule engine was unified), this now also contains DOM, AX-tree,
+    // and ARIA-pattern findings — only genuine UIA-sourced entries use the
+    // Windows UIA PascalCase control-type strings this lookup is keyed on
+    // (e.g. "Button"), so DOM/AX-tree findings (lowercase ARIA role strings,
+    // or no role at all) never collide with it; this only ever corroborates
+    // against real UIA findings, as intended.
     const uiaFindings: UiaFinding[] = uiaFindingsReport?.findings ?? [];
     const keyboardFindings: KeyboardFinding[] = keyboardReport?.findings ?? [];
     const expectedFocusGaps: ExpectedFocusGap[] = expectedFocusReport?.allGaps ?? [];
@@ -309,6 +316,14 @@ function main(): void {
     };
 
     fs.mkdirSync(adaConfig.paths.reportsDir, { recursive: true });
+
+    // Snapshot the outgoing merged report BEFORE overwriting it, so compare.ts
+    // can diff ALL 7 scanners across runs (previousSummary/summary.json only
+    // ever covered axe-core, which is why comparison.md and dashboard.md used
+    // to disagree on the total finding count).
+    if (fs.existsSync(adaConfig.paths.merged)) {
+      fs.copyFileSync(adaConfig.paths.merged, adaConfig.paths.mergedPrevious);
+    }
     fs.writeFileSync(adaConfig.paths.merged, JSON.stringify(merged, null, 2), 'utf-8');
 
     const confirmedByBoth = findings.filter(

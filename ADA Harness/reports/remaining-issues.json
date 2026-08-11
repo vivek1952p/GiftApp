@@ -1,7 +1,976 @@
 {
-  "generatedAt": "2026-07-30T10:54:02.919Z",
-  "count": 0,
+  "generatedAt": "2026-08-11T10:22:20.861Z",
+  "count": 121,
   "introduced": 0,
-  "issues": [],
+  "issues": [
+    {
+      "key": "axe::Home::color-contrast::.card:nth-child(1) > .content > .price-rating > h2",
+      "page": "Home",
+      "rule": "color-contrast",
+      "severity": "serious",
+      "detail": ".card:nth-child(1) > .content > .price-rating > h2",
+      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
+    },
+    {
+      "key": "axe::Home::color-contrast::.card:nth-child(2) > .content > .price-rating > h2",
+      "page": "Home",
+      "rule": "color-contrast",
+      "severity": "serious",
+      "detail": ".card:nth-child(2) > .content > .price-rating > h2",
+      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
+    },
+    {
+      "key": "axe::Home::color-contrast::.card:nth-child(3) > .content > .price-rating > h2",
+      "page": "Home",
+      "rule": "color-contrast",
+      "severity": "serious",
+      "detail": ".card:nth-child(3) > .content > .price-rating > h2",
+      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
+    },
+    {
+      "key": "axe::Home::color-contrast::.card:nth-child(4) > .content > .price-rating > h2",
+      "page": "Home",
+      "rule": "color-contrast",
+      "severity": "serious",
+      "detail": ".card:nth-child(4) > .content > .price-rating > h2",
+      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
+    },
+    {
+      "key": "axe::Home::color-contrast::.card:nth-child(5) > .content > .price-rating > h2",
+      "page": "Home",
+      "rule": "color-contrast",
+      "severity": "serious",
+      "detail": ".card:nth-child(5) > .content > .price-rating > h2",
+      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
+    },
+    {
+      "key": "axe::Home::color-contrast::.card:nth-child(6) > .content > .price-rating > h2",
+      "page": "Home",
+      "rule": "color-contrast",
+      "severity": "serious",
+      "detail": ".card:nth-child(6) > .content > .price-rating > h2",
+      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
+    },
+    {
+      "key": "axe::Home::image-alt::span > img",
+      "page": "Home",
+      "rule": "image-alt",
+      "severity": "critical",
+      "detail": "span > img",
+      "issue": "Ensure <img> elements have alternative text or a role of none or presentation"
+    },
+    {
+      "key": "axe::Home::landmark-one-main::html",
+      "page": "Home",
+      "rule": "landmark-one-main",
+      "severity": "moderate",
+      "detail": "html",
+      "issue": "Ensure the document has a main landmark"
+    },
+    {
+      "key": "axe::Home::region::h1",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": "h1",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::region::.search-sort-bar",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".search-sort-bar",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::region::.card:nth-child(1) > .imgBx",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".card:nth-child(1) > .imgBx",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::region::.card:nth-child(1) > .content > .productName",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".card:nth-child(1) > .content > .productName",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::region::.card:nth-child(1) > .content > .price-rating > h2",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".card:nth-child(1) > .content > .price-rating > h2",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::region::.card:nth-child(2) > .imgBx",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".card:nth-child(2) > .imgBx",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::region::.card:nth-child(2) > .content > .productName",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".card:nth-child(2) > .content > .productName",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::region::.card:nth-child(2) > .content > .price-rating > h2",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".card:nth-child(2) > .content > .price-rating > h2",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::region::.card:nth-child(3) > .imgBx",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".card:nth-child(3) > .imgBx",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::region::.card:nth-child(3) > .content > .productName",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".card:nth-child(3) > .content > .productName",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::region::.card:nth-child(3) > .content > .price-rating > h2",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".card:nth-child(3) > .content > .price-rating > h2",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::region::.card:nth-child(4) > .imgBx",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".card:nth-child(4) > .imgBx",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::region::.card:nth-child(4) > .content > .productName",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".card:nth-child(4) > .content > .productName",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::region::.card:nth-child(4) > .content > .price-rating > h2",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".card:nth-child(4) > .content > .price-rating > h2",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::region::.card:nth-child(5) > .imgBx",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".card:nth-child(5) > .imgBx",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::region::.card:nth-child(5) > .content > .productName",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".card:nth-child(5) > .content > .productName",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::region::.card:nth-child(5) > .content > .price-rating > h2",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".card:nth-child(5) > .content > .price-rating > h2",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::region::.card:nth-child(6) > .imgBx",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".card:nth-child(6) > .imgBx",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::region::.card:nth-child(6) > .content > .productName",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".card:nth-child(6) > .content > .productName",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::region::.card:nth-child(6) > .content > .price-rating > h2",
+      "page": "Home",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".card:nth-child(6) > .content > .price-rating > h2",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Home::select-name::select",
+      "page": "Home",
+      "rule": "select-name",
+      "severity": "critical",
+      "detail": "select",
+      "issue": "Ensure select element has an accessible name"
+    },
+    {
+      "key": "axe::Product Detail::color-contrast::.price_original",
+      "page": "Product Detail",
+      "rule": "color-contrast",
+      "severity": "serious",
+      "detail": ".price_original",
+      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
+    },
+    {
+      "key": "axe::Product Detail::color-contrast::.offer",
+      "page": "Product Detail",
+      "rule": "color-contrast",
+      "severity": "serious",
+      "detail": ".offer",
+      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
+    },
+    {
+      "key": "axe::Product Detail::color-contrast::.other",
+      "page": "Product Detail",
+      "rule": "color-contrast",
+      "severity": "serious",
+      "detail": ".other",
+      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
+    },
+    {
+      "key": "axe::Product Detail::color-contrast::.product_description > p:nth-child(2)",
+      "page": "Product Detail",
+      "rule": "color-contrast",
+      "severity": "serious",
+      "detail": ".product_description > p:nth-child(2)",
+      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
+    },
+    {
+      "key": "axe::Product Detail::color-contrast::.product_description > p:nth-child(3)",
+      "page": "Product Detail",
+      "rule": "color-contrast",
+      "severity": "serious",
+      "detail": ".product_description > p:nth-child(3)",
+      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
+    },
+    {
+      "key": "axe::Product Detail::image-alt::img",
+      "page": "Product Detail",
+      "rule": "image-alt",
+      "severity": "critical",
+      "detail": "img",
+      "issue": "Ensure <img> elements have alternative text or a role of none or presentation"
+    },
+    {
+      "key": "axe::Product Detail::landmark-one-main::html",
+      "page": "Product Detail",
+      "rule": "landmark-one-main",
+      "severity": "moderate",
+      "detail": "html",
+      "issue": "Ensure the document has a main landmark"
+    },
+    {
+      "key": "axe::Product Detail::page-has-heading-one::html",
+      "page": "Product Detail",
+      "rule": "page-has-heading-one",
+      "severity": "moderate",
+      "detail": "html",
+      "issue": "Ensure that the page, or at least one of its frames contains a level-one heading"
+    },
+    {
+      "key": "axe::Product Detail::region::.left",
+      "page": "Product Detail",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".left",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Product Detail::region::.product_description > h4",
+      "page": "Product Detail",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".product_description > h4",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Product Detail::region::.product_description > p:nth-child(2)",
+      "page": "Product Detail",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".product_description > p:nth-child(2)",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Product Detail::region::.product_description > p:nth-child(3)",
+      "page": "Product Detail",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".product_description > p:nth-child(3)",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Cart::image-alt::img",
+      "page": "Cart",
+      "rule": "image-alt",
+      "severity": "critical",
+      "detail": "img",
+      "issue": "Ensure <img> elements have alternative text or a role of none or presentation"
+    },
+    {
+      "key": "axe::Cart::landmark-one-main::html",
+      "page": "Cart",
+      "rule": "landmark-one-main",
+      "severity": "moderate",
+      "detail": "html",
+      "issue": "Ensure the document has a main landmark"
+    },
+    {
+      "key": "axe::Cart::page-has-heading-one::html",
+      "page": "Cart",
+      "rule": "page-has-heading-one",
+      "severity": "moderate",
+      "detail": "html",
+      "issue": "Ensure that the page, or at least one of its frames contains a level-one heading"
+    },
+    {
+      "key": "axe::Cart::region::.total-price",
+      "page": "Cart",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".total-price",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Checkout::color-contrast::button",
+      "page": "Checkout",
+      "rule": "color-contrast",
+      "severity": "serious",
+      "detail": "button",
+      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
+    },
+    {
+      "key": "axe::Checkout::image-alt::img",
+      "page": "Checkout",
+      "rule": "image-alt",
+      "severity": "critical",
+      "detail": "img",
+      "issue": "Ensure <img> elements have alternative text or a role of none or presentation"
+    },
+    {
+      "key": "axe::Checkout::page-has-heading-one::html",
+      "page": "Checkout",
+      "rule": "page-has-heading-one",
+      "severity": "moderate",
+      "detail": "html",
+      "issue": "Ensure that the page, or at least one of its frames contains a level-one heading"
+    },
+    {
+      "key": "axe::Login::image-alt::img",
+      "page": "Login",
+      "rule": "image-alt",
+      "severity": "critical",
+      "detail": "img",
+      "issue": "Ensure <img> elements have alternative text or a role of none or presentation"
+    },
+    {
+      "key": "axe::Login::landmark-one-main::html",
+      "page": "Login",
+      "rule": "landmark-one-main",
+      "severity": "moderate",
+      "detail": "html",
+      "issue": "Ensure the document has a main landmark"
+    },
+    {
+      "key": "axe::Login::page-has-heading-one::html",
+      "page": "Login",
+      "rule": "page-has-heading-one",
+      "severity": "moderate",
+      "detail": "html",
+      "issue": "Ensure that the page, or at least one of its frames contains a level-one heading"
+    },
+    {
+      "key": "axe::About::color-contrast::button",
+      "page": "About",
+      "rule": "color-contrast",
+      "severity": "serious",
+      "detail": "button",
+      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
+    },
+    {
+      "key": "axe::About::image-alt::img",
+      "page": "About",
+      "rule": "image-alt",
+      "severity": "critical",
+      "detail": "img",
+      "issue": "Ensure <img> elements have alternative text or a role of none or presentation"
+    },
+    {
+      "key": "axe::About::landmark-one-main::html",
+      "page": "About",
+      "rule": "landmark-one-main",
+      "severity": "moderate",
+      "detail": "html",
+      "issue": "Ensure the document has a main landmark"
+    },
+    {
+      "key": "axe::About::page-has-heading-one::html",
+      "page": "About",
+      "rule": "page-has-heading-one",
+      "severity": "moderate",
+      "detail": "html",
+      "issue": "Ensure that the page, or at least one of its frames contains a level-one heading"
+    },
+    {
+      "key": "axe::About::region::h2",
+      "page": "About",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": "h2",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::About::region::.hero-card > p",
+      "page": "About",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".hero-card > p",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::About::region::.feature-grid",
+      "page": "About",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": ".feature-grid",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Contact::color-contrast::button",
+      "page": "Contact",
+      "rule": "color-contrast",
+      "severity": "serious",
+      "detail": "button",
+      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
+    },
+    {
+      "key": "axe::Contact::image-alt::img",
+      "page": "Contact",
+      "rule": "image-alt",
+      "severity": "critical",
+      "detail": "img",
+      "issue": "Ensure <img> elements have alternative text or a role of none or presentation"
+    },
+    {
+      "key": "axe::Contact::label::input[name=\"name\"]",
+      "page": "Contact",
+      "rule": "label",
+      "severity": "critical",
+      "detail": "input[name=\"name\"]",
+      "issue": "Ensure every form element has a label"
+    },
+    {
+      "key": "axe::Contact::label::input[name=\"email\"]",
+      "page": "Contact",
+      "rule": "label",
+      "severity": "critical",
+      "detail": "input[name=\"email\"]",
+      "issue": "Ensure every form element has a label"
+    },
+    {
+      "key": "axe::Contact::label::textarea",
+      "page": "Contact",
+      "rule": "label",
+      "severity": "critical",
+      "detail": "textarea",
+      "issue": "Ensure every form element has a label"
+    },
+    {
+      "key": "axe::Contact::landmark-one-main::html",
+      "page": "Contact",
+      "rule": "landmark-one-main",
+      "severity": "moderate",
+      "detail": "html",
+      "issue": "Ensure the document has a main landmark"
+    },
+    {
+      "key": "axe::Contact::page-has-heading-one::html",
+      "page": "Contact",
+      "rule": "page-has-heading-one",
+      "severity": "moderate",
+      "detail": "html",
+      "issue": "Ensure that the page, or at least one of its frames contains a level-one heading"
+    },
+    {
+      "key": "axe::Contact::region::h2",
+      "page": "Contact",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": "h2",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Contact::region::p",
+      "page": "Contact",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": "p",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Contact::region::label:nth-child(1)",
+      "page": "Contact",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": "label:nth-child(1)",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Contact::region::input[name=\"name\"]",
+      "page": "Contact",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": "input[name=\"name\"]",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Contact::region::label:nth-child(3)",
+      "page": "Contact",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": "label:nth-child(3)",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Contact::region::input[name=\"email\"]",
+      "page": "Contact",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": "input[name=\"email\"]",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Contact::region::label:nth-child(5)",
+      "page": "Contact",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": "label:nth-child(5)",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "axe::Contact::region::textarea",
+      "page": "Contact",
+      "rule": "region",
+      "severity": "moderate",
+      "detail": "textarea",
+      "issue": "Ensure all page content is contained by landmarks"
+    },
+    {
+      "key": "uia::Cart::uia-image-name::",
+      "page": "Cart",
+      "rule": "uia-image-name",
+      "severity": "serious",
+      "detail": "ImageControl",
+      "issue": "Image may be missing alt text"
+    },
+    {
+      "key": "uia::Cart::uia-disabled-interactive::Checkout",
+      "page": "Cart",
+      "rule": "uia-disabled-interactive",
+      "severity": "minor",
+      "detail": "Checkout",
+      "issue": "Button is disabled — verify this is intended"
+    },
+    {
+      "key": "uia::Contact::uia-input-name::",
+      "page": "Contact",
+      "rule": "uia-input-name",
+      "severity": "critical",
+      "detail": "EditControl",
+      "issue": "Input field has no accessible label"
+    },
+    {
+      "key": "uia::Contact::uia-input-name::",
+      "page": "Contact",
+      "rule": "uia-input-name",
+      "severity": "critical",
+      "detail": "EditControl",
+      "issue": "Input field has no accessible label"
+    },
+    {
+      "key": "uia::Contact::uia-input-name::",
+      "page": "Contact",
+      "rule": "uia-input-name",
+      "severity": "critical",
+      "detail": "EditControl",
+      "issue": "Input field has no accessible label"
+    },
+    {
+      "key": "uia::Home::dom-color-contrast::.card:nth-child(1) > .content > .price-rating > h2",
+      "page": "Home",
+      "rule": "dom-color-contrast",
+      "severity": "moderate",
+      "detail": ".card:nth-child(1) > .content > .price-rating > h2",
+      "issue": "Insufficient colour contrast 3.83:1 on \"$29.99\" (required 4.5:1)"
+    },
+    {
+      "key": "uia::Home::dom-color-contrast::.card:nth-child(2) > .content > .price-rating > h2",
+      "page": "Home",
+      "rule": "dom-color-contrast",
+      "severity": "moderate",
+      "detail": ".card:nth-child(2) > .content > .price-rating > h2",
+      "issue": "Insufficient colour contrast 3.83:1 on \"$139.99\" (required 4.5:1)"
+    },
+    {
+      "key": "uia::Home::dom-color-contrast::.card:nth-child(3) > .content > .price-rating > h2",
+      "page": "Home",
+      "rule": "dom-color-contrast",
+      "severity": "moderate",
+      "detail": ".card:nth-child(3) > .content > .price-rating > h2",
+      "issue": "Insufficient colour contrast 3.83:1 on \"$99.99\" (required 4.5:1)"
+    },
+    {
+      "key": "uia::Home::dom-color-contrast::.card:nth-child(4) > .content > .price-rating > h2",
+      "page": "Home",
+      "rule": "dom-color-contrast",
+      "severity": "moderate",
+      "detail": ".card:nth-child(4) > .content > .price-rating > h2",
+      "issue": "Insufficient colour contrast 3.83:1 on \"$219.99\" (required 4.5:1)"
+    },
+    {
+      "key": "uia::Home::dom-color-contrast::.card:nth-child(5) > .content > .price-rating > h2",
+      "page": "Home",
+      "rule": "dom-color-contrast",
+      "severity": "moderate",
+      "detail": ".card:nth-child(5) > .content > .price-rating > h2",
+      "issue": "Insufficient colour contrast 3.83:1 on \"$59.99\" (required 4.5:1)"
+    },
+    {
+      "key": "uia::Home::dom-color-contrast::.card:nth-child(6) > .content > .price-rating > h2",
+      "page": "Home",
+      "rule": "dom-color-contrast",
+      "severity": "moderate",
+      "detail": ".card:nth-child(6) > .content > .price-rating > h2",
+      "issue": "Insufficient colour contrast 3.83:1 on \"$21.99\" (required 4.5:1)"
+    },
+    {
+      "key": "uia::Product Detail::dom-color-contrast::.price_original",
+      "page": "Product Detail",
+      "rule": "dom-color-contrast",
+      "severity": "moderate",
+      "detail": ".price_original",
+      "issue": "Insufficient colour contrast 3.44:1 on \"$4000\" (required 4.5:1)"
+    },
+    {
+      "key": "uia::Product Detail::dom-color-contrast::.offer",
+      "page": "Product Detail",
+      "rule": "dom-color-contrast",
+      "severity": "serious",
+      "detail": ".offer",
+      "issue": "Insufficient colour contrast 2.65:1 on \"79% OFF\" (required 4.5:1)"
+    },
+    {
+      "key": "uia::Product Detail::dom-color-contrast::.other",
+      "page": "Product Detail",
+      "rule": "dom-color-contrast",
+      "severity": "moderate",
+      "detail": ".other",
+      "issue": "Insufficient colour contrast 3.44:1 on \"inclusive of all taxes\" (required 4.5:1)"
+    },
+    {
+      "key": "uia::Product Detail::dom-color-contrast::.product_description > p:nth-child(2)",
+      "page": "Product Detail",
+      "rule": "dom-color-contrast",
+      "severity": "moderate",
+      "detail": ".product_description > p:nth-child(2)",
+      "issue": "Insufficient colour contrast 3.44:1 on \"Instant Print Camera for Kids, 1080P HD Instant Print Photo,\" (required 4.5:1)"
+    },
+    {
+      "key": "uia::Product Detail::dom-color-contrast::.product_description > p:nth-child(3)",
+      "page": "Product Detail",
+      "rule": "dom-color-contrast",
+      "severity": "moderate",
+      "detail": ".product_description > p:nth-child(3)",
+      "issue": "Insufficient colour contrast 3.44:1 on \"Country of Origin - India\" (required 4.5:1)"
+    },
+    {
+      "key": "uia::Checkout::dom-color-contrast::button",
+      "page": "Checkout",
+      "rule": "dom-color-contrast",
+      "severity": "serious",
+      "detail": "button",
+      "issue": "Insufficient colour contrast 2.23:1 on \"Checkout\" (required 4.5:1)"
+    },
+    {
+      "key": "uia::About::dom-color-contrast::button",
+      "page": "About",
+      "rule": "dom-color-contrast",
+      "severity": "moderate",
+      "detail": "button",
+      "issue": "Insufficient colour contrast 3.46:1 on \"Discover collections\" (required 4.5:1)"
+    },
+    {
+      "key": "uia::Contact::dom-color-contrast::button",
+      "page": "Contact",
+      "rule": "dom-color-contrast",
+      "severity": "moderate",
+      "detail": "button",
+      "issue": "Insufficient colour contrast 3.46:1 on \"Send request\" (required 4.5:1)"
+    },
+    {
+      "key": "uia::Home::ax-image-alt::",
+      "page": "Home",
+      "rule": "ax-image-alt",
+      "severity": "serious",
+      "detail": "image",
+      "issue": "Image has no accessible name in the browser AX tree"
+    },
+    {
+      "key": "uia::Home::ax-interactive-name::",
+      "page": "Home",
+      "rule": "ax-interactive-name",
+      "severity": "serious",
+      "detail": "combobox",
+      "issue": "combobox has no accessible name in the browser AX tree"
+    },
+    {
+      "key": "uia::Product Detail::ax-image-alt::",
+      "page": "Product Detail",
+      "rule": "ax-image-alt",
+      "severity": "serious",
+      "detail": "image",
+      "issue": "Image has no accessible name in the browser AX tree"
+    },
+    {
+      "key": "uia::Cart::ax-image-alt::",
+      "page": "Cart",
+      "rule": "ax-image-alt",
+      "severity": "serious",
+      "detail": "image",
+      "issue": "Image has no accessible name in the browser AX tree"
+    },
+    {
+      "key": "uia::Cart::ax-image-alt::",
+      "page": "Cart",
+      "rule": "ax-image-alt",
+      "severity": "serious",
+      "detail": "image",
+      "issue": "Image has no accessible name in the browser AX tree"
+    },
+    {
+      "key": "uia::Checkout::ax-image-alt::",
+      "page": "Checkout",
+      "rule": "ax-image-alt",
+      "severity": "serious",
+      "detail": "image",
+      "issue": "Image has no accessible name in the browser AX tree"
+    },
+    {
+      "key": "uia::Login::ax-image-alt::",
+      "page": "Login",
+      "rule": "ax-image-alt",
+      "severity": "serious",
+      "detail": "image",
+      "issue": "Image has no accessible name in the browser AX tree"
+    },
+    {
+      "key": "uia::About::ax-image-alt::",
+      "page": "About",
+      "rule": "ax-image-alt",
+      "severity": "serious",
+      "detail": "image",
+      "issue": "Image has no accessible name in the browser AX tree"
+    },
+    {
+      "key": "uia::Contact::ax-image-alt::",
+      "page": "Contact",
+      "rule": "ax-image-alt",
+      "severity": "serious",
+      "detail": "image",
+      "issue": "Image has no accessible name in the browser AX tree"
+    },
+    {
+      "key": "uia::Contact::ax-interactive-name::",
+      "page": "Contact",
+      "rule": "ax-interactive-name",
+      "severity": "serious",
+      "detail": "textbox",
+      "issue": "textbox has no accessible name in the browser AX tree"
+    },
+    {
+      "key": "uia::Contact::ax-interactive-name::",
+      "page": "Contact",
+      "rule": "ax-interactive-name",
+      "severity": "serious",
+      "detail": "textbox",
+      "issue": "textbox has no accessible name in the browser AX tree"
+    },
+    {
+      "key": "uia::Contact::ax-interactive-name::",
+      "page": "Contact",
+      "rule": "ax-interactive-name",
+      "severity": "serious",
+      "detail": "textbox",
+      "issue": "textbox has no accessible name in the browser AX tree"
+    },
+    {
+      "key": "expected-focus::Home::textbox::Search products::2.1.1",
+      "page": "Home",
+      "rule": "expected-focus:2.1.1",
+      "severity": "serious",
+      "detail": "textbox Search products",
+      "issue": "textbox \"Search products\" is Tab-navigable in the AX tree but was never reached during Tab traversal"
+    },
+    {
+      "key": "expected-focus::(3 pages: Home, Checkout, Contact)::input::::4.1.2",
+      "page": "(3 pages: Home, Checkout, Contact)",
+      "rule": "expected-focus:4.1.2",
+      "severity": "serious",
+      "detail": "input",
+      "issue": "[Shared component — 3 pages] <input> at Tab position 6 is reachable by keyboard but has no accessible name — screen readers will announce the role only"
+    },
+    {
+      "key": "expected-focus::Cart::button::Checkout::2.1.1",
+      "page": "Cart",
+      "rule": "expected-focus:2.1.1",
+      "severity": "serious",
+      "detail": "button Checkout",
+      "issue": "button \"Checkout\" is Tab-navigable in the AX tree but was never reached during Tab traversal"
+    },
+    {
+      "key": "expected-focus::Checkout::textbox::E-mail::2.1.1",
+      "page": "Checkout",
+      "rule": "expected-focus:2.1.1",
+      "severity": "serious",
+      "detail": "textbox E-mail",
+      "issue": "textbox \"E-mail\" is Tab-navigable in the AX tree but was never reached during Tab traversal"
+    },
+    {
+      "key": "expected-focus::Checkout::textbox::Phone::2.1.1",
+      "page": "Checkout",
+      "rule": "expected-focus:2.1.1",
+      "severity": "serious",
+      "detail": "textbox Phone",
+      "issue": "textbox \"Phone\" is Tab-navigable in the AX tree but was never reached during Tab traversal"
+    },
+    {
+      "key": "expected-focus::Checkout::textbox::Name::2.1.1",
+      "page": "Checkout",
+      "rule": "expected-focus:2.1.1",
+      "severity": "serious",
+      "detail": "textbox Name",
+      "issue": "textbox \"Name\" is Tab-navigable in the AX tree but was never reached during Tab traversal"
+    },
+    {
+      "key": "expected-focus::Checkout::textbox::Address::2.1.1",
+      "page": "Checkout",
+      "rule": "expected-focus:2.1.1",
+      "severity": "serious",
+      "detail": "textbox Address",
+      "issue": "textbox \"Address\" is Tab-navigable in the AX tree but was never reached during Tab traversal"
+    },
+    {
+      "key": "expected-focus::Checkout::textbox::City::2.1.1",
+      "page": "Checkout",
+      "rule": "expected-focus:2.1.1",
+      "severity": "serious",
+      "detail": "textbox City",
+      "issue": "textbox \"City\" is Tab-navigable in the AX tree but was never reached during Tab traversal"
+    },
+    {
+      "key": "expected-focus::Contact::textarea::::4.1.2",
+      "page": "Contact",
+      "rule": "expected-focus:4.1.2",
+      "severity": "serious",
+      "detail": "textarea",
+      "issue": "<textarea> at Tab position 8 is reachable by keyboard but has no accessible name — screen readers will announce the role only"
+    },
+    {
+      "key": "focus-mgmt::Home::route-navigation::Focused element: <body>",
+      "page": "Home",
+      "rule": "focus-management:route-navigation",
+      "severity": "serious",
+      "detail": "Focused element: <body>",
+      "issue": "After navigating to Home, focus fell to <body>/<html> — keyboard users lose context"
+    },
+    {
+      "key": "focus-mgmt::Product Detail::route-navigation::Focused element: <body>",
+      "page": "Product Detail",
+      "rule": "focus-management:route-navigation",
+      "severity": "serious",
+      "detail": "Focused element: <body>",
+      "issue": "After navigating to Product Detail, focus fell to <body>/<html> — keyboard users lose context"
+    },
+    {
+      "key": "focus-mgmt::Cart::route-navigation::Focused element: <body>",
+      "page": "Cart",
+      "rule": "focus-management:route-navigation",
+      "severity": "serious",
+      "detail": "Focused element: <body>",
+      "issue": "After navigating to Cart, focus fell to <body>/<html> — keyboard users lose context"
+    },
+    {
+      "key": "focus-mgmt::Checkout::route-navigation::Focused element: <body>",
+      "page": "Checkout",
+      "rule": "focus-management:route-navigation",
+      "severity": "serious",
+      "detail": "Focused element: <body>",
+      "issue": "After navigating to Checkout, focus fell to <body>/<html> — keyboard users lose context"
+    },
+    {
+      "key": "focus-mgmt::Checkout::focus-visible::Element: input|input|ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"|12px|700|rgb(0, 0, 0)|rgba(0, 0, 0, 0)|10px|40px",
+      "page": "Checkout",
+      "rule": "focus-management:focus-visible",
+      "severity": "serious",
+      "detail": "Element: input|input|ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"|12px|700|rgb(0, 0, 0)|rgba(0, 0, 0, 0)|10px|40px",
+      "issue": "<input role=\"input\"> has :focus-visible active but no visual property (outline/box-shadow/border/background/transform) changes between its focused and unfocused state"
+    },
+    {
+      "key": "focus-mgmt::Login::route-navigation::Focused element: <body>",
+      "page": "Login",
+      "rule": "focus-management:route-navigation",
+      "severity": "serious",
+      "detail": "Focused element: <body>",
+      "issue": "After navigating to Login, focus fell to <body>/<html> — keyboard users lose context"
+    },
+    {
+      "key": "focus-mgmt::About::route-navigation::Focused element: <body>",
+      "page": "About",
+      "rule": "focus-management:route-navigation",
+      "severity": "serious",
+      "detail": "Focused element: <body>",
+      "issue": "After navigating to About, focus fell to <body>/<html> — keyboard users lose context"
+    },
+    {
+      "key": "focus-mgmt::Contact::route-navigation::Focused element: <body>",
+      "page": "Contact",
+      "rule": "focus-management:route-navigation",
+      "severity": "serious",
+      "detail": "Focused element: <body>",
+      "issue": "After navigating to Contact, focus fell to <body>/<html> — keyboard users lose context"
+    }
+  ],
   "newIssues": []
 }

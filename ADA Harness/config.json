@@ -2,7 +2,7 @@
   "$schema": "./config.schema.json",
   "//": "Single source of PROJECT-SPECIFIC configuration. Point the harness at a new application by editing ONLY this file. No values are hardcoded anywhere in the source.",
 
-  "baseUrl": "http://localhost:3001",
+  "baseUrl": "http://localhost:4200",
   "browser": "chromium",
   "channel": "msedge",
 
@@ -43,7 +43,7 @@
 
   "uia": {
     "enabled": true,
-    "python": "python",
+    "python": "C:\\Users\\VivekPrasadMAQSoftwa\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
     "maxDepth": 40,
     "windowClass": "Chrome_WidgetWin_1",
     "documentOnly": true
@@ -57,5 +57,27 @@
   "keyboard": {
     "enabled": true,
     "maxTabs": 200
+  },
+
+  "navigation": {
+    "//": "'reload' calls page.goto() for every route (works for any app, MPA or SPA). 'spa' uses history.pushState + popstate for same-document navigation after the first page (faster, opt-in, requires a true client-side router).",
+    "mode": "reload"
+  },
+
+  "widgets": {
+    "//": "CSS selector(s) used by the Widget Behavior Engine's accordion check. Point this at your own design system's component if the generic default doesn't match.",
+    "accordionSelector": "details > summary, [role=\"button\"][aria-expanded]"
+  },
+
+  "auth": {
+    "//": "Optional interactive session capture (npm run save-auth) for apps that need a real login (SSO/ADFS/OAuth/etc.) before scanning. Independent of the scripted `login` block above.",
+    "enabled": false,
+    "manualLoginTimeoutMs": 300000,
+    "readySelector": ""
+  },
+
+  "autoFix": {
+    "sourceExtensions": [".tsx", ".ts", ".jsx", ".js", ".vue", ".html"],
+    "htmlEntryPoints": ["public/index.html", "src/index.html", "index.html"]
   }
 }

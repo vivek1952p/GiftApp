@@ -3,32 +3,35 @@
  * ADA Harness — Before/After Comparison (Step 6)
  * ============================================================================
  *
- * Compares the previous scan (summary.previous.json) against the current scan
- * (summary.json) and writes reports/comparison.md containing:
+ * Compares the previous scan against the current scan across ALL 7 scanners
+ * (axe-core, the Accessibility Rule Engine, keyboard, and all 4 specialized
+ * engines) and writes reports/comparison.md containing:
  *
  *   - Resolved Issues   (present before, gone now)
  *   - Remaining Issues  (present in both)
  *   - New Issues        (introduced after fixes)
  *   - Accessibility Score
  *
- * Each violation is identified by a stable key of page + rule + target so the
- * diff is element-accurate.
+ * "Previous" is `merged-report.previous.json`, snapshotted by merge-report.ts
+ * right before it overwrites merged-report.json — this is what makes the
+ * totals here match dashboard.md's totals for the current scan; previously
+ * this file only ever diffed axe-core (via summary.previous.json), while
+ * dashboard.md counted every scanner, so the two reports disagreed.
+ *
+ * Each finding is identified by a stable key built per-source (see
+ * all-findings.ts) so the diff is element-accurate across scans.
  * ============================================================================
  */
 
 import fs from 'fs';
 import path from 'path';
+import { collectAllFindings, severityCountsOf, type NormalizedFinding } from './all-findings';
 import { adaConfig } from '../playwright/config';
 import { createLogger } from './logger';
 import { computeScore } from './score';
-import type { Summary, SummaryViolation } from './types';
+import type { MergedReport, Summary } from './types';
 
 const log = createLogger('compare');
-
-/** Stable identity for a single violation across scans. */
-function keyOf(v: SummaryViolation): string {
-  return `${v.page}::${v.ruleId}::${v.target}`;
-}
 
 /** Safely read a summary file, returning an empty summary when absent. */
 function readSummary(file: string): Summary {
@@ -45,41 +48,60 @@ function readSummary(file: string): Summary {
   return JSON.parse(fs.readFileSync(file, 'utf-8')) as Summary;
 }
 
-/** Render a violation as a single Markdown bullet. */
-function bullet(v: SummaryViolation): string {
-  return `- \`${v.ruleId}\` (${v.impact ?? 'n/a'}) on **${v.page}** — \`${v.target}\``;
+/** Safely read a merged report, returning null when absent or unparseable. */
+function readMerged(file: string): MergedReport | null {
+  if (!fs.existsSync(file)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf-8')) as MergedReport;
+  } catch {
+    return null;
+  }
+}
+
+/** Render a finding as a single Markdown bullet. */
+function bullet(f: NormalizedFinding): string {
+  return `- \`${f.rule}\` (${f.severity ?? 'n/a'}) on **${f.page}** — ${f.detail}`;
 }
 
 /**
- * Entry point: build comparison.md from previous vs current summaries.
+ * Entry point: build comparison.md from previous vs current state, across
+ * every scanner.
  */
 function main(): void {
   try {
-    const previous = readSummary(adaConfig.paths.previousSummary);
-    const current = readSummary(adaConfig.paths.summary);
+    const previousSummary = readSummary(adaConfig.paths.previousSummary);
+    const currentSummary = readSummary(adaConfig.paths.summary);
+    const previousMerged = readMerged(adaConfig.paths.mergedPrevious);
+    const currentMerged = readMerged(adaConfig.paths.merged);
 
-    const prevKeys = new Map(previous.violations.map((v) => [keyOf(v), v]));
-    const currKeys = new Map(current.violations.map((v) => [keyOf(v), v]));
+    const previousFindings = collectAllFindings(previousSummary, previousMerged);
+    const currentFindings = collectAllFindings(currentSummary, currentMerged);
 
-    const resolved = previous.violations.filter((v) => !currKeys.has(keyOf(v)));
-    const remaining = current.violations.filter((v) => prevKeys.has(keyOf(v)));
-    const introduced = current.violations.filter((v) => !prevKeys.has(keyOf(v)));
+    const prevKeys = new Set(previousFindings.map((f) => f.key));
+    const currKeys = new Set(currentFindings.map((f) => f.key));
 
-    const prevScore = computeScore(previous);
-    const currScore = computeScore(current);
+    const resolved = previousFindings.filter((f) => !currKeys.has(f.key));
+    const remaining = currentFindings.filter((f) => prevKeys.has(f.key));
+    const introduced = currentFindings.filter((f) => !prevKeys.has(f.key));
+
+    const prevScore = computeScore(severityCountsOf(previousFindings));
+    const currScore = computeScore(severityCountsOf(currentFindings));
 
     const md = [
       '# Accessibility Comparison Report',
       '',
       `_Generated: ${new Date().toISOString()}_`,
       '',
+      '_Covers all 7 scanners (axe-core + the Accessibility Rule Engine + keyboard + all 4' +
+        ' specialized engines) — the same totals_ `dashboard.md` _shows for the current scan._',
+      '',
       '## Accessibility Score',
       '',
-      '| Scan | Total Violations | Score |',
+      '| Scan | Total Findings | Score |',
       '| --- | --- | --- |',
-      `| Previous | ${previous.totalViolations} | ${prevScore}/100 |`,
-      `| Current | ${current.totalViolations} | ${currScore}/100 |`,
-      `| **Change** | **${current.totalViolations - previous.totalViolations}** | **${currScore - prevScore}** |`,
+      `| Previous | ${previousFindings.length} | ${prevScore}/100 |`,
+      `| Current | ${currentFindings.length} | ${currScore}/100 |`,
+      `| **Change** | **${currentFindings.length - previousFindings.length}** | **${currScore - prevScore}** |`,
       '',
       `## ✅ Resolved Issues (${resolved.length})`,
       '',

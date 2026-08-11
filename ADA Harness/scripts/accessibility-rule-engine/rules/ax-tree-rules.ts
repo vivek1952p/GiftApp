@@ -35,8 +35,6 @@ export const AxInteractiveNameRule: AxTreeRule = {
     const INTERACTIVE_ROLES = new Set(['button', 'link', 'checkbox', 'radio', 'combobox', 'listbox', 'menuitem', 'tab', 'textbox', 'searchbox', 'slider', 'spinbutton', 'switch']);
     if (!INTERACTIVE_ROLES.has(node.role ?? '')) return null;
     if (!noName(node)) return null;
-    // Exclude decorative/placeholder roles
-    if (node.role === 'generic' || node.role === 'none') return null;
     return {
       issue: `${node.role} has no accessible name in the browser AX tree`,
       severity: 'serious', wcag: '4.1.2',

@@ -22,10 +22,6 @@ function collectAll(node: A11yTreeNode | null, role: string, out: A11yTreeNode[]
   return out;
 }
 
-function hasChildRole(node: A11yTreeNode, ...roles: string[]): boolean {
-  return (node.children ?? []).some((c) => roles.includes((c as A11yTreeNode).role ?? ''));
-}
-
 function parentHasRole(node: A11yTreeNode, tree: A11yTreeNode | null, ...roles: string[]): boolean {
   if (!tree) return false;
   function search(current: A11yTreeNode): boolean {
@@ -48,21 +44,31 @@ export const TabPanelRelationRule: AriaPatternRule = {
   evaluatePage(tree, page, url): RuleResult[] {
     const results: RuleResult[] = [];
     const tablists = collectAll(tree, 'tablist');
+
+    // Per the WAI-ARIA APG Tab pattern, tabpanel elements are standardly
+    // SIBLINGS of the tablist, not descendants of it — scoping the search to
+    // collectAll(tablist, 'tabpanel') would find 0 panels for essentially
+    // every correctly-built tab widget. The AX tree captured by this harness
+    // doesn't carry aria-controls/id, so a specific tablist can't be tied to
+    // its own panels by reference; comparing against the page-wide tabpanel
+    // count avoids that systematic false positive at the cost of precision
+    // when a page has multiple independent tablists (rare).
+    const allPanels = collectAll(tree, 'tabpanel');
+
     for (const tablist of tablists) {
-      const tabs    = collectAll(tablist, 'tab');
-      const panels  = collectAll(tablist, 'tabpanel');
-      // Also look for panels that are siblings of the tablist
-      // (common pattern: tablist + tabpanels as siblings)
-      if (tabs.length > 0 && panels.length === 0) {
+      const tabs = collectAll(tablist, 'tab');
+      if (tabs.length === 0) continue;
+
+      if (allPanels.length === 0) {
         results.push({
-          issue: `tablist contains ${tabs.length} tab(s) but no tabpanel(s) are present in the AX tree`,
+          issue: `tablist contains ${tabs.length} tab(s) but no tabpanel role is present anywhere on the page`,
           severity: 'serious', wcag: '1.3.1',
           recommendation: 'Each tab must control a tabpanel via aria-controls or the owned-by relationship. Verify tabpanels are not hidden from the accessibility tree.',
           context: { role: 'tablist', name: tablist.name },
         });
-      } else if (tabs.length !== panels.length && panels.length > 0) {
+      } else if (tabs.length > allPanels.length) {
         results.push({
-          issue: `Mismatched tabs (${tabs.length}) and tabpanels (${panels.length}) in tablist`,
+          issue: `tablist has ${tabs.length} tab(s) but only ${allPanels.length} tabpanel(s) exist on the page`,
           severity: 'moderate', wcag: '1.3.1',
           recommendation: 'Ensure each tab has exactly one corresponding tabpanel.',
           context: { role: 'tablist', name: tablist.name },

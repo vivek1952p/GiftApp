@@ -36,7 +36,7 @@ function readAxeReport(): AxeReport {
   const file = adaConfig.paths.axeReport;
   if (!fs.existsSync(file)) {
     throw new Error(
-      `Raw axe report not found at ${file}. Run the scan first (npm run ada:scan).`
+      `Raw axe report not found at ${file}. Run the scan first (npm run scan).`
     );
   }
   return JSON.parse(fs.readFileSync(file, 'utf-8')) as AxeReport;
