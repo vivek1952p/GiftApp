@@ -1,0 +1,62 @@
+{
+  "generatedAt": "2026-07-30T10:53:21.436Z",
+  "baseUrl": "http://localhost:3001",
+  "results": [
+    {
+      "page": "Home",
+      "url": "http://localhost:3001/",
+      "timestamp": "2026-07-30T10:53:03.980Z",
+      "violations": [],
+      "passes": 35,
+      "incomplete": 0
+    },
+    {
+      "page": "Product Detail",
+      "url": "http://localhost:3001/product/1",
+      "timestamp": "2026-07-30T10:53:08.431Z",
+      "violations": [],
+      "passes": 26,
+      "incomplete": 0
+    },
+    {
+      "page": "Cart",
+      "url": "http://localhost:3001/cart",
+      "timestamp": "2026-07-30T10:53:10.997Z",
+      "violations": [],
+      "passes": 22,
+      "incomplete": 0
+    },
+    {
+      "page": "Checkout",
+      "url": "http://localhost:3001/checkout",
+      "timestamp": "2026-07-30T10:53:13.565Z",
+      "violations": [],
+      "passes": 22,
+      "incomplete": 0
+    },
+    {
+      "page": "Login",
+      "url": "http://localhost:3001/login",
+      "timestamp": "2026-07-30T10:53:16.112Z",
+      "violations": [],
+      "passes": 27,
+      "incomplete": 0
+    },
+    {
+      "page": "About",
+      "url": "http://localhost:3001/about",
+      "timestamp": "2026-07-30T10:53:18.713Z",
+      "violations": [],
+      "passes": 24,
+      "incomplete": 0
+    },
+    {
+      "page": "Contact",
+      "url": "http://localhost:3001/contact",
+      "timestamp": "2026-07-30T10:53:21.305Z",
+      "violations": [],
+      "passes": 27,
+      "incomplete": 0
+    }
+  ]
+}

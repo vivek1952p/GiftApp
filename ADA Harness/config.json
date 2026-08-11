@@ -1,0 +1,61 @@
+{
+  "$schema": "./config.schema.json",
+  "//": "Single source of PROJECT-SPECIFIC configuration. Point the harness at a new application by editing ONLY this file. No values are hardcoded anywhere in the source.",
+
+  "baseUrl": "http://localhost:3001",
+  "browser": "chromium",
+  "channel": "msedge",
+
+  "viewport": { "width": 1280, "height": 800 },
+
+  "settleTimeoutMs": 1500,
+  "timeouts": { "navigationMs": 30000, "testMs": 60000 },
+
+  "appSrcDir": "../src",
+  "reportDir": "reports",
+
+  "screenshots": { "enabled": true, "dir": "reports/screenshots" },
+
+  "wcagTags": ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "best-practice"],
+  "ignoredRules": [],
+
+  "routes": [
+    { "name": "Home", "path": "/" },
+    { "name": "Product Detail", "path": "/product/1" },
+    { "name": "Cart", "path": "/cart" },
+    { "name": "Checkout", "path": "/checkout" },
+    { "name": "Login", "path": "/login" },
+    { "name": "About", "path": "/about" },
+    { "name": "Contact", "path": "/contact" }
+  ],
+  "ignoredRoutes": [],
+
+  "login": {
+    "enabled": false,
+    "loginPath": "/login",
+    "usernameSelector": "#email",
+    "passwordSelector": "#password",
+    "submitSelector": "button[type=\"submit\"]",
+    "usernameEnv": "ADA_LOGIN_USER",
+    "passwordEnv": "ADA_LOGIN_PASS",
+    "waitForSelector": ""
+  },
+
+  "uia": {
+    "enabled": true,
+    "python": "python",
+    "maxDepth": 40,
+    "windowClass": "Chrome_WidgetWin_1",
+    "documentOnly": true
+  },
+
+  "dom": {
+    "enabled": true,
+    "fullHtml": true
+  },
+
+  "keyboard": {
+    "enabled": true,
+    "maxTabs": 200
+  }
+}

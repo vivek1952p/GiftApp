@@ -1,0 +1,3 @@
+# Windows UI Automation capture dependency.
+# Install with:  pip install -r ada-harness/uia/requirements.txt
+uiautomation>=2.0.18

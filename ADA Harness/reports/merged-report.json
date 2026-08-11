@@ -1,0 +1,30 @@
+{
+  "generatedAt": "2026-07-30T10:54:00.321Z",
+  "baseUrl": "http://localhost:3001",
+  "sources": {
+    "axe": true,
+    "playwrightTree": true,
+    "uia": true,
+    "dom": true,
+    "uiaRuleEngine": true,
+    "keyboard": true
+  },
+  "totalFindings": 0,
+  "severityCounts": {
+    "critical": 0,
+    "serious": 0,
+    "moderate": 0,
+    "minor": 0
+  },
+  "findings": [],
+  "uiaFindings": [],
+  "keyboardFindings": [],
+  "trees": {
+    "playwrightNodeCount": 6266,
+    "uiaNodeCount": 1974,
+    "uiaAvailable": true,
+    "domElementsCaptured": 0,
+    "uiaRuleFindingCount": 0,
+    "keyboardFindingCount": 0
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-07-30T10:53:54.546Z",
+  "baseUrl": "http://localhost:3001",
+  "totalFindings": 0,
+  "severityCounts": {
+    "critical": 0,
+    "serious": 0,
+    "moderate": 0,
+    "minor": 0
+  },
+  "findings": []
+}

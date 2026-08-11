@@ -1,0 +1,1572 @@
+{
+  "generatedAt": "2026-07-30T10:53:21.465Z",
+  "baseUrl": "http://localhost:3001",
+  "results": [
+    {
+      "page": "Home",
+      "url": "http://localhost:3001/",
+      "timestamp": "2026-07-30T10:53:05.621Z",
+      "reached": 202,
+      "interactiveTotal": 202,
+      "tabOrder": [
+        {
+          "order": 1,
+          "tag": "a",
+          "name": "🛒 ShopReact",
+          "kb": "0"
+        },
+        {
+          "order": 2,
+          "tag": "a",
+          "name": "Home",
+          "kb": "1"
+        },
+        {
+          "order": 3,
+          "tag": "a",
+          "name": "About",
+          "kb": "2"
+        },
+        {
+          "order": 4,
+          "tag": "a",
+          "name": "Contact",
+          "kb": "3"
+        },
+        {
+          "order": 5,
+          "tag": "a",
+          "name": "🛍️ Cart",
+          "kb": "4"
+        },
+        {
+          "order": 6,
+          "tag": "a",
+          "name": "Login",
+          "kb": "5"
+        },
+        {
+          "order": 7,
+          "tag": "input",
+          "name": "",
+          "kb": "6"
+        },
+        {
+          "order": 8,
+          "tag": "select",
+          "name": "Filter products by category",
+          "kb": "7"
+        },
+        {
+          "order": 9,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "8"
+        },
+        {
+          "order": 10,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "9"
+        },
+        {
+          "order": 11,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "10"
+        },
+        {
+          "order": 12,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "11"
+        },
+        {
+          "order": 13,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "12"
+        },
+        {
+          "order": 14,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "13"
+        },
+        {
+          "order": 15,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "14"
+        },
+        {
+          "order": 16,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "15"
+        },
+        {
+          "order": 17,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "16"
+        },
+        {
+          "order": 18,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "17"
+        },
+        {
+          "order": 19,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "18"
+        },
+        {
+          "order": 20,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "19"
+        },
+        {
+          "order": 21,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "20"
+        },
+        {
+          "order": 22,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "21"
+        },
+        {
+          "order": 23,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "22"
+        },
+        {
+          "order": 24,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "23"
+        },
+        {
+          "order": 25,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "24"
+        },
+        {
+          "order": 26,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "25"
+        },
+        {
+          "order": 27,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "26"
+        },
+        {
+          "order": 28,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "27"
+        },
+        {
+          "order": 29,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "28"
+        },
+        {
+          "order": 30,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "29"
+        },
+        {
+          "order": 31,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "30"
+        },
+        {
+          "order": 32,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "31"
+        },
+        {
+          "order": 33,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "32"
+        },
+        {
+          "order": 34,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "33"
+        },
+        {
+          "order": 35,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "34"
+        },
+        {
+          "order": 36,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "35"
+        },
+        {
+          "order": 37,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "36"
+        },
+        {
+          "order": 38,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "37"
+        },
+        {
+          "order": 39,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "38"
+        },
+        {
+          "order": 40,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "39"
+        },
+        {
+          "order": 41,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "40"
+        },
+        {
+          "order": 42,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "41"
+        },
+        {
+          "order": 43,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "42"
+        },
+        {
+          "order": 44,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "43"
+        },
+        {
+          "order": 45,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "44"
+        },
+        {
+          "order": 46,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "45"
+        },
+        {
+          "order": 47,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "46"
+        },
+        {
+          "order": 48,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "47"
+        },
+        {
+          "order": 49,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "48"
+        },
+        {
+          "order": 50,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "49"
+        },
+        {
+          "order": 51,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "50"
+        },
+        {
+          "order": 52,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "51"
+        },
+        {
+          "order": 53,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "52"
+        },
+        {
+          "order": 54,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "53"
+        },
+        {
+          "order": 55,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "54"
+        },
+        {
+          "order": 56,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "55"
+        },
+        {
+          "order": 57,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "56"
+        },
+        {
+          "order": 58,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "57"
+        },
+        {
+          "order": 59,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "58"
+        },
+        {
+          "order": 60,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "59"
+        },
+        {
+          "order": 61,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "60"
+        },
+        {
+          "order": 62,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "61"
+        },
+        {
+          "order": 63,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "62"
+        },
+        {
+          "order": 64,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "63"
+        },
+        {
+          "order": 65,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "64"
+        },
+        {
+          "order": 66,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "65"
+        },
+        {
+          "order": 67,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "66"
+        },
+        {
+          "order": 68,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "67"
+        },
+        {
+          "order": 69,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "68"
+        },
+        {
+          "order": 70,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "69"
+        },
+        {
+          "order": 71,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "70"
+        },
+        {
+          "order": 72,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "71"
+        },
+        {
+          "order": 73,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "72"
+        },
+        {
+          "order": 74,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "73"
+        },
+        {
+          "order": 75,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "74"
+        },
+        {
+          "order": 76,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "75"
+        },
+        {
+          "order": 77,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "76"
+        },
+        {
+          "order": 78,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "77"
+        },
+        {
+          "order": 79,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "78"
+        },
+        {
+          "order": 80,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "79"
+        },
+        {
+          "order": 81,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "80"
+        },
+        {
+          "order": 82,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "81"
+        },
+        {
+          "order": 83,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "82"
+        },
+        {
+          "order": 84,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "83"
+        },
+        {
+          "order": 85,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "84"
+        },
+        {
+          "order": 86,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "85"
+        },
+        {
+          "order": 87,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "86"
+        },
+        {
+          "order": 88,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "87"
+        },
+        {
+          "order": 89,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "88"
+        },
+        {
+          "order": 90,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "89"
+        },
+        {
+          "order": 91,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "90"
+        },
+        {
+          "order": 92,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "91"
+        },
+        {
+          "order": 93,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "92"
+        },
+        {
+          "order": 94,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "93"
+        },
+        {
+          "order": 95,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "94"
+        },
+        {
+          "order": 96,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "95"
+        },
+        {
+          "order": 97,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "96"
+        },
+        {
+          "order": 98,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "97"
+        },
+        {
+          "order": 99,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "98"
+        },
+        {
+          "order": 100,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "99"
+        },
+        {
+          "order": 101,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "100"
+        },
+        {
+          "order": 102,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "101"
+        },
+        {
+          "order": 103,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "102"
+        },
+        {
+          "order": 104,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "103"
+        },
+        {
+          "order": 105,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "104"
+        },
+        {
+          "order": 106,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "105"
+        },
+        {
+          "order": 107,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "106"
+        },
+        {
+          "order": 108,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "107"
+        },
+        {
+          "order": 109,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "108"
+        },
+        {
+          "order": 110,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "109"
+        },
+        {
+          "order": 111,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "110"
+        },
+        {
+          "order": 112,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "111"
+        },
+        {
+          "order": 113,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "112"
+        },
+        {
+          "order": 114,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "113"
+        },
+        {
+          "order": 115,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "114"
+        },
+        {
+          "order": 116,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "115"
+        },
+        {
+          "order": 117,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "116"
+        },
+        {
+          "order": 118,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "117"
+        },
+        {
+          "order": 119,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "118"
+        },
+        {
+          "order": 120,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "119"
+        },
+        {
+          "order": 121,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "120"
+        },
+        {
+          "order": 122,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "121"
+        },
+        {
+          "order": 123,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "122"
+        },
+        {
+          "order": 124,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "123"
+        },
+        {
+          "order": 125,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "124"
+        },
+        {
+          "order": 126,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "125"
+        },
+        {
+          "order": 127,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "126"
+        },
+        {
+          "order": 128,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "127"
+        },
+        {
+          "order": 129,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "128"
+        },
+        {
+          "order": 130,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "129"
+        },
+        {
+          "order": 131,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "130"
+        },
+        {
+          "order": 132,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "131"
+        },
+        {
+          "order": 133,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "132"
+        },
+        {
+          "order": 134,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "133"
+        },
+        {
+          "order": 135,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "134"
+        },
+        {
+          "order": 136,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "135"
+        },
+        {
+          "order": 137,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "136"
+        },
+        {
+          "order": 138,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "137"
+        },
+        {
+          "order": 139,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "138"
+        },
+        {
+          "order": 140,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "139"
+        },
+        {
+          "order": 141,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "140"
+        },
+        {
+          "order": 142,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "141"
+        },
+        {
+          "order": 143,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "142"
+        },
+        {
+          "order": 144,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "143"
+        },
+        {
+          "order": 145,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "144"
+        },
+        {
+          "order": 146,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "145"
+        },
+        {
+          "order": 147,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "146"
+        },
+        {
+          "order": 148,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "147"
+        },
+        {
+          "order": 149,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "148"
+        },
+        {
+          "order": 150,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "149"
+        },
+        {
+          "order": 151,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "150"
+        },
+        {
+          "order": 152,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "151"
+        },
+        {
+          "order": 153,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "152"
+        },
+        {
+          "order": 154,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "153"
+        },
+        {
+          "order": 155,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "154"
+        },
+        {
+          "order": 156,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "155"
+        },
+        {
+          "order": 157,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "156"
+        },
+        {
+          "order": 158,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "157"
+        },
+        {
+          "order": 159,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "158"
+        },
+        {
+          "order": 160,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "159"
+        },
+        {
+          "order": 161,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "160"
+        },
+        {
+          "order": 162,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "161"
+        },
+        {
+          "order": 163,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "162"
+        },
+        {
+          "order": 164,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "163"
+        },
+        {
+          "order": 165,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "164"
+        },
+        {
+          "order": 166,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "165"
+        },
+        {
+          "order": 167,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "166"
+        },
+        {
+          "order": 168,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "167"
+        },
+        {
+          "order": 169,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "168"
+        },
+        {
+          "order": 170,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "169"
+        },
+        {
+          "order": 171,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "170"
+        },
+        {
+          "order": 172,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "171"
+        },
+        {
+          "order": 173,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "172"
+        },
+        {
+          "order": 174,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "173"
+        },
+        {
+          "order": 175,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "174"
+        },
+        {
+          "order": 176,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "175"
+        },
+        {
+          "order": 177,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "176"
+        },
+        {
+          "order": 178,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "177"
+        },
+        {
+          "order": 179,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "178"
+        },
+        {
+          "order": 180,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "179"
+        },
+        {
+          "order": 181,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "180"
+        },
+        {
+          "order": 182,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "181"
+        },
+        {
+          "order": 183,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "182"
+        },
+        {
+          "order": 184,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "183"
+        },
+        {
+          "order": 185,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "184"
+        },
+        {
+          "order": 186,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "185"
+        },
+        {
+          "order": 187,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "186"
+        },
+        {
+          "order": 188,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "187"
+        },
+        {
+          "order": 189,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "188"
+        },
+        {
+          "order": 190,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "189"
+        },
+        {
+          "order": 191,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "190"
+        },
+        {
+          "order": 192,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "191"
+        },
+        {
+          "order": 193,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "192"
+        },
+        {
+          "order": 194,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "193"
+        },
+        {
+          "order": 195,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "194"
+        },
+        {
+          "order": 196,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "195"
+        },
+        {
+          "order": 197,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "196"
+        },
+        {
+          "order": 198,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "197"
+        },
+        {
+          "order": 199,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "198"
+        },
+        {
+          "order": 200,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "199"
+        },
+        {
+          "order": 201,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "200"
+        },
+        {
+          "order": 202,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "201"
+        }
+      ],
+      "unreachable": [],
+      "positiveTabindex": []
+    },
+    {
+      "page": "Product Detail",
+      "url": "http://localhost:3001/product/1",
+      "timestamp": "2026-07-30T10:53:08.561Z",
+      "reached": 8,
+      "interactiveTotal": 8,
+      "tabOrder": [
+        {
+          "order": 1,
+          "tag": "a",
+          "name": "🛒 ShopReact",
+          "kb": "0"
+        },
+        {
+          "order": 2,
+          "tag": "a",
+          "name": "Home",
+          "kb": "1"
+        },
+        {
+          "order": 3,
+          "tag": "a",
+          "name": "About",
+          "kb": "2"
+        },
+        {
+          "order": 4,
+          "tag": "a",
+          "name": "Contact",
+          "kb": "3"
+        },
+        {
+          "order": 5,
+          "tag": "a",
+          "name": "🛍️ Cart",
+          "kb": "4"
+        },
+        {
+          "order": 6,
+          "tag": "a",
+          "name": "Login",
+          "kb": "5"
+        },
+        {
+          "order": 7,
+          "tag": "button",
+          "name": "Back",
+          "kb": "6"
+        },
+        {
+          "order": 8,
+          "tag": "button",
+          "name": "Add to Cart",
+          "kb": "7"
+        }
+      ],
+      "unreachable": [],
+      "positiveTabindex": []
+    },
+    {
+      "page": "Cart",
+      "url": "http://localhost:3001/cart",
+      "timestamp": "2026-07-30T10:53:11.082Z",
+      "reached": 7,
+      "interactiveTotal": 7,
+      "tabOrder": [
+        {
+          "order": 1,
+          "tag": "a",
+          "name": "🛒 ShopReact",
+          "kb": "0"
+        },
+        {
+          "order": 2,
+          "tag": "a",
+          "name": "Home",
+          "kb": "1"
+        },
+        {
+          "order": 3,
+          "tag": "a",
+          "name": "About",
+          "kb": "2"
+        },
+        {
+          "order": 4,
+          "tag": "a",
+          "name": "Contact",
+          "kb": "3"
+        },
+        {
+          "order": 5,
+          "tag": "a",
+          "name": "🛍️ Cart",
+          "kb": "4"
+        },
+        {
+          "order": 6,
+          "tag": "a",
+          "name": "Login",
+          "kb": "5"
+        },
+        {
+          "order": 7,
+          "tag": "a",
+          "name": "Continue Shopping",
+          "kb": "6"
+        }
+      ],
+      "unreachable": [],
+      "positiveTabindex": []
+    },
+    {
+      "page": "Checkout",
+      "url": "http://localhost:3001/checkout",
+      "timestamp": "2026-07-30T10:53:13.638Z",
+      "reached": 6,
+      "interactiveTotal": 6,
+      "tabOrder": [
+        {
+          "order": 1,
+          "tag": "a",
+          "name": "🛒 ShopReact",
+          "kb": "0"
+        },
+        {
+          "order": 2,
+          "tag": "a",
+          "name": "Home",
+          "kb": "1"
+        },
+        {
+          "order": 3,
+          "tag": "a",
+          "name": "About",
+          "kb": "2"
+        },
+        {
+          "order": 4,
+          "tag": "a",
+          "name": "Contact",
+          "kb": "3"
+        },
+        {
+          "order": 5,
+          "tag": "a",
+          "name": "🛍️ Cart",
+          "kb": "4"
+        },
+        {
+          "order": 6,
+          "tag": "a",
+          "name": "Login",
+          "kb": "5"
+        }
+      ],
+      "unreachable": [],
+      "positiveTabindex": []
+    },
+    {
+      "page": "Login",
+      "url": "http://localhost:3001/login",
+      "timestamp": "2026-07-30T10:53:16.213Z",
+      "reached": 9,
+      "interactiveTotal": 9,
+      "tabOrder": [
+        {
+          "order": 1,
+          "tag": "a",
+          "name": "🛒 ShopReact",
+          "kb": "0"
+        },
+        {
+          "order": 2,
+          "tag": "a",
+          "name": "Home",
+          "kb": "1"
+        },
+        {
+          "order": 3,
+          "tag": "a",
+          "name": "About",
+          "kb": "2"
+        },
+        {
+          "order": 4,
+          "tag": "a",
+          "name": "Contact",
+          "kb": "3"
+        },
+        {
+          "order": 5,
+          "tag": "a",
+          "name": "🛍️ Cart",
+          "kb": "4"
+        },
+        {
+          "order": 6,
+          "tag": "a",
+          "name": "Login",
+          "kb": "5"
+        },
+        {
+          "order": 7,
+          "tag": "input",
+          "name": "",
+          "kb": "6"
+        },
+        {
+          "order": 8,
+          "tag": "input",
+          "name": "",
+          "kb": "7"
+        },
+        {
+          "order": 9,
+          "tag": "button",
+          "name": "Login",
+          "kb": "8"
+        }
+      ],
+      "unreachable": [],
+      "positiveTabindex": []
+    },
+    {
+      "page": "About",
+      "url": "http://localhost:3001/about",
+      "timestamp": "2026-07-30T10:53:18.805Z",
+      "reached": 6,
+      "interactiveTotal": 6,
+      "tabOrder": [
+        {
+          "order": 1,
+          "tag": "a",
+          "name": "🛒 ShopReact",
+          "kb": "0"
+        },
+        {
+          "order": 2,
+          "tag": "a",
+          "name": "Home",
+          "kb": "1"
+        },
+        {
+          "order": 3,
+          "tag": "a",
+          "name": "About",
+          "kb": "2"
+        },
+        {
+          "order": 4,
+          "tag": "a",
+          "name": "Contact",
+          "kb": "3"
+        },
+        {
+          "order": 5,
+          "tag": "a",
+          "name": "🛍️ Cart",
+          "kb": "4"
+        },
+        {
+          "order": 6,
+          "tag": "a",
+          "name": "Login",
+          "kb": "5"
+        }
+      ],
+      "unreachable": [],
+      "positiveTabindex": []
+    },
+    {
+      "page": "Contact",
+      "url": "http://localhost:3001/contact",
+      "timestamp": "2026-07-30T10:53:21.435Z",
+      "reached": 10,
+      "interactiveTotal": 10,
+      "tabOrder": [
+        {
+          "order": 1,
+          "tag": "a",
+          "name": "🛒 ShopReact",
+          "kb": "0"
+        },
+        {
+          "order": 2,
+          "tag": "a",
+          "name": "Home",
+          "kb": "1"
+        },
+        {
+          "order": 3,
+          "tag": "a",
+          "name": "About",
+          "kb": "2"
+        },
+        {
+          "order": 4,
+          "tag": "a",
+          "name": "Contact",
+          "kb": "3"
+        },
+        {
+          "order": 5,
+          "tag": "a",
+          "name": "🛍️ Cart",
+          "kb": "4"
+        },
+        {
+          "order": 6,
+          "tag": "a",
+          "name": "Login",
+          "kb": "5"
+        },
+        {
+          "order": 7,
+          "tag": "input",
+          "name": "",
+          "kb": "6"
+        },
+        {
+          "order": 8,
+          "tag": "input",
+          "name": "",
+          "kb": "7"
+        },
+        {
+          "order": 9,
+          "tag": "textarea",
+          "name": "",
+          "kb": "8"
+        },
+        {
+          "order": 10,
+          "tag": "button",
+          "name": "Send",
+          "kb": "9"
+        }
+      ],
+      "unreachable": [],
+      "positiveTabindex": []
+    }
+  ],
+  "findings": []
+}

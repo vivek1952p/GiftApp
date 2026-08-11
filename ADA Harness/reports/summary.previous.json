@@ -1,0 +1,168 @@
+{
+  "generatedAt": "2026-07-30T10:51:47.478Z",
+  "baseUrl": "http://localhost:3001",
+  "totalViolations": 7,
+  "pagesScanned": 7,
+  "severityCounts": {
+    "critical": 0,
+    "serious": 7,
+    "moderate": 0,
+    "minor": 0
+  },
+  "violations": [
+    {
+      "page": "Home",
+      "url": "http://localhost:3001/",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": "a[href$=\"login\"]",
+      "html": "<a href=\"/login\" style=\"color: rgb(255, 255, 255); text-decoration: none; background: rgb(34, 197, 94); padding: 6px 14px; border-radius: 6px; font-size: 0.9rem;\">Login</a>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "Product Detail",
+      "url": "http://localhost:3001/product/1",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": "a[href$=\"login\"]",
+      "html": "<a href=\"/login\" style=\"color: rgb(255, 255, 255); text-decoration: none; background: rgb(34, 197, 94); padding: 6px 14px; border-radius: 6px; font-size: 0.9rem;\">Login</a>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "Cart",
+      "url": "http://localhost:3001/cart",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": "a[href$=\"login\"]",
+      "html": "<a href=\"/login\" style=\"color: rgb(255, 255, 255); text-decoration: none; background: rgb(34, 197, 94); padding: 6px 14px; border-radius: 6px; font-size: 0.9rem;\">Login</a>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "Checkout",
+      "url": "http://localhost:3001/checkout",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": "a[href$=\"login\"]",
+      "html": "<a href=\"/login\" style=\"color: rgb(255, 255, 255); text-decoration: none; background: rgb(34, 197, 94); padding: 6px 14px; border-radius: 6px; font-size: 0.9rem;\">Login</a>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "Login",
+      "url": "http://localhost:3001/login",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": "a[href$=\"login\"]",
+      "html": "<a href=\"/login\" style=\"color: rgb(255, 255, 255); text-decoration: none; background: rgb(34, 197, 94); padding: 6px 14px; border-radius: 6px; font-size: 0.9rem;\">Login</a>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "About",
+      "url": "http://localhost:3001/about",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": "a[href$=\"login\"]",
+      "html": "<a href=\"/login\" style=\"color: rgb(255, 255, 255); text-decoration: none; background: rgb(34, 197, 94); padding: 6px 14px; border-radius: 6px; font-size: 0.9rem;\">Login</a>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    },
+    {
+      "page": "Contact",
+      "url": "http://localhost:3001/contact",
+      "ruleId": "color-contrast",
+      "wcagRuleIds": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "impact": "serious",
+      "target": "a[href$=\"login\"]",
+      "html": "<a href=\"/login\" style=\"color: rgb(255, 255, 255); text-decoration: none; background: rgb(34, 197, 94); padding: 6px 14px; border-radius: 6px; font-size: 0.9rem;\">Login</a>",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright"
+    }
+  ]
+}
