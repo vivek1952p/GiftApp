@@ -45,7 +45,7 @@ const MAX_PER_SPEC = 4;
 // ── Signal types ────────────────────────────────────────────────────────────
 
 interface AriaState {
-  checked:  string | null;
+  checked: string | null;
   expanded: string | null;
   selected: string | null;
   disabled: string | null;
@@ -100,8 +100,10 @@ const ROLE_SPECS: RoleSpec[] = [
     severity: 'serious',
     wcag: '2.1.1',
     verifyPass: (s) => s.clickFired || s.domMutated || s.ariaStateChanged,
-    issue: (k) => `Custom role="button" did not fire a click event on ${k} — screen reader and keyboard users cannot activate it`,
-    recommendation: 'Add keydown/keyup handlers for Enter (keyCode 13) and Space (keyCode 32) that call element.click() or dispatch a click event. Better: replace the div/span with a native <button>.',
+    issue: (k) =>
+      `Custom role="button" did not fire a click event on ${k} — screen reader and keyboard users cannot activate it`,
+    recommendation:
+      'Add keydown/keyup handlers for Enter (keyCode 13) and Space (keyCode 32) that call element.click() or dispatch a click event. Better: replace the div/span with a native <button>.',
   },
 
   // ── Custom role="link" (any non-native tag — not native <a>) ──────────────
@@ -114,7 +116,8 @@ const ROLE_SPECS: RoleSpec[] = [
     wcag: '2.1.1',
     verifyPass: (s) => s.clickFired || s.focusMoved || s.domMutated,
     issue: () => 'Custom role="link" did not activate on Enter — keyboard users cannot follow it',
-    recommendation: 'Add a keydown handler for Enter that triggers navigation, or replace with a native <a href>.',
+    recommendation:
+      'Add a keydown handler for Enter that triggers navigation, or replace with a native <a href>.',
   },
 
   // ── Custom checkbox (not native <input type="checkbox">) ───────────────────
@@ -126,10 +129,11 @@ const ROLE_SPECS: RoleSpec[] = [
     severity: 'serious',
     wcag: '2.1.1',
     // aria-checked MUST change — click alone is not enough to confirm toggle
-    verifyPass: (_s, before, after) =>
-      after !== null && after.checked !== before.checked,
-    issue: () => 'Space did not toggle aria-checked on custom role="checkbox" — screen readers will not announce the state change',
-    recommendation: 'On Space keydown, toggle aria-checked between "true" and "false" and announce the change.',
+    verifyPass: (_s, before, after) => after !== null && after.checked !== before.checked,
+    issue: () =>
+      'Space did not toggle aria-checked on custom role="checkbox" — screen readers will not announce the state change',
+    recommendation:
+      'On Space keydown, toggle aria-checked between "true" and "false" and announce the change.',
     revertAfterTest: true,
   },
 
@@ -141,10 +145,10 @@ const ROLE_SPECS: RoleSpec[] = [
     keys: ['Space'],
     severity: 'serious',
     wcag: '2.1.1',
-    verifyPass: (_s, before, after) =>
-      after !== null && after.checked !== before.checked,
+    verifyPass: (_s, before, after) => after !== null && after.checked !== before.checked,
     issue: () => 'Space did not toggle aria-checked on role="switch"',
-    recommendation: 'Bind Space keydown to toggle aria-checked between "true" and "false" on the switch control.',
+    recommendation:
+      'Bind Space keydown to toggle aria-checked between "true" and "false" on the switch control.',
     revertAfterTest: true,
   },
 
@@ -160,9 +164,9 @@ const ROLE_SPECS: RoleSpec[] = [
     keys: ['Enter', 'Space'],
     severity: 'serious',
     wcag: '2.1.1',
-    verifyPass: (s, before, after) =>
-      (after !== null && after.expanded !== before.expanded) || s.domMutated,
-    issue: (k) => `${k} did not toggle aria-expanded on the expandable control — keyboard users cannot open this panel`,
+    verifyPass: (s, before, after) => (after !== null && after.expanded !== before.expanded) || s.domMutated,
+    issue: (k) =>
+      `${k} did not toggle aria-expanded on the expandable control — keyboard users cannot open this panel`,
     recommendation: 'On Enter/Space keydown, toggle aria-expanded and show/hide the controlled region.',
     revertAfterTest: true,
   },
@@ -176,8 +180,10 @@ const ROLE_SPECS: RoleSpec[] = [
     severity: 'serious',
     wcag: '2.1.1',
     verifyPass: (s) => s.clickFired || s.domMutated || s.focusMoved,
-    issue: () => 'Enter did not activate custom role="menuitem" — screen reader menu navigation will be broken',
-    recommendation: 'Bind Enter keydown to trigger the menu item action (fire a click event or perform the action directly).',
+    issue: () =>
+      'Enter did not activate custom role="menuitem" — screen reader menu navigation will be broken',
+    recommendation:
+      'Bind Enter keydown to trigger the menu item action (fire a click event or perform the action directly).',
   },
 
   // ── Custom tab (not native) — Enter/Space must select ──────────────────────
@@ -191,7 +197,8 @@ const ROLE_SPECS: RoleSpec[] = [
     verifyPass: (s, before, after) =>
       (after !== null && after.selected !== before.selected) || s.ariaStateChanged || s.clickFired,
     issue: () => 'Enter did not select the custom role="tab" (aria-selected did not change)',
-    recommendation: 'On Enter/Space, set aria-selected="true" on the tab and aria-selected="false" on sibling tabs, and reveal the associated tabpanel.',
+    recommendation:
+      'On Enter/Space, set aria-selected="true" on the tab and aria-selected="false" on sibling tabs, and reveal the associated tabpanel.',
     revertAfterTest: true,
   },
 ];
@@ -216,7 +223,9 @@ async function injectInterceptors(page: Page): Promise<void> {
   await page.evaluate((marker) => {
     // ①  Click-event interceptor — capture phase catches all bubbling/non-bubbling
     (window as any).__ada_click = false;
-    (window as any).__ada_clickHandler = () => { (window as any).__ada_click = true; };
+    (window as any).__ada_clickHandler = () => {
+      (window as any).__ada_click = true;
+    };
     document.addEventListener('click', (window as any).__ada_clickHandler, { capture: true });
 
     // ② DOM MutationObserver — watches child list + key ARIA attributes
@@ -237,14 +246,19 @@ async function injectInterceptors(page: Page): Promise<void> {
       }
     });
     (window as any).__ada_observer.observe(document.body, {
-      childList: true, subtree: true, attributes: true,
+      childList: true,
+      subtree: true,
+      attributes: true,
       attributeFilter: ['aria-expanded', 'aria-hidden', 'aria-checked', 'aria-selected', 'class', 'style'],
     });
   }, TARGET_MARKER);
 }
 
 /** Read interceptor signals and clean up. */
-async function readAndClearInterceptors(page: Page, focusedElementBefore: string): Promise<InteractionSignals> {
+async function readAndClearInterceptors(
+  page: Page,
+  focusedElementBefore: string
+): Promise<InteractionSignals> {
   return page.evaluate((prevFocus) => {
     const clickFired = (window as any).__ada_click === true;
     const domMutated = (window as any).__ada_mutations > 0;
@@ -262,7 +276,7 @@ async function readAndClearInterceptors(page: Page, focusedElementBefore: string
 /** Snapshot the ARIA state of an element. */
 async function snapshotAria(page: Page, handle: Awaited<ReturnType<Page['locator']>>): Promise<AriaState> {
   return handle.evaluate((el) => ({
-    checked:  el.getAttribute('aria-checked'),
+    checked: el.getAttribute('aria-checked'),
     expanded: el.getAttribute('aria-expanded'),
     selected: el.getAttribute('aria-selected'),
     disabled: el.getAttribute('aria-disabled'),
@@ -308,13 +322,13 @@ async function main(): Promise<void> {
 
       for (const spec of ROLE_SPECS) {
         // Collect elements matching the spec — skip non-visible and aria-hidden
-        const allEls = await page
-          .locator(`${spec.selector}:not([aria-hidden="true"])`)
-          .all();
+        const allEls = await page.locator(`${spec.selector}:not([aria-hidden="true"])`).all();
 
         const visible = (
           await Promise.all(allEls.map(async (el) => ({ el, vis: await el.isVisible().catch(() => false) })))
-        ).filter((x) => x.vis).map((x) => x.el);
+        )
+          .filter((x) => x.vis)
+          .map((x) => x.el);
 
         const sample = visible.slice(0, MAX_PER_SPEC);
         if (sample.length === 0) continue;
@@ -334,7 +348,11 @@ async function main(): Promise<void> {
             try {
               // Capture element name for reporting
               const name = await el.evaluate((e) =>
-                (e.getAttribute('aria-label') ?? (e as HTMLElement).innerText?.replace(/\s+/g, ' ').slice(0, 50) ?? '').trim()
+                (
+                  e.getAttribute('aria-label') ??
+                  (e as HTMLElement).innerText?.replace(/\s+/g, ' ').slice(0, 50) ??
+                  ''
+                ).trim()
               );
 
               const before = await snapshotAria(page, el);
@@ -343,8 +361,8 @@ async function main(): Promise<void> {
               if (before.disabled === 'true') continue;
 
               // Record current focus element for focus-move detection
-              const focusBefore = await page.evaluate(() =>
-                document.activeElement?.outerHTML?.slice(0, 80) ?? ''
+              const focusBefore = await page.evaluate(
+                () => document.activeElement?.outerHTML?.slice(0, 80) ?? ''
               );
 
               // Mark this element so injectInterceptors can scope attribute-
@@ -366,11 +384,11 @@ async function main(): Promise<void> {
               await el.evaluate((e, marker) => e.removeAttribute(marker), TARGET_MARKER).catch(() => {});
 
               // Enrich signals with ARIA state comparison
-              signals.ariaStateChanged = after !== null && (
-                after.checked  !== before.checked  ||
-                after.expanded !== before.expanded ||
-                after.selected !== before.selected
-              );
+              signals.ariaStateChanged =
+                after !== null &&
+                (after.checked !== before.checked ||
+                  after.expanded !== before.expanded ||
+                  after.selected !== before.selected);
 
               const passed = spec.verifyPass(signals, before, after);
 
@@ -389,8 +407,9 @@ async function main(): Promise<void> {
                 await page.keyboard.press(key);
                 await page.waitForTimeout(150);
               }
-
-            } catch { /* element became stale — skip */ }
+            } catch {
+              /* element became stale — skip */
+            }
           }
 
           if (failCount > 0 && !reported.has(dupKey)) {
@@ -403,9 +422,10 @@ async function main(): Promise<void> {
               role: spec.role,
               name: failName,
               expectedKey: key,
-              issue: totalTested > 1
-                ? `${spec.issue(key)} (${failCount} of ${totalTested} sampled instance(s) failed)`
-                : spec.issue(key),
+              issue:
+                totalTested > 1
+                  ? `${spec.issue(key)} (${failCount} of ${totalTested} sampled instance(s) failed)`
+                  : spec.issue(key),
               severity: spec.severity,
               wcag: spec.wcag,
               recommendation: spec.recommendation,
@@ -443,6 +463,7 @@ main().catch((err) => {
   try {
     fs.mkdirSync(adaConfig.paths.reportsDir, { recursive: true });
     fs.writeFileSync(adaConfig.paths.interactionReport, JSON.stringify(empty, null, 2), 'utf-8');
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
 });
-

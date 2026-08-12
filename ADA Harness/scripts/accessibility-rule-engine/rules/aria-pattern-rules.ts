@@ -39,9 +39,10 @@ function parentHasRole(node: A11yTreeNode, tree: A11yTreeNode | null, ...roles: 
  * (owned by a common `tablist`).
  */
 export const TabPanelRelationRule: AriaPatternRule = {
-  id: 'aria-tab-tabpanel-relation', source: 'aria-pattern',
+  id: 'aria-tab-tabpanel-relation',
+  source: 'aria-pattern',
   description: 'Every tab must have a corresponding tabpanel',
-  evaluatePage(tree, page, url): RuleResult[] {
+  evaluatePage(tree, _page, _url): RuleResult[] {
     const results: RuleResult[] = [];
     const tablists = collectAll(tree, 'tablist');
 
@@ -62,14 +63,17 @@ export const TabPanelRelationRule: AriaPatternRule = {
       if (allPanels.length === 0) {
         results.push({
           issue: `tablist contains ${tabs.length} tab(s) but no tabpanel role is present anywhere on the page`,
-          severity: 'serious', wcag: '1.3.1',
-          recommendation: 'Each tab must control a tabpanel via aria-controls or the owned-by relationship. Verify tabpanels are not hidden from the accessibility tree.',
+          severity: 'serious',
+          wcag: '1.3.1',
+          recommendation:
+            'Each tab must control a tabpanel via aria-controls or the owned-by relationship. Verify tabpanels are not hidden from the accessibility tree.',
           context: { role: 'tablist', name: tablist.name },
         });
       } else if (tabs.length > allPanels.length) {
         results.push({
           issue: `tablist has ${tabs.length} tab(s) but only ${allPanels.length} tabpanel(s) exist on the page`,
-          severity: 'moderate', wcag: '1.3.1',
+          severity: 'moderate',
+          wcag: '1.3.1',
           recommendation: 'Ensure each tab has exactly one corresponding tabpanel.',
           context: { role: 'tablist', name: tablist.name },
         });
@@ -83,7 +87,8 @@ export const TabPanelRelationRule: AriaPatternRule = {
  * WCAG 1.3.1 / ARIA APG: `menu` and `menubar` must contain `menuitem` children.
  */
 export const MenuStructureRule: AriaPatternRule = {
-  id: 'aria-menu-structure', source: 'aria-pattern',
+  id: 'aria-menu-structure',
+  source: 'aria-pattern',
   description: 'Menus must contain menuitem children',
   evaluatePage(tree): RuleResult[] {
     const results: RuleResult[] = [];
@@ -95,7 +100,8 @@ export const MenuStructureRule: AriaPatternRule = {
         if (items.length === 0) {
           results.push({
             issue: `${role} contains no menuitem children in the AX tree`,
-            severity: 'serious', wcag: '1.3.1',
+            severity: 'serious',
+            wcag: '1.3.1',
             recommendation: `Add role="menuitem" to the direct interactive children of the ${role}.`,
             context: { role, name: menu.name },
           });
@@ -110,7 +116,8 @@ export const MenuStructureRule: AriaPatternRule = {
  * WCAG 1.3.1 / ARIA APG: `tree` must contain `treeitem` children.
  */
 export const TreeStructureRule: AriaPatternRule = {
-  id: 'aria-tree-structure', source: 'aria-pattern',
+  id: 'aria-tree-structure',
+  source: 'aria-pattern',
   description: 'Trees must contain treeitem children',
   evaluatePage(tree): RuleResult[] {
     const results: RuleResult[] = [];
@@ -118,7 +125,8 @@ export const TreeStructureRule: AriaPatternRule = {
       if (collectAll(treeNode, 'treeitem').length === 0) {
         results.push({
           issue: 'tree role contains no treeitem children in the AX tree',
-          severity: 'moderate', wcag: '1.3.1',
+          severity: 'moderate',
+          wcag: '1.3.1',
           recommendation: 'Add role="treeitem" to the tree node elements.',
           context: { role: 'tree', name: treeNode.name },
         });
@@ -133,7 +141,8 @@ export const TreeStructureRule: AriaPatternRule = {
  * or aria-labelledby pointing to a heading).
  */
 export const DialogNameRule: AriaPatternRule = {
-  id: 'aria-dialog-name', source: 'aria-pattern',
+  id: 'aria-dialog-name',
+  source: 'aria-pattern',
   description: 'Dialogs must have an accessible name',
   evaluatePage(tree): RuleResult[] {
     const results: RuleResult[] = [];
@@ -142,7 +151,8 @@ export const DialogNameRule: AriaPatternRule = {
         if (!dialog.name || dialog.name.trim() === '') {
           results.push({
             issue: `${role} has no accessible name — screen readers cannot announce its purpose`,
-            severity: 'serious', wcag: '2.1.2',
+            severity: 'serious',
+            wcag: '2.1.2',
             recommendation: 'Add aria-label or aria-labelledby referencing a heading inside the dialog.',
             context: { role },
           });
@@ -158,7 +168,8 @@ export const DialogNameRule: AriaPatternRule = {
  * Complements the axe-core `listitem` rule with AX-tree level confirmation.
  */
 export const ListItemParentRule: AriaPatternRule = {
-  id: 'aria-listitem-parent', source: 'aria-pattern',
+  id: 'aria-listitem-parent',
+  source: 'aria-pattern',
   description: 'listitem must be contained by a list',
   evaluatePage(tree): RuleResult[] {
     const results: RuleResult[] = [];
@@ -166,7 +177,8 @@ export const ListItemParentRule: AriaPatternRule = {
       if (!parentHasRole(item, tree, 'list')) {
         results.push({
           issue: 'listitem is not inside a list role — AT cannot determine list structure',
-          severity: 'serious', wcag: '1.3.1',
+          severity: 'serious',
+          wcag: '1.3.1',
           recommendation: 'Ensure every listitem is a direct child of a list (ul/ol or role="list").',
           context: { role: 'listitem', name: item.name },
         });

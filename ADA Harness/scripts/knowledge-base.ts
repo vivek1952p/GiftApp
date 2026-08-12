@@ -88,7 +88,9 @@ export class KnowledgeStore {
     try {
       fs.mkdirSync(path.dirname(this.file), { recursive: true });
       fs.writeFileSync(this.file, JSON.stringify(this.kb, null, 2), 'utf-8');
-      log.info(`Knowledge base saved (${Object.keys(this.kb.entries).length} pattern(s)) -> ${path.relative(process.cwd(), this.file)}`);
+      log.info(
+        `Knowledge base saved (${Object.keys(this.kb.entries).length} pattern(s)) -> ${path.relative(process.cwd(), this.file)}`
+      );
     } catch (err) {
       log.error('Failed to save knowledge base', (err as Error).message);
     }

@@ -585,4 +585,3 @@ export interface InteractionReport {
   totalFindings: number;
   findings: InteractionFinding[];
 }
-

@@ -51,9 +51,9 @@ const ACCEPTABLE_LANDING_ROLES = new Set([
   'region',
   'document',
   'application',
-  'link',        // skip-to-main or logo link is acceptable
-  'none',        // structural layout element rendered with no semantic role
-  'generic',     // same as none — structural div/span without semantic role
+  'link', // skip-to-main or logo link is acceptable
+  'none', // structural layout element rendered with no semantic role
+  'generic', // same as none — structural div/span without semantic role
 ]);
 
 /**
@@ -65,7 +65,12 @@ const ACCEPTABLE_LANDING_ROLES = new Set([
  * check is meant to encourage.
  */
 const NATIVE_TAG_ROLES: Record<string, string> = {
-  h1: 'heading', h2: 'heading', h3: 'heading', h4: 'heading', h5: 'heading', h6: 'heading',
+  h1: 'heading',
+  h2: 'heading',
+  h3: 'heading',
+  h4: 'heading',
+  h5: 'heading',
+  h6: 'heading',
   nav: 'navigation',
   header: 'banner',
   footer: 'contentinfo',
@@ -84,9 +89,14 @@ interface FocusVisibleFailure {
 }
 
 const FOCUS_INDICATOR_PROPS = [
-  'outlineWidth', 'outlineStyle', 'outlineColor',
-  'boxShadow', 'borderColor', 'borderWidth',
-  'backgroundColor', 'transform',
+  'outlineWidth',
+  'outlineStyle',
+  'outlineColor',
+  'boxShadow',
+  'borderColor',
+  'borderWidth',
+  'backgroundColor',
+  'transform',
 ] as const;
 
 const BASELINE_MARKER = 'data-ada-focus-idx';
@@ -115,8 +125,10 @@ async function collectFocusBaselines(page: Page, selector: string): Promise<numb
         const he = el as HTMLElement;
         const rect = he.getBoundingClientRect();
         const style = window.getComputedStyle(he);
-        const visible = rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden' && style.display !== 'none';
-        const disabled = (he as HTMLButtonElement).disabled === true || he.getAttribute('aria-disabled') === 'true';
+        const visible =
+          rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden' && style.display !== 'none';
+        const disabled =
+          (he as HTMLButtonElement).disabled === true || he.getAttribute('aria-disabled') === 'true';
         if (!visible || disabled || he.getAttribute('tabindex') === '-1') continue;
 
         he.setAttribute(marker, String(idx));
@@ -186,8 +198,9 @@ async function sweepFocusVisible(page: Page, maxTabs: number): Promise<FocusVisi
         for (const p of props) focusedStyle[p] = (focusedComputed as unknown as Record<string, string>)[p];
 
         const idx = el.getAttribute(marker);
-        const baselines = (window as unknown as { __adaFocusBaselines?: Record<string, Record<string, string>> })
-          .__adaFocusBaselines;
+        const baselines = (
+          window as unknown as { __adaFocusBaselines?: Record<string, Record<string, string>> }
+        ).__adaFocusBaselines;
         const baseline = idx !== null ? baselines?.[idx] : undefined;
 
         let unfocusedStyle: Record<string, string>;
@@ -199,7 +212,8 @@ async function sweepFocusVisible(page: Page, maxTabs: number): Promise<FocusVisi
           el.blur();
           const unfocusedComputed = window.getComputedStyle(el);
           unfocusedStyle = {};
-          for (const p of props) unfocusedStyle[p] = (unfocusedComputed as unknown as Record<string, string>)[p];
+          for (const p of props)
+            unfocusedStyle[p] = (unfocusedComputed as unknown as Record<string, string>)[p];
           el.focus();
         }
 
@@ -210,13 +224,26 @@ async function sweepFocusVisible(page: Page, maxTabs: number): Promise<FocusVisi
         const name = (el.innerText || el.getAttribute('aria-label') || '').trim().slice(0, 60);
         const fullStyle = window.getComputedStyle(el);
         const fingerprint = [
-          tag, role,
-          fullStyle.fontFamily, fullStyle.fontSize, fullStyle.fontWeight,
-          fullStyle.color, fullStyle.backgroundColor,
-          fullStyle.paddingTop, fullStyle.paddingLeft,
+          tag,
+          role,
+          fullStyle.fontFamily,
+          fullStyle.fontSize,
+          fullStyle.fontWeight,
+          fullStyle.color,
+          fullStyle.backgroundColor,
+          fullStyle.paddingTop,
+          fullStyle.paddingLeft,
         ].join('|');
 
-        return { leftDocument: false, checked: true, changed, tag, role, name, signature: fingerprint } as const;
+        return {
+          leftDocument: false,
+          checked: true,
+          changed,
+          tag,
+          role,
+          name,
+          signature: fingerprint,
+        } as const;
       },
       { marker: BASELINE_MARKER, props: FOCUS_INDICATOR_PROPS }
     );
@@ -292,7 +319,9 @@ async function checkModalFocusRestoration(
       await page.keyboard.press('Enter');
       await page.waitForTimeout(300);
 
-      const dialog = page.locator('dialog:visible, [role="dialog"]:visible, [role="alertdialog"]:visible').first();
+      const dialog = page
+        .locator('dialog:visible, [role="dialog"]:visible, [role="alertdialog"]:visible')
+        .first();
       if (!(await dialog.isVisible().catch(() => false))) continue; // Enter didn't open a dialog — not this check's concern
 
       await page.keyboard.press('Escape');
@@ -307,16 +336,21 @@ async function checkModalFocusRestoration(
 
       if (!restored) {
         findings.push({
-          page: pageName, url,
+          page: pageName,
+          url,
           scenario: 'modal-focus-restoration',
-          issue: 'After closing a dialog with Escape, keyboard focus did not return to the element that opened it',
-          severity: 'serious', wcag: '2.4.3',
+          issue:
+            'After closing a dialog with Escape, keyboard focus did not return to the element that opened it',
+          severity: 'serious',
+          wcag: '2.4.3',
           recommendation:
             'Before opening a dialog, store a reference to the currently focused element (the trigger). ' +
-            'When the dialog closes, call .focus() on that stored reference so keyboard users don\'t lose their place.',
+            "When the dialog closes, call .focus() on that stored reference so keyboard users don't lose their place.",
         });
       }
-    } catch { /* trigger became stale or interaction failed — skip this candidate */ }
+    } catch {
+      /* trigger became stale or interaction failed — skip this candidate */
+    }
   }
 
   await page.evaluate((marker) => {
@@ -340,7 +374,10 @@ async function main(): Promise<void> {
 
   try {
     const pages = adaConfig.pages;
-    if (pages.length === 0) { log.warn('No pages configured.'); return; }
+    if (pages.length === 0) {
+      log.warn('No pages configured.');
+      return;
+    }
 
     let firstPage = true;
 
@@ -370,20 +407,26 @@ async function main(): Promise<void> {
 
         if (focusInfo.onBody) {
           findings.push({
-            page: target.name, url,
+            page: target.name,
+            url,
             scenario: 'route-navigation',
             issue: `After navigating to ${target.name}, focus fell to <body>/<html> — keyboard users lose context`,
-            severity: 'serious', wcag: '2.4.3',
-            recommendation: 'After client-side route navigation, programmatically move focus to the page <h1>, a skip-to-main link, or the <main> element (e.g. React Router\'s useEffect, Angular\'s router.events, Vue Router\'s afterEach).',
+            severity: 'serious',
+            wcag: '2.4.3',
+            recommendation:
+              "After client-side route navigation, programmatically move focus to the page <h1>, a skip-to-main link, or the <main> element (e.g. React Router's useEffect, Angular's router.events, Vue Router's afterEach).",
             detail: `Focused element: <${focusInfo.tag}>`,
           });
         } else if (!ACCEPTABLE_LANDING_ROLES.has(focusInfo.role ?? '')) {
           findings.push({
-            page: target.name, url,
+            page: target.name,
+            url,
             scenario: 'route-navigation',
             issue: `Focus lands on <${focusInfo.tag} role="${focusInfo.role}"> after navigation — not a landmark or heading`,
-            severity: 'moderate', wcag: '2.4.3',
-            recommendation: 'Prefer placing focus on the page heading (<h1>) or skip-to-main link after route change.',
+            severity: 'moderate',
+            wcag: '2.4.3',
+            recommendation:
+              'Prefer placing focus on the page heading (<h1>) or skip-to-main link after route change.',
             detail: `Focused element: <${focusInfo.tag}> "${focusInfo.name}"`,
           });
         } else {
@@ -395,10 +438,12 @@ async function main(): Promise<void> {
         const focusVisibleFailures = await sweepFocusVisible(page, maxTabs);
         for (const f of focusVisibleFailures) {
           findings.push({
-            page: target.name, url,
+            page: target.name,
+            url,
             scenario: 'focus-visible',
             issue: `<${f.tag} role="${f.role}"> has :focus-visible active but no visual property (outline/box-shadow/border/background/transform) changes between its focused and unfocused state`,
-            severity: 'serious', wcag: '2.4.7',
+            severity: 'serious',
+            wcag: '2.4.7',
             recommendation:
               'Remove outline:none from focus styles. Provide a replacement indicator ' +
               '(e.g. box-shadow, background-color change, border) that meets WCAG 2.4.7.',
@@ -408,7 +453,6 @@ async function main(): Promise<void> {
 
         // ── Test 3: Modal focus restoration ──────────────────────────────
         await checkModalFocusRestoration(page, findings, target.name, url);
-
       } catch (err) {
         log.warn(`Focus management test failed for ${target.name}: ${(err as Error).message}`);
       }
@@ -426,7 +470,9 @@ async function main(): Promise<void> {
 
   fs.mkdirSync(adaConfig.paths.reportsDir, { recursive: true });
   fs.writeFileSync(adaConfig.paths.focusManagementReport, JSON.stringify(report, null, 2), 'utf-8');
-  log.info(`Focus Management Engine: ${findings.length} finding(s) -> ${path.relative(process.cwd(), adaConfig.paths.focusManagementReport)}`);
+  log.info(
+    `Focus Management Engine: ${findings.length} finding(s) -> ${path.relative(process.cwd(), adaConfig.paths.focusManagementReport)}`
+  );
 }
 
 main().catch((err) => {
@@ -441,6 +487,8 @@ main().catch((err) => {
   try {
     fs.mkdirSync(adaConfig.paths.reportsDir, { recursive: true });
     fs.writeFileSync(adaConfig.paths.focusManagementReport, JSON.stringify(empty, null, 2), 'utf-8');
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
   // Exit 0 so the pipeline continues — this engine is optional.
 });

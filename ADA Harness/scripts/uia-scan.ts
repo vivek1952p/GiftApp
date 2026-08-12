@@ -67,9 +67,7 @@ function capture(title: string): CaptureOutput {
   const useShell = process.platform === 'win32';
   // Under a shell, args are concatenated (not escaped): quote anything with a
   // space (e.g. the script path or the page title) so it is not split.
-  const finalArgs = useShell
-    ? args.map((a) => (/\s/.test(a) && !a.startsWith('"') ? `"${a}"` : a))
-    : args;
+  const finalArgs = useShell ? args.map((a) => (/\s/.test(a) && !a.startsWith('"') ? `"${a}"` : a)) : args;
 
   const proc = spawnSync(adaConfig.uia.python, finalArgs, {
     encoding: 'utf-8',
@@ -94,7 +92,13 @@ function capture(title: string): CaptureOutput {
   try {
     return JSON.parse(stdout) as CaptureOutput;
   } catch {
-    return { available: false, found: false, nodeCount: 0, tree: null, error: `Unparseable UIA output: ${stdout.slice(0, 200)}` };
+    return {
+      available: false,
+      found: false,
+      nodeCount: 0,
+      tree: null,
+      error: `Unparseable UIA output: ${stdout.slice(0, 200)}`,
+    };
   }
 }
 
@@ -202,7 +206,11 @@ async function main(): Promise<void> {
         // the remaining pages can still be captured.
         if (page.isClosed()) {
           log.warn('Page was closed — relaunching browser for remaining pages...');
-          try { await browser.close(); } catch { /* already closed */ }
+          try {
+            await browser.close();
+          } catch {
+            /* already closed */
+          }
           const recovered = await launchPage();
           browser = recovered.br;
           page = recovered.pg;
@@ -210,7 +218,11 @@ async function main(): Promise<void> {
       }
     }
   } finally {
-    try { await browser.close(); } catch { /* already closed */ }
+    try {
+      await browser.close();
+    } catch {
+      /* already closed */
+    }
   }
 
   writeReport({

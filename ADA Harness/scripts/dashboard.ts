@@ -113,8 +113,8 @@ function main(): void {
       '## Findings by Rule / Category (All Scanners)',
       '',
       '_Rows prefixed_ `expected-focus:` / `widget-behavior:` / `focus-management:` /' +
-        ' `interaction:` _come from the specialized engines, which don\'t use axe rule ids —' +
-        ' the suffix is that engine\'s own scenario/widget/role label instead._',
+        " `interaction:` _come from the specialized engines, which don't use axe rule ids —" +
+        " the suffix is that engine's own scenario/widget/role label instead._",
       '',
       '| Rule | Count |',
       '| --- | --- |',

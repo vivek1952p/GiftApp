@@ -24,13 +24,16 @@ import path from 'path';
 import readline from 'readline';
 import { adaConfig } from '../playwright/config';
 
-const AUTH_DIR     = path.join(adaConfig.paths.root, 'auth');
+const AUTH_DIR = path.join(adaConfig.paths.root, 'auth');
 const SESSION_FILE = path.join(AUTH_DIR, 'session.json');
 
 function prompt(q: string): Promise<void> {
   return new Promise((resolve) => {
     const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-    rl.question(q, () => { rl.close(); resolve(); });
+    rl.question(q, () => {
+      rl.close();
+      resolve();
+    });
   });
 }
 
@@ -42,13 +45,16 @@ async function main(): Promise<void> {
     ...(adaConfig.channel ? { channel: adaConfig.channel } : {}),
   });
   const context = await browser.newContext({ viewport: adaConfig.viewport });
-  const page    = await context.newPage();
+  const page = await context.newPage();
 
   try {
     await page.goto(adaConfig.baseUrl, {
-      waitUntil: 'load', timeout: adaConfig.timeouts.navigationMs,
+      waitUntil: 'load',
+      timeout: adaConfig.timeouts.navigationMs,
     });
-  } catch { /* external identity-provider redirect — handled by the user in the browser */ }
+  } catch {
+    /* external identity-provider redirect — handled by the user in the browser */
+  }
 
   console.log('Complete the login in the opened browser window.');
 

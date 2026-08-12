@@ -13,20 +13,20 @@
  */
 
 import type {
-    A11yTreeNode,
-    DomElementStyle,
-    DomSnapshotReport,
-    PlaywrightA11yReport,
-    UiaReport
+  A11yTreeNode,
+  DomElementStyle,
+  DomSnapshotReport,
+  PlaywrightA11yReport,
+  UiaReport,
 } from '../types';
 import type {
-    AccessibilityFinding,
-    AnyRule,
-    AriaPatternRule,
-    AxTreeRule,
-    DomRule,
-    RuleResult,
-    UiaRule,
+  AccessibilityFinding,
+  AnyRule,
+  AriaPatternRule,
+  AxTreeRule,
+  DomRule,
+  RuleResult,
+  UiaRule,
 } from './types';
 import { flattenScoped } from './uia-parser';
 
@@ -34,19 +34,22 @@ export { flattenScoped };
 
 // ── Type guards ────────────────────────────────────────────────────────────
 
-function isUiaRule(r: AnyRule): r is UiaRule        { return r.source === 'uia'; }
-function isDomRule(r: AnyRule): r is DomRule         { return r.source === 'dom'; }
-function isAxRule(r: AnyRule): r is AxTreeRule       { return r.source === 'ax-tree'; }
-function isAriaRule(r: AnyRule): r is AriaPatternRule{ return r.source === 'aria-pattern'; }
+function isUiaRule(r: AnyRule): r is UiaRule {
+  return r.source === 'uia';
+}
+function isDomRule(r: AnyRule): r is DomRule {
+  return r.source === 'dom';
+}
+function isAxRule(r: AnyRule): r is AxTreeRule {
+  return r.source === 'ax-tree';
+}
+function isAriaRule(r: AnyRule): r is AriaPatternRule {
+  return r.source === 'aria-pattern';
+}
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
-function finding(
-  rule: AnyRule,
-  page: string,
-  url: string,
-  result: RuleResult
-): AccessibilityFinding {
+function finding(rule: AnyRule, page: string, url: string, result: RuleResult): AccessibilityFinding {
   return {
     ruleId: rule.id,
     source: rule.source,
@@ -93,10 +96,12 @@ export class AccessibilityRuleEngine {
       for (const rule of uiaRules) {
         const result = rule.evaluate(el);
         if (!result) continue;
-        findings.push(finding(rule, el.page, el.url, {
-          ...result,
-          context: { name: el.name, role: el.controlType, ...result.context },
-        }));
+        findings.push(
+          finding(rule, el.page, el.url, {
+            ...result,
+            context: { name: el.name, role: el.controlType, ...result.context },
+          })
+        );
       }
     }
     return findings;
@@ -113,10 +118,12 @@ export class AccessibilityRuleEngine {
         for (const rule of domRules) {
           const result = rule.evaluate(el as DomElementStyle, page.page, page.url);
           if (!result) continue;
-          findings.push(finding(rule, page.page, page.url, {
-            ...result,
-            context: { target: el.target, ...result.context },
-          }));
+          findings.push(
+            finding(rule, page.page, page.url, {
+              ...result,
+              context: { target: el.target, ...result.context },
+            })
+          );
         }
       }
     }
@@ -134,10 +141,12 @@ export class AccessibilityRuleEngine {
         for (const rule of axRules) {
           const result = rule.evaluate(node, page.page, page.url);
           if (!result) continue;
-          findings.push(finding(rule, page.page, page.url, {
-            ...result,
-            context: { role: node.role, name: node.name, ...result.context },
-          }));
+          findings.push(
+            finding(rule, page.page, page.url, {
+              ...result,
+              context: { role: node.role, name: node.name, ...result.context },
+            })
+          );
         }
       });
     }
@@ -175,10 +184,10 @@ export class AccessibilityRuleEngine {
     documentOnly?: boolean;
   }): AccessibilityFinding[] {
     const findings: AccessibilityFinding[] = [];
-    if (opts.uia)   findings.push(...this.evaluateUia(opts.uia, opts.documentOnly ?? true));
-    if (opts.dom)   findings.push(...this.evaluateDom(opts.dom));
-    if (opts.a11y)  findings.push(...this.evaluateAxTree(opts.a11y));
-    if (opts.a11y)  findings.push(...this.evaluateAriaPatterns(opts.a11y));
+    if (opts.uia) findings.push(...this.evaluateUia(opts.uia, opts.documentOnly ?? true));
+    if (opts.dom) findings.push(...this.evaluateDom(opts.dom));
+    if (opts.a11y) findings.push(...this.evaluateAxTree(opts.a11y));
+    if (opts.a11y) findings.push(...this.evaluateAriaPatterns(opts.a11y));
     return findings;
   }
 }

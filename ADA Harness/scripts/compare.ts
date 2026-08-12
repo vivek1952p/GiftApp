@@ -122,13 +122,23 @@ function main(): void {
     // Machine-readable outputs for downstream tooling / the AI agent.
     fs.writeFileSync(
       adaConfig.paths.resolvedIssues,
-      JSON.stringify({ generatedAt: new Date().toISOString(), count: resolved.length, issues: resolved }, null, 2),
+      JSON.stringify(
+        { generatedAt: new Date().toISOString(), count: resolved.length, issues: resolved },
+        null,
+        2
+      ),
       'utf-8'
     );
     fs.writeFileSync(
       adaConfig.paths.remainingIssues,
       JSON.stringify(
-        { generatedAt: new Date().toISOString(), count: remaining.length, introduced: introduced.length, issues: remaining, newIssues: introduced },
+        {
+          generatedAt: new Date().toISOString(),
+          count: remaining.length,
+          introduced: introduced.length,
+          issues: remaining,
+          newIssues: introduced,
+        },
         null,
         2
       ),

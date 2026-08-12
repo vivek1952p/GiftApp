@@ -32,12 +32,12 @@ import path from 'path';
 import { adaConfig } from '../playwright/config';
 import { createLogger } from './logger';
 import type {
-    A11yTreeNode,
-    ExpectedFocusGap,
-    ExpectedFocusReport,
-    KeyboardPageResult,
-    KeyboardReport,
-    PlaywrightA11yReport,
+  A11yTreeNode,
+  ExpectedFocusGap,
+  ExpectedFocusReport,
+  KeyboardPageResult,
+  KeyboardReport,
+  PlaywrightA11yReport,
 } from './types';
 
 const log = createLogger('expected-focus');
@@ -54,7 +54,7 @@ const TAB_NAVIGABLE_ROLES = new Set([
   'link',
   'checkbox',
   'radio',
-  'combobox',   // the combobox trigger is Tab-navigable; its options are not
+  'combobox', // the combobox trigger is Tab-navigable; its options are not
   'textbox',
   'searchbox',
   'slider',
@@ -73,7 +73,7 @@ const COMPOSITE_CONTAINER_ROLES = new Set([
   'tree',
   'grid',
   'treegrid',
-  'tablist',    // only the active/selected tab is in the Tab order
+  'tablist', // only the active/selected tab is in the Tab order
 ]);
 
 // ── Tree traversal ──────────────────────────────────────────────────────────
@@ -275,7 +275,7 @@ function deduplicateAcrossPages(allGaps: ExpectedFocusGap[]): ExpectedFocusGap[]
 function main(): void {
   try {
     const a11yPath = adaConfig.paths.a11yTree;
-    const kbPath   = adaConfig.paths.keyboardReport;
+    const kbPath = adaConfig.paths.keyboardReport;
 
     if (!fs.existsSync(a11yPath)) {
       log.warn('playwright-accessibility-tree.json not found — skipping Expected Focus Engine.');
@@ -283,20 +283,18 @@ function main(): void {
     }
 
     const a11y: PlaywrightA11yReport = JSON.parse(fs.readFileSync(a11yPath, 'utf-8'));
-    const kb: KeyboardReport | null  = fs.existsSync(kbPath)
+    const kb: KeyboardReport | null = fs.existsSync(kbPath)
       ? JSON.parse(fs.readFileSync(kbPath, 'utf-8'))
       : null;
 
-    const kbByPage = new Map<string, KeyboardPageResult>(
-      (kb?.results ?? []).map((r) => [r.page, r])
-    );
+    const kbByPage = new Map<string, KeyboardPageResult>((kb?.results ?? []).map((r) => [r.page, r]));
 
     const pageResults: ExpectedFocusReport['results'] = [];
     const rawGaps: ExpectedFocusGap[] = [];
 
     for (const a11yPage of a11y.results ?? []) {
       const kbPage = kbByPage.get(a11yPage.page);
-      const gaps   = analyseGaps(a11yPage, kbPage);
+      const gaps = analyseGaps(a11yPage, kbPage);
       rawGaps.push(...gaps);
 
       const tabNavigableCount = collectTabNavigable(a11yPage.tree).length;
@@ -311,7 +309,7 @@ function main(): void {
 
       log.info(
         `${a11yPage.page}: ${tabNavigableCount} Tab-navigable AX nodes, ` +
-        `${kbPage?.reached ?? 0} reached by Tab, ${gaps.length} gap(s)`
+          `${kbPage?.reached ?? 0} reached by Tab, ${gaps.length} gap(s)`
       );
     }
 
@@ -327,16 +325,12 @@ function main(): void {
     };
 
     fs.mkdirSync(adaConfig.paths.reportsDir, { recursive: true });
-    fs.writeFileSync(
-      adaConfig.paths.expectedFocusReport,
-      JSON.stringify(report, null, 2),
-      'utf-8'
-    );
+    fs.writeFileSync(adaConfig.paths.expectedFocusReport, JSON.stringify(report, null, 2), 'utf-8');
 
     log.info(
       `Expected Focus Engine: ${allGaps.length} gap(s) (${rawGaps.length} raw, ` +
-      `${rawGaps.length - allGaps.length} deduplicated) across ${pageResults.length} page(s) ` +
-      `-> ${path.relative(process.cwd(), adaConfig.paths.expectedFocusReport)}`
+        `${rawGaps.length - allGaps.length} deduplicated) across ${pageResults.length} page(s) ` +
+        `-> ${path.relative(process.cwd(), adaConfig.paths.expectedFocusReport)}`
     );
   } catch (err) {
     log.error('Expected Focus Engine failed', (err as Error).message);

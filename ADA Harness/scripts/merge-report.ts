@@ -23,32 +23,32 @@ import path from 'path';
 import { adaConfig } from '../playwright/config';
 import { createLogger } from './logger';
 import type {
-    A11yPageTree,
-    A11yTreeNode,
-    DomElementStyle,
-    DomPageSnapshot,
-    DomSnapshotReport,
-    ExpectedFocusGap,
-    ExpectedFocusReport,
-    FocusManagementFinding,
-    FocusManagementReport,
-    InteractionFinding,
-    InteractionReport,
-    KeyboardFinding,
-    KeyboardReport,
-    MergedFinding,
-    MergedReport,
-    PlaywrightA11yReport,
-    Summary,
-    SummaryViolation,
-    UiaFinding,
-    UiaFindingsReport,
-    UiaNode,
-    UiaPageResult,
-    UiaReport,
-    VerificationStatus,
-    WidgetBehaviorReport,
-    WidgetFinding,
+  A11yPageTree,
+  A11yTreeNode,
+  DomElementStyle,
+  DomPageSnapshot,
+  DomSnapshotReport,
+  ExpectedFocusGap,
+  ExpectedFocusReport,
+  FocusManagementFinding,
+  FocusManagementReport,
+  InteractionFinding,
+  InteractionReport,
+  KeyboardFinding,
+  KeyboardReport,
+  MergedFinding,
+  MergedReport,
+  PlaywrightA11yReport,
+  Summary,
+  SummaryViolation,
+  UiaFinding,
+  UiaFindingsReport,
+  UiaNode,
+  UiaPageResult,
+  UiaReport,
+  VerificationStatus,
+  WidgetBehaviorReport,
+  WidgetFinding,
 } from './types';
 
 const log = createLogger('merge');
@@ -77,7 +77,10 @@ const NAME_RULES: Record<string, { ariaRoles: string[]; uiaRoles: string[] }> = 
   'aria-command-name': { ariaRoles: ['button'], uiaRoles: ['Button'] },
   'aria-toggle-field-name': { ariaRoles: ['button', 'checkbox', 'switch'], uiaRoles: ['Button', 'CheckBox'] },
   'link-name': { ariaRoles: ['link'], uiaRoles: ['Hyperlink'] },
-  'label': { ariaRoles: ['textbox', 'combobox', 'checkbox', 'radio'], uiaRoles: ['Edit', 'ComboBox', 'CheckBox', 'RadioButton'] },
+  label: {
+    ariaRoles: ['textbox', 'combobox', 'checkbox', 'radio'],
+    uiaRoles: ['Edit', 'ComboBox', 'CheckBox', 'RadioButton'],
+  },
 };
 
 /**
@@ -91,7 +94,7 @@ const AXE_TO_UIA_BASETYPE: Record<string, string[]> = {
   'aria-command-name': ['Button'],
   'aria-toggle-field-name': ['Button', 'CheckBox'],
   'link-name': ['Hyperlink'],
-  'label': ['Edit', 'ComboBox', 'CheckBox', 'RadioButton'],
+  label: ['Edit', 'ComboBox', 'CheckBox', 'RadioButton'],
   'select-name': ['ComboBox'],
 };
 
@@ -155,7 +158,11 @@ function verifyInA11y(v: SummaryViolation, pageTree?: A11yPageTree): Verificatio
 }
 
 /** Correlate one violation against the Windows UIA tree. */
-function verifyInUia(v: SummaryViolation, uiaResult?: UiaPageResult, uiaAvailable?: boolean): VerificationStatus {
+function verifyInUia(
+  v: SummaryViolation,
+  uiaResult?: UiaPageResult,
+  uiaAvailable?: boolean
+): VerificationStatus {
   if (!uiaAvailable || !uiaResult || !uiaResult.available) return 'unavailable';
   const spec = NAME_RULES[v.ruleId];
   if (!spec) return 'not-detected';

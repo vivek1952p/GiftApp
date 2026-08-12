@@ -50,37 +50,61 @@ export function collectAllFindings(summary: Summary, merged: MergedReport | null
   for (const f of merged.uiaFindings ?? []) {
     out.push({
       key: `uia::${f.page}::${f.ruleId}::${f.name}`,
-      page: f.page, rule: f.ruleId, severity: f.severity, detail: f.name || f.controlType, issue: f.issue,
+      page: f.page,
+      rule: f.ruleId,
+      severity: f.severity,
+      detail: f.name || f.controlType,
+      issue: f.issue,
     });
   }
   for (const f of merged.keyboardFindings ?? []) {
     out.push({
       key: `keyboard::${f.page}::${f.ruleId}::${f.tag}::${f.name}`,
-      page: f.page, rule: f.ruleId, severity: f.severity, detail: `<${f.tag}> ${f.name}`.trim(), issue: f.issue,
+      page: f.page,
+      rule: f.ruleId,
+      severity: f.severity,
+      detail: `<${f.tag}> ${f.name}`.trim(),
+      issue: f.issue,
     });
   }
   for (const f of merged.expectedFocusGaps ?? []) {
     out.push({
       key: `expected-focus::${f.page}::${f.role}::${f.name}::${f.wcag}`,
-      page: f.page, rule: `expected-focus:${f.wcag}`, severity: f.severity, detail: `${f.role} ${f.name}`.trim(), issue: f.issue,
+      page: f.page,
+      rule: `expected-focus:${f.wcag}`,
+      severity: f.severity,
+      detail: `${f.role} ${f.name}`.trim(),
+      issue: f.issue,
     });
   }
   for (const f of merged.widgetFindings ?? []) {
     out.push({
       key: `widget::${f.page}::${f.widget}::${f.selector}`,
-      page: f.page, rule: `widget-behavior:${f.widget}`, severity: f.severity, detail: f.name || f.selector, issue: f.issue,
+      page: f.page,
+      rule: `widget-behavior:${f.widget}`,
+      severity: f.severity,
+      detail: f.name || f.selector,
+      issue: f.issue,
     });
   }
   for (const f of merged.focusManagementFindings ?? []) {
     out.push({
       key: `focus-mgmt::${f.page}::${f.scenario}::${f.detail ?? ''}`,
-      page: f.page, rule: `focus-management:${f.scenario}`, severity: f.severity, detail: f.detail ?? f.scenario, issue: f.issue,
+      page: f.page,
+      rule: `focus-management:${f.scenario}`,
+      severity: f.severity,
+      detail: f.detail ?? f.scenario,
+      issue: f.issue,
     });
   }
   for (const f of merged.interactionFindings ?? []) {
     out.push({
       key: `interaction::${f.page}::${f.role}::${f.selector}::${f.expectedKey}`,
-      page: f.page, rule: `interaction:${f.role}`, severity: f.severity, detail: `${f.name || f.selector} (${f.expectedKey})`, issue: f.issue,
+      page: f.page,
+      rule: `interaction:${f.role}`,
+      severity: f.severity,
+      detail: `${f.name || f.selector} (${f.expectedKey})`,
+      issue: f.issue,
     });
   }
   return out;
@@ -98,7 +122,10 @@ export function severityCountsOf(findings: NormalizedFinding[]): SeverityCounts 
 }
 
 /** Count findings grouped by an arbitrary key selector. */
-export function groupCount(findings: NormalizedFinding[], key: (f: NormalizedFinding) => string): Map<string, number> {
+export function groupCount(
+  findings: NormalizedFinding[],
+  key: (f: NormalizedFinding) => string
+): Map<string, number> {
   const map = new Map<string, number>();
   for (const f of findings) map.set(key(f), (map.get(key(f)) ?? 0) + 1);
   return map;

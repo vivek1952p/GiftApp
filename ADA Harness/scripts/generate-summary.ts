@@ -19,13 +19,7 @@ import fs from 'fs';
 import path from 'path';
 import { adaConfig } from '../playwright/config';
 import { createLogger } from './logger';
-import type {
-  AxeReport,
-  Summary,
-  SummaryViolation,
-  SeverityCounts,
-  Impact,
-} from './types';
+import type { AxeReport, Summary, SummaryViolation, SeverityCounts, Impact } from './types';
 
 const log = createLogger('summary');
 
@@ -35,9 +29,7 @@ const log = createLogger('summary');
 function readAxeReport(): AxeReport {
   const file = adaConfig.paths.axeReport;
   if (!fs.existsSync(file)) {
-    throw new Error(
-      `Raw axe report not found at ${file}. Run the scan first (npm run scan).`
-    );
+    throw new Error(`Raw axe report not found at ${file}. Run the scan first (npm run scan).`);
   }
   return JSON.parse(fs.readFileSync(file, 'utf-8')) as AxeReport;
 }

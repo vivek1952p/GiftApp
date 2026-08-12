@@ -53,7 +53,12 @@ function ensureDir(dir: string): void {
 
 /** Convert a page name into a filesystem-safe screenshot filename. */
 function screenshotName(pageName: string): string {
-  return pageName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'page';
+  return (
+    pageName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '') || 'page'
+  );
 }
 
 /** Recursively count the nodes in an accessibility tree. */
@@ -165,7 +170,9 @@ async function captureDom(
         }
         // layers[0] = closest to the element (topmost), layers[end] = closest to <html>.
         // Composite from the outermost layer down to the innermost, over white.
-        let r = 255, g = 255, b = 255;
+        let r = 255,
+          g = 255,
+          b = 255;
         for (let i = layers.length - 1; i >= 0; i--) {
           const layer = layers[i];
           r = layer.r * layer.a + r * (1 - layer.a);
@@ -263,8 +270,10 @@ async function captureKeyboard(
       const he = el as HTMLElement;
       const rect = he.getBoundingClientRect();
       const style = window.getComputedStyle(he);
-      const visible = rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden' && style.display !== 'none';
-      const disabled = (he as HTMLButtonElement).disabled === true || he.getAttribute('aria-disabled') === 'true';
+      const visible =
+        rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden' && style.display !== 'none';
+      const disabled =
+        (he as HTMLButtonElement).disabled === true || he.getAttribute('aria-disabled') === 'true';
       const ti = he.getAttribute('tabindex');
       // Skip invisible/disabled and intentionally-removed (tabindex="-1") controls.
       if (!visible || disabled || ti === '-1') continue;
@@ -349,7 +358,8 @@ function buildKeyboardFindings(results: KeyboardPageResult[]): KeyboardFinding[]
         issue: `<${el.tag}>${el.name ? ` "${el.name}"` : ''} uses a positive tabindex (${el.tabindex}) which disrupts natural tab order`,
         severity: 'moderate',
         wcag: '2.4.3',
-        recommendation: 'Remove the positive tabindex; rely on DOM order (use tabindex="0" only when needed).',
+        recommendation:
+          'Remove the positive tabindex; rely on DOM order (use tabindex="0" only when needed).',
         tag: el.tag,
         name: el.name,
       });

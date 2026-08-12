@@ -27,7 +27,8 @@ function luminance([r, g, b]: [number, number, number]): number {
 
 /** Contrast ratio between two RGB colours. */
 function contrastRatio(fg: [number, number, number], bg: [number, number, number]): number {
-  const L1 = luminance(fg), L2 = luminance(bg);
+  const L1 = luminance(fg),
+    L2 = luminance(bg);
   const [light, dark] = L1 > L2 ? [L1, L2] : [L2, L1];
   return (light + 0.05) / (dark + 0.05);
 }
@@ -41,14 +42,15 @@ function px(size: string): number {
 function requiredRatio(fontSize: string, fontWeight: string): number {
   const size = px(fontSize);
   const bold = fontWeight === 'bold' || +fontWeight >= 700;
-  return (size >= 24 || (size >= 18.67 && bold)) ? 3 : 4.5;
+  return size >= 24 || (size >= 18.67 && bold) ? 3 : 4.5;
 }
 
 // ── Rules ────────────────────────────────────────────────────────────────
 
 /** WCAG 1.4.3 — Contrast (Minimum). */
 export const DomContrastRule: DomRule = {
-  id: 'dom-color-contrast', source: 'dom',
+  id: 'dom-color-contrast',
+  source: 'dom',
   description: 'Text must meet WCAG 2.1 AA minimum contrast ratio',
   evaluate(el: DomElementStyle): RuleResult | null {
     const fg = parseRgb(el.color ?? '');
@@ -76,13 +78,15 @@ export const DomContrastRule: DomRule = {
 
 /** WCAG 1.4.4 — Resize Text: text set in px smaller than 10px is hard to resize. */
 export const DomSmallTextRule: DomRule = {
-  id: 'dom-text-too-small', source: 'dom',
+  id: 'dom-text-too-small',
+  source: 'dom',
   description: 'Text should not be smaller than 10 px to support browser zoom',
   evaluate(el: DomElementStyle): RuleResult | null {
     if (px(el.fontSize ?? '16px') >= 10) return null;
     return {
       issue: `Text is ${el.fontSize} — too small to read at default zoom (min recommended 10 px)`,
-      severity: 'minor', wcag: '1.4.4',
+      severity: 'minor',
+      wcag: '1.4.4',
       recommendation: 'Use relative units (rem/em) and a minimum font size of 0.625rem (10 px).',
       context: { target: el.target },
     };

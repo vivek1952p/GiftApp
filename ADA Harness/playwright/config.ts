@@ -409,7 +409,7 @@ export const adaConfig: AdaConfig = {
 };
 
 /** Map the configured browser name to a Playwright device descriptor. */
-const DEVICE_BY_BROWSER: Record<BrowserName, typeof devices[string]> = {
+const DEVICE_BY_BROWSER: Record<BrowserName, (typeof devices)[string]> = {
   chromium: devices['Desktop Chrome'],
   firefox: devices['Desktop Firefox'],
   webkit: devices['Desktop Safari'],

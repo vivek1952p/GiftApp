@@ -14,14 +14,23 @@
     "auto-fix": "npx tsx scripts/auto-fix.ts",
     "auto-fix:apply": "npx tsx scripts/auto-fix.ts --apply",
     "save-auth": "npx tsx scripts/save-auth.ts",
-    "ada": "npm run scan && npm run compare && npm run dashboard"
+    "ada": "npm run scan && npm run compare && npm run dashboard",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
+    "@eslint/js": "^9.39.5",
     "@playwright/test": "^1.61.1",
     "@types/node": "^26.1.1",
     "axe-core": "^4.12.1",
+    "eslint": "^9.39.5",
+    "eslint-config-prettier": "^9.1.2",
+    "prettier": "^3.9.6",
     "tsx": "^4.19.2",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.67.0"
   }
 }

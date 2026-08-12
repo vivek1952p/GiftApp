@@ -107,16 +107,23 @@ async function main(): Promise<void> {
           const moved = await focusMovedTo(page, tabs[0], 'ArrowRight', '[role="tab"]');
           if (!moved) {
             findings.push({
-              page: target.name, url,
-              widget: 'tab', selector: '[role="tab"]',
-              issue: 'ArrowRight did not move focus to another tab (WAI-ARIA APG: roving tabindex — ArrowRight/Left must navigate between tabs)',
-              severity: 'serious', wcag: '2.1.1',
-              recommendation: 'Implement the roving tabindex pattern: on ArrowRight, set tabindex="0" on the next tab and tabindex="-1" on the others, then call focus(). See WAI-ARIA APG Tab Pattern.',
+              page: target.name,
+              url,
+              widget: 'tab',
+              selector: '[role="tab"]',
+              issue:
+                'ArrowRight did not move focus to another tab (WAI-ARIA APG: roving tabindex — ArrowRight/Left must navigate between tabs)',
+              severity: 'serious',
+              wcag: '2.1.1',
+              recommendation:
+                'Implement the roving tabindex pattern: on ArrowRight, set tabindex="0" on the next tab and tabindex="-1" on the others, then call focus(). See WAI-ARIA APG Tab Pattern.',
             });
           }
           // Restore focus to first tab
           await tabs[0].focus();
-        } catch { /* element may not be interactable */ }
+        } catch {
+          /* element may not be interactable */
+        }
       }
 
       // -- Menu / Menubar -------------------------------------------------
@@ -157,17 +164,29 @@ async function main(): Promise<void> {
           const menu = page.locator('[role="menu"]:visible, [role="menubar"]:visible').first();
           if (!(await menu.isVisible().catch(() => false))) continue; // Enter didn't open a menu — not this check's concern
 
-          const items = await menu.locator('[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]').all();
+          const items = await menu
+            .locator('[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]')
+            .all();
           if (items.length > 1 && !reportedWidgets.has('menu-arrow')) {
-            const moved = await focusMovedTo(page, items[0], 'ArrowDown', '[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]');
+            const moved = await focusMovedTo(
+              page,
+              items[0],
+              'ArrowDown',
+              '[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]'
+            );
             if (!moved) {
               reportedWidgets.add('menu-arrow');
               findings.push({
-                page: target.name, url,
-                widget: 'menu', selector: '[role="menu"], [role="menubar"]',
-                issue: 'ArrowDown did not move focus to another menu item (WAI-ARIA APG: Menu/Menubar must support Arrow-key navigation between items)',
-                severity: 'serious', wcag: '2.1.1',
-                recommendation: 'Implement roving tabindex or aria-activedescendant for menu items, and bind ArrowDown/ArrowUp to move focus between them.',
+                page: target.name,
+                url,
+                widget: 'menu',
+                selector: '[role="menu"], [role="menubar"]',
+                issue:
+                  'ArrowDown did not move focus to another menu item (WAI-ARIA APG: Menu/Menubar must support Arrow-key navigation between items)',
+                severity: 'serious',
+                wcag: '2.1.1',
+                recommendation:
+                  'Implement roving tabindex or aria-activedescendant for menu items, and bind ArrowDown/ArrowUp to move focus between them.',
               });
             }
           }
@@ -178,19 +197,26 @@ async function main(): Promise<void> {
             if (await menu.isVisible().catch(() => false)) {
               reportedWidgets.add('menu-escape');
               findings.push({
-                page: target.name, url,
-                widget: 'menu', selector: '[role="menu"], [role="menubar"]',
+                page: target.name,
+                url,
+                widget: 'menu',
+                selector: '[role="menu"], [role="menubar"]',
                 issue: 'Escape key did not close the menu (WAI-ARIA APG: Escape must dismiss an open menu)',
-                severity: 'serious', wcag: '2.1.2',
+                severity: 'serious',
+                wcag: '2.1.2',
                 recommendation: 'Bind keydown Escape to close the menu and return focus to the trigger.',
               });
             }
           }
-        } catch { /* trigger became stale or interaction failed — skip */ }
+        } catch {
+          /* trigger became stale or interaction failed — skip */
+        }
       }
 
       await page.evaluate(() => {
-        document.querySelectorAll('[data-ada-menu-trigger]').forEach((el) => el.removeAttribute('data-ada-menu-trigger'));
+        document
+          .querySelectorAll('[data-ada-menu-trigger]')
+          .forEach((el) => el.removeAttribute('data-ada-menu-trigger'));
       });
 
       // -- Accordion -----------------------------------------------------
@@ -200,9 +226,11 @@ async function main(): Promise<void> {
       // source. Defaults to native <details><summary> plus a generic
       // [role="button"][aria-expanded] header pattern.
       const accordions = await page.locator(adaConfig.widgets.accordionSelector).all();
-      const visibleAccordions = (await Promise.all(
-        accordions.map(async (a) => ({ a, vis: await a.isVisible().catch(() => false) }))
-      )).filter((x) => x.vis).map((x) => x.a);
+      const visibleAccordions = (
+        await Promise.all(accordions.map(async (a) => ({ a, vis: await a.isVisible().catch(() => false) })))
+      )
+        .filter((x) => x.vis)
+        .map((x) => x.a);
 
       // Reads the expansion state regardless of pattern: aria-expanded on the
       // header itself, or (for native <details><summary>) the parent <details>
@@ -230,11 +258,15 @@ async function main(): Promise<void> {
             if (before === after) {
               reportedWidgets.add('accordion');
               findings.push({
-                page: target.name, url,
-                widget: 'accordion', selector: adaConfig.widgets.accordionSelector,
+                page: target.name,
+                url,
+                widget: 'accordion',
+                selector: adaConfig.widgets.accordionSelector,
                 issue: `${key} key did not toggle the accordion/disclosure header (WAI-ARIA APG: accordion headers must respond to Enter and Space)`,
-                severity: 'serious', wcag: '2.1.1',
-                recommendation: 'Bind Enter and Space keydown events to the accordion header\'s toggle action, or use a native <details><summary> element which handles this automatically.',
+                severity: 'serious',
+                wcag: '2.1.1',
+                recommendation:
+                  "Bind Enter and Space keydown events to the accordion header's toggle action, or use a native <details><summary> element which handles this automatically.",
               });
               break; // this instance is already known broken — no need to test the other key
             } else {
@@ -243,7 +275,9 @@ async function main(): Promise<void> {
               await page.keyboard.press(key);
               await page.waitForTimeout(200);
             }
-          } catch { /* not interactable */ }
+          } catch {
+            /* not interactable */
+          }
         }
       }
 
@@ -251,22 +285,27 @@ async function main(): Promise<void> {
       // Only check dialogs already open on page load (passive check — no trigger needed).
       // Matches native <dialog> too — it carries an implicit dialog role and
       // needs no role="dialog" attribute, so a role-only selector would miss it.
-      const dialogs = await page.locator('dialog:visible, [role="dialog"]:visible, [role="alertdialog"]:visible').all();
+      const dialogs = await page
+        .locator('dialog:visible, [role="dialog"]:visible, [role="alertdialog"]:visible')
+        .all();
       for (const dialog of dialogs.slice(0, 1)) {
         try {
           // Use evaluate() — elementHandle() is deprecated in newer Playwright.
-          const focusInDialog = await dialog.evaluate((dlg) =>
-            dlg.contains(document.activeElement)
-          );
+          const focusInDialog = await dialog.evaluate((dlg) => dlg.contains(document.activeElement));
 
           if (!focusInDialog && !reportedWidgets.has('dialog-focus')) {
             reportedWidgets.add('dialog-focus');
             findings.push({
-              page: target.name, url,
-              widget: 'dialog', selector: '[role="dialog"]',
-              issue: 'An open dialog does not contain keyboard focus (WAI-ARIA APG: focus must move inside dialog when it opens)',
-              severity: 'critical', wcag: '2.1.2',
-              recommendation: 'On dialog open, move focus to the first focusable element inside the dialog or to the dialog container itself (tabindex="-1").',
+              page: target.name,
+              url,
+              widget: 'dialog',
+              selector: '[role="dialog"]',
+              issue:
+                'An open dialog does not contain keyboard focus (WAI-ARIA APG: focus must move inside dialog when it opens)',
+              severity: 'critical',
+              wcag: '2.1.2',
+              recommendation:
+                'On dialog open, move focus to the first focusable element inside the dialog or to the dialog container itself (tabindex="-1").',
             });
           }
 
@@ -277,14 +316,20 @@ async function main(): Promise<void> {
           if (stillVisible && !reportedWidgets.has('dialog-escape')) {
             reportedWidgets.add('dialog-escape');
             findings.push({
-              page: target.name, url,
-              widget: 'dialog', selector: '[role="dialog"]',
+              page: target.name,
+              url,
+              widget: 'dialog',
+              selector: '[role="dialog"]',
               issue: 'Escape key did not close the dialog (WAI-ARIA APG: Escape must dismiss dialogs)',
-              severity: 'serious', wcag: '2.1.2',
-              recommendation: 'Bind keydown Escape to the dialog close action. Ensure child elements do not stop-propagate the Escape event.',
+              severity: 'serious',
+              wcag: '2.1.2',
+              recommendation:
+                'Bind keydown Escape to the dialog close action. Ensure child elements do not stop-propagate the Escape event.',
             });
           }
-        } catch { /* dialog interaction failed */ }
+        } catch {
+          /* dialog interaction failed */
+        }
       }
 
       // -- Combobox ----------------------------------------------------------
@@ -303,11 +348,16 @@ async function main(): Promise<void> {
               if (!reportedWidgets.has('combobox')) {
                 reportedWidgets.add('combobox');
                 findings.push({
-                  page: target.name, url,
-                  widget: 'combobox', selector: '[role="combobox"]',
-                  issue: 'ArrowDown did not open the combobox dropdown (WAI-ARIA APG: combobox must open on ArrowDown)',
-                  severity: 'serious', wcag: '2.1.1',
-                  recommendation: 'Bind ArrowDown to open the combobox listbox. If using a component library (Angular Material mat-select, MUI Select, etc.), verify no custom event handler is intercepting ArrowDown before the library handles it.',
+                  page: target.name,
+                  url,
+                  widget: 'combobox',
+                  selector: '[role="combobox"]',
+                  issue:
+                    'ArrowDown did not open the combobox dropdown (WAI-ARIA APG: combobox must open on ArrowDown)',
+                  severity: 'serious',
+                  wcag: '2.1.1',
+                  recommendation:
+                    'Bind ArrowDown to open the combobox listbox. If using a component library (Angular Material mat-select, MUI Select, etc.), verify no custom event handler is intercepting ArrowDown before the library handles it.',
                 });
               }
             } else {
@@ -316,7 +366,9 @@ async function main(): Promise<void> {
               await page.waitForTimeout(200);
             }
           }
-        } catch { /* not interactable */ }
+        } catch {
+          /* not interactable */
+        }
       }
     }
   } finally {
@@ -332,7 +384,9 @@ async function main(): Promise<void> {
 
   fs.mkdirSync(adaConfig.paths.reportsDir, { recursive: true });
   fs.writeFileSync(adaConfig.paths.widgetBehaviorReport, JSON.stringify(report, null, 2), 'utf-8');
-  log.info(`Widget Behavior Engine: ${findings.length} finding(s) -> ${path.relative(process.cwd(), adaConfig.paths.widgetBehaviorReport)}`);
+  log.info(
+    `Widget Behavior Engine: ${findings.length} finding(s) -> ${path.relative(process.cwd(), adaConfig.paths.widgetBehaviorReport)}`
+  );
 }
 
 main().catch((err) => {

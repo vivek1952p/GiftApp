@@ -261,7 +261,7 @@ function findUniqueCandidate(
 function fixImageAlt(v: SummaryViolation, files: string[]): FixResult {
   const src = attr('src', v.html);
   const altText = humanize(src ?? 'image');
-  const basename = src ? src.split('/').pop()?.split('?')[0] ?? '' : '';
+  const basename = src ? (src.split('/').pop()?.split('?')[0] ?? '') : '';
 
   const match = findUniqueCandidate(
     files,
@@ -308,7 +308,13 @@ function fixControlName(v: SummaryViolation, files: string[], tagName: string): 
   );
   if (match) {
     const fixed = match.tag.replace(/\s*\/?>$/, (end) => ` aria-label="${derived}"${end}`);
-    const result = applyOrSuggest(v, match.file, match.tag, fixed, `Added aria-label="${derived}" to <${tagName}>`);
+    const result = applyOrSuggest(
+      v,
+      match.file,
+      match.tag,
+      fixed,
+      `Added aria-label="${derived}" to <${tagName}>`
+    );
     if (result) return result;
   }
   return suggest(v, `Add aria-label="${derived}" to the <${tagName}>.`);
@@ -342,7 +348,13 @@ function fixLabel(v: SummaryViolation, files: string[]): FixResult {
   );
   if (match) {
     const fixed = match.tag.replace(/\/?>$/, (end) => ` aria-label="${labelText}"${end}`);
-    const result = applyOrSuggest(v, match.file, match.tag, fixed, `Added aria-label="${labelText}" to <input>`);
+    const result = applyOrSuggest(
+      v,
+      match.file,
+      match.tag,
+      fixed,
+      `Added aria-label="${labelText}" to <input>`
+    );
     if (result) return result;
   }
   return suggest(
@@ -425,7 +437,13 @@ function fixInputImageAlt(v: SummaryViolation, files: string[]): FixResult {
   );
   if (match) {
     const fixed = match.tag.replace(/\/?>$/, (end) => ` alt="${altText}"${end}`);
-    const result = applyOrSuggest(v, match.file, match.tag, fixed, `Added alt="${altText}" to <input type="image">`);
+    const result = applyOrSuggest(
+      v,
+      match.file,
+      match.tag,
+      fixed,
+      `Added alt="${altText}" to <input type="image">`
+    );
     if (result) return result;
   }
   return suggest(v, `Add alt="${altText}" to the <input type="image">.`);
@@ -508,7 +526,7 @@ function strategyFor(ruleId: string): string {
     'aria-input-field-name': 'add-attribute:aria-label',
     'aria-command-name': 'add-attribute:aria-label',
     'aria-toggle-field-name': 'add-attribute:aria-label',
-    'label': 'add-attribute:aria-label',
+    label: 'add-attribute:aria-label',
     'frame-title': 'add-attribute:title',
     'html-has-lang': 'add-attribute:lang',
   };
@@ -577,7 +595,9 @@ function main(): void {
   try {
     const { violations, source } = loadViolations();
     const files = listSourceFiles(adaConfig.paths.appSrc);
-    log.info(`Loaded ${violations.length} violation(s) from ${source}; scanning ${files.length} source file(s).`);
+    log.info(
+      `Loaded ${violations.length} violation(s) from ${source}; scanning ${files.length} source file(s).`
+    );
 
     // Phase 2 context: how many pages each rule affects (reach signal).
     const affected = countAffectedPages(violations as MergedFinding[]);
@@ -621,7 +641,8 @@ function main(): void {
 
       // Continuous learning: note when we are reusing a known pattern.
       const known = kb.recall(v.ruleId);
-      if (known) log.debug(`Reusing known pattern for ${v.ruleId} (${known.strategy}, used ${known.timesApplied}x)`);
+      if (known)
+        log.debug(`Reusing known pattern for ${v.ruleId} (${known.strategy}, used ${known.timesApplied}x)`);
 
       const result = handleViolation(v, files);
       result.priority = priority;
@@ -634,7 +655,7 @@ function main(): void {
       // Record successful, generic patterns back to the knowledge base.
       if (result.status === 'applied') kb.record(v.ruleId, strategyFor(v.ruleId));
 
-      const label = `[${(priority).toUpperCase()}] ${result.status.toUpperCase()} [${result.ruleId}] ${result.message}`;
+      const label = `[${priority.toUpperCase()}] ${result.status.toUpperCase()} [${result.ruleId}] ${result.message}`;
       if (result.status === 'applied') log.info(label, result.file);
       else if (result.status === 'suggested') log.warn(label);
       else log.debug(label);
@@ -671,7 +692,9 @@ function main(): void {
     writeFixesMarkdown(results, source);
     kb.save();
 
-    log.info(`Auto-fix complete (${APPLY_FIXES ? 'apply' : 'report-only'}): ${applied} applied, ${suggested} suggested, ${skipped} skipped (duplicate).`);
+    log.info(
+      `Auto-fix complete (${APPLY_FIXES ? 'apply' : 'report-only'}): ${applied} applied, ${suggested} suggested, ${skipped} skipped (duplicate).`
+    );
     log.info(`Fix log -> ${path.relative(process.cwd(), adaConfig.paths.fixes)}`);
   } catch (err) {
     log.error('Auto-fix failed', (err as Error).message);

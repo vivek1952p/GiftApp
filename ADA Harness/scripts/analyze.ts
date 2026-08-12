@@ -39,9 +39,7 @@ function run(cmd: string, args: string[]): void {
   const useShell = process.platform === 'win32'; // allow npx.cmd resolution on Windows
   // When running through a shell, arguments are concatenated (not escaped), so any
   // path containing spaces (e.g. "Assign spec") must be quoted or it will be split.
-  const finalArgs = useShell
-    ? args.map((a) => (/\s/.test(a) && !a.startsWith('"') ? `"${a}"` : a))
-    : args;
+  const finalArgs = useShell ? args.map((a) => (/\s/.test(a) && !a.startsWith('"') ? `"${a}"` : a)) : args;
   const result = spawnSync(cmd, finalArgs, {
     stdio: 'inherit',
     shell: useShell,

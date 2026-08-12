@@ -8,12 +8,7 @@
  * ============================================================================
  */
 
-import type {
-    A11yTreeNode,
-    DomElementStyle,
-    UiaSeverity,
-    FlatUiaElement as _FlatUiaElement,
-} from '../types';
+import type { A11yTreeNode, DomElementStyle, UiaSeverity, FlatUiaElement as _FlatUiaElement } from '../types';
 
 export type Severity = UiaSeverity;
 

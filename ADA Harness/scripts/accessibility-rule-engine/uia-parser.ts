@@ -20,7 +20,8 @@ export function flattenTree(
 ): FlatUiaElement[] {
   if (!node) return out;
   out.push({
-    page, url,
+    page,
+    url,
     name: node.name ?? '',
     controlType: node.role ?? '',
     baseType: baseControlType(node.role ?? ''),
@@ -38,7 +39,10 @@ export function flattenTree(
 
 function collectDocumentRoots(node: UiaNode | null, out: UiaNode[] = []): UiaNode[] {
   if (!node) return out;
-  if (baseControlType(node.role ?? '') === 'Document') { out.push(node); return out; }
+  if (baseControlType(node.role ?? '') === 'Document') {
+    out.push(node);
+    return out;
+  }
   for (const child of node.children ?? []) collectDocumentRoots(child, out);
   return out;
 }

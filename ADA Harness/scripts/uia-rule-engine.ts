@@ -33,12 +33,12 @@ import { adaConfig } from '../playwright/config';
 import { AccessibilityRuleEngine, allRules } from './accessibility-rule-engine';
 import { createLogger } from './logger';
 import type {
-    DomSnapshotReport,
-    KeyboardReport,
-    PlaywrightA11yReport,
-    UiaFinding,
-    UiaFindingsReport,
-    UiaReport,
+  DomSnapshotReport,
+  KeyboardReport,
+  PlaywrightA11yReport,
+  UiaFinding,
+  UiaFindingsReport,
+  UiaReport,
 } from './types';
 
 const log = createLogger('uia-rules');
@@ -54,12 +54,28 @@ function readJson<T>(filePath: string): T | null {
 }
 
 /** Map unified AccessibilityFinding to legacy UiaFinding shape for downstream compatibility. */
-function toUiaFinding(f: { ruleId: string; page: string; url: string; name?: string; role?: string; target?: string; issue: string; severity: 'critical'|'serious'|'moderate'|'minor'; wcag: string; recommendation: string }): UiaFinding {
+function toUiaFinding(f: {
+  ruleId: string;
+  page: string;
+  url: string;
+  name?: string;
+  role?: string;
+  target?: string;
+  issue: string;
+  severity: 'critical' | 'serious' | 'moderate' | 'minor';
+  wcag: string;
+  recommendation: string;
+}): UiaFinding {
   return {
-    ruleId: f.ruleId, page: f.page, url: f.url,
-    controlType: f.role ?? '', automationId: '',
-    name: f.name ?? f.target ?? '', issue: f.issue,
-    severity: f.severity, wcag: f.wcag,
+    ruleId: f.ruleId,
+    page: f.page,
+    url: f.url,
+    controlType: f.role ?? '',
+    automationId: '',
+    name: f.name ?? f.target ?? '',
+    issue: f.issue,
+    severity: f.severity,
+    wcag: f.wcag,
     recommendation: f.recommendation,
   };
 }
@@ -103,15 +119,17 @@ function main(): void {
 
     // ── Load data sources (all optional — each rule set degrades gracefully) ──
 
-    const uia     = readJson<UiaReport>(adaConfig.paths.uiaTree);
-    const dom     = readJson<DomSnapshotReport>(adaConfig.paths.domSnapshot);
-    const a11y    = readJson<PlaywrightA11yReport>(adaConfig.paths.a11yTree);
+    const uia = readJson<UiaReport>(adaConfig.paths.uiaTree);
+    const dom = readJson<DomSnapshotReport>(adaConfig.paths.domSnapshot);
+    const a11y = readJson<PlaywrightA11yReport>(adaConfig.paths.a11yTree);
 
     if (!uia && !dom && !a11y) {
       log.warn('No report artifacts found — writing empty uia-findings.json.');
       const emptyReport: UiaFindingsReport = {
-        generatedAt: new Date().toISOString(), baseUrl: adaConfig.baseUrl,
-        totalFindings: 0, severityCounts: { critical: 0, serious: 0, moderate: 0, minor: 0 },
+        generatedAt: new Date().toISOString(),
+        baseUrl: adaConfig.baseUrl,
+        totalFindings: 0,
+        severityCounts: { critical: 0, serious: 0, moderate: 0, minor: 0 },
         findings: [],
       };
       fs.writeFileSync(adaConfig.paths.uiaFindings, JSON.stringify(emptyReport, null, 2), 'utf-8');
@@ -123,12 +141,14 @@ function main(): void {
     const engine = new AccessibilityRuleEngine(allRules);
     const documentOnly = adaConfig.uia.documentOnly ?? true;
 
-    const rawFindings = engine.evaluateAll({
-      uia:  uia  ?? undefined,
-      dom:  dom  ?? undefined,
-      a11y: a11y ?? undefined,
-      documentOnly,
-    }).map(toUiaFinding);
+    const rawFindings = engine
+      .evaluateAll({
+        uia: uia ?? undefined,
+        dom: dom ?? undefined,
+        a11y: a11y ?? undefined,
+        documentOnly,
+      })
+      .map(toUiaFinding);
 
     // ── Suppress known false-positive: UIA keyboard-focusable ─────────────────
     // If an element is confirmed reachable via Tab in the browser, the UIA
@@ -142,7 +162,7 @@ function main(): void {
       if (isTabReachable) {
         log.info(
           `Suppressed false-positive uia-keyboard-focusable for "${f.name}" on ${f.page} ` +
-          `(confirmed reachable by Tab in keyboard-report.json)`
+            `(confirmed reachable by Tab in keyboard-report.json)`
         );
         return false;
       }
@@ -161,15 +181,14 @@ function main(): void {
 
     fs.writeFileSync(adaConfig.paths.uiaFindings, JSON.stringify(report, null, 2), 'utf-8');
 
-    const sourcesSummary = [
-      uia?.available  ? 'UIA' : null,
-      dom             ? 'DOM' : null,
-      a11y            ? 'AX-tree' : null,
-    ].filter(Boolean).join(', ') || 'none';
+    const sourcesSummary =
+      [uia?.available ? 'UIA' : null, dom ? 'DOM' : null, a11y ? 'AX-tree' : null]
+        .filter(Boolean)
+        .join(', ') || 'none';
 
     log.info(
       `Rule Engine: evaluated sources [${sourcesSummary}] with ${allRules.length} rule(s); ` +
-      `${findings.length} finding(s) -> ${path.relative(process.cwd(), adaConfig.paths.uiaFindings)}`
+        `${findings.length} finding(s) -> ${path.relative(process.cwd(), adaConfig.paths.uiaFindings)}`
     );
     log.info('Severity counts', report.severityCounts);
   } catch (err) {
