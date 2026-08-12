@@ -1,237 +1,12 @@
 {
-  "generatedAt": "2026-08-11T10:21:02.482Z",
+  "generatedAt": "2026-08-12T05:21:52.278Z",
   "baseUrl": "http://localhost:4200",
   "results": [
     {
       "page": "Home",
       "url": "http://localhost:4200/",
-      "timestamp": "2026-08-11T10:20:48.659Z",
+      "timestamp": "2026-08-12T05:21:38.384Z",
       "violations": [
-        {
-          "id": "color-contrast",
-          "impact": "serious",
-          "tags": [
-            "cat.color",
-            "wcag2aa",
-            "wcag143",
-            "TTv5",
-            "TT13.c",
-            "EN-301-549",
-            "EN-9.1.4.3",
-            "ACT",
-            "RGAAv4",
-            "RGAA-3.2.1"
-          ],
-          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
-          "help": "Elements must meet minimum color contrast ratio thresholds",
-          "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
-          "nodes": [
-            {
-              "any": [
-                {
-                  "id": "color-contrast",
-                  "data": {
-                    "fgColor": "#ff2020",
-                    "bgColor": "#ffffff",
-                    "contrastRatio": 3.83,
-                    "fontSize": "15.0pt (20px)",
-                    "fontWeight": "normal",
-                    "messageKey": null,
-                    "expectedContrastRatio": "4.5:1"
-                  },
-                  "relatedNodes": [
-                    {
-                      "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"card\">",
-                      "target": [
-                        ".card:nth-child(1)"
-                      ]
-                    }
-                  ],
-                  "impact": "serious",
-                  "message": "Element has insufficient color contrast of 3.83 (foreground color: #ff2020, background color: #ffffff, font size: 15.0pt (20px), font weight: normal). Expected contrast ratio of 4.5:1"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "serious",
-              "html": "<h2 _ngcontent-ng-c1983750911=\"\">$29.99</h2>",
-              "target": [
-                ".card:nth-child(1) > .content > .price-rating > h2"
-              ],
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.83 (foreground color: #ff2020, background color: #ffffff, font size: 15.0pt (20px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "any": [
-                {
-                  "id": "color-contrast",
-                  "data": {
-                    "fgColor": "#ff2020",
-                    "bgColor": "#ffffff",
-                    "contrastRatio": 3.83,
-                    "fontSize": "15.0pt (20px)",
-                    "fontWeight": "normal",
-                    "messageKey": null,
-                    "expectedContrastRatio": "4.5:1"
-                  },
-                  "relatedNodes": [
-                    {
-                      "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"card\">",
-                      "target": [
-                        ".card:nth-child(2)"
-                      ]
-                    }
-                  ],
-                  "impact": "serious",
-                  "message": "Element has insufficient color contrast of 3.83 (foreground color: #ff2020, background color: #ffffff, font size: 15.0pt (20px), font weight: normal). Expected contrast ratio of 4.5:1"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "serious",
-              "html": "<h2 _ngcontent-ng-c1983750911=\"\">$139.99</h2>",
-              "target": [
-                ".card:nth-child(2) > .content > .price-rating > h2"
-              ],
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.83 (foreground color: #ff2020, background color: #ffffff, font size: 15.0pt (20px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "any": [
-                {
-                  "id": "color-contrast",
-                  "data": {
-                    "fgColor": "#ff2020",
-                    "bgColor": "#ffffff",
-                    "contrastRatio": 3.83,
-                    "fontSize": "15.0pt (20px)",
-                    "fontWeight": "normal",
-                    "messageKey": null,
-                    "expectedContrastRatio": "4.5:1"
-                  },
-                  "relatedNodes": [
-                    {
-                      "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"card\">",
-                      "target": [
-                        ".card:nth-child(3)"
-                      ]
-                    }
-                  ],
-                  "impact": "serious",
-                  "message": "Element has insufficient color contrast of 3.83 (foreground color: #ff2020, background color: #ffffff, font size: 15.0pt (20px), font weight: normal). Expected contrast ratio of 4.5:1"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "serious",
-              "html": "<h2 _ngcontent-ng-c1983750911=\"\">$99.99</h2>",
-              "target": [
-                ".card:nth-child(3) > .content > .price-rating > h2"
-              ],
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.83 (foreground color: #ff2020, background color: #ffffff, font size: 15.0pt (20px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "any": [
-                {
-                  "id": "color-contrast",
-                  "data": {
-                    "fgColor": "#ff2020",
-                    "bgColor": "#ffffff",
-                    "contrastRatio": 3.83,
-                    "fontSize": "15.0pt (20px)",
-                    "fontWeight": "normal",
-                    "messageKey": null,
-                    "expectedContrastRatio": "4.5:1"
-                  },
-                  "relatedNodes": [
-                    {
-                      "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"card\">",
-                      "target": [
-                        ".card:nth-child(4)"
-                      ]
-                    }
-                  ],
-                  "impact": "serious",
-                  "message": "Element has insufficient color contrast of 3.83 (foreground color: #ff2020, background color: #ffffff, font size: 15.0pt (20px), font weight: normal). Expected contrast ratio of 4.5:1"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "serious",
-              "html": "<h2 _ngcontent-ng-c1983750911=\"\">$219.99</h2>",
-              "target": [
-                ".card:nth-child(4) > .content > .price-rating > h2"
-              ],
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.83 (foreground color: #ff2020, background color: #ffffff, font size: 15.0pt (20px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "any": [
-                {
-                  "id": "color-contrast",
-                  "data": {
-                    "fgColor": "#ff2020",
-                    "bgColor": "#ffffff",
-                    "contrastRatio": 3.83,
-                    "fontSize": "15.0pt (20px)",
-                    "fontWeight": "normal",
-                    "messageKey": null,
-                    "expectedContrastRatio": "4.5:1"
-                  },
-                  "relatedNodes": [
-                    {
-                      "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"card\">",
-                      "target": [
-                        ".card:nth-child(5)"
-                      ]
-                    }
-                  ],
-                  "impact": "serious",
-                  "message": "Element has insufficient color contrast of 3.83 (foreground color: #ff2020, background color: #ffffff, font size: 15.0pt (20px), font weight: normal). Expected contrast ratio of 4.5:1"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "serious",
-              "html": "<h2 _ngcontent-ng-c1983750911=\"\">$59.99</h2>",
-              "target": [
-                ".card:nth-child(5) > .content > .price-rating > h2"
-              ],
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.83 (foreground color: #ff2020, background color: #ffffff, font size: 15.0pt (20px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "any": [
-                {
-                  "id": "color-contrast",
-                  "data": {
-                    "fgColor": "#ff2020",
-                    "bgColor": "#ffffff",
-                    "contrastRatio": 3.83,
-                    "fontSize": "15.0pt (20px)",
-                    "fontWeight": "normal",
-                    "messageKey": null,
-                    "expectedContrastRatio": "4.5:1"
-                  },
-                  "relatedNodes": [
-                    {
-                      "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"card\">",
-                      "target": [
-                        ".card:nth-child(6)"
-                      ]
-                    }
-                  ],
-                  "impact": "serious",
-                  "message": "Element has insufficient color contrast of 3.83 (foreground color: #ff2020, background color: #ffffff, font size: 15.0pt (20px), font weight: normal). Expected contrast ratio of 4.5:1"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "serious",
-              "html": "<h2 _ngcontent-ng-c1983750911=\"\">$21.99</h2>",
-              "target": [
-                ".card:nth-child(6) > .content > .price-rating > h2"
-              ],
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.83 (foreground color: #ff2020, background color: #ffffff, font size: 15.0pt (20px), font weight: normal). Expected contrast ratio of 4.5:1"
-            }
-          ]
-        },
         {
           "id": "image-alt",
           "impact": "critical",
@@ -299,7 +74,7 @@
               "impact": "critical",
               "html": "<img _ngcontent-ng-c40394...=\"\" src=\"data:image/png;base6...\">",
               "target": [
-                "span > img"
+                "img"
               ],
               "failureSummary": "Fix any of the following:\n  Element does not have an alt attribute\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -407,366 +182,9 @@
               "all": [],
               "none": [],
               "impact": "moderate",
-              "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"imgBx\">",
+              "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"flex justify-center items-center\"><span _ngcontent-ng-c1983750911=\"\">No product found!!!</span></div>",
               "target": [
-                ".card:nth-child(1) > .imgBx"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"productName\">Instant Print Camera</div>",
-              "target": [
-                ".card:nth-child(1) > .content > .productName"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<h2 _ngcontent-ng-c1983750911=\"\">$29.99</h2>",
-              "target": [
-                ".card:nth-child(1) > .content > .price-rating > h2"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"imgBx\">",
-              "target": [
-                ".card:nth-child(2) > .imgBx"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"productName\">Prestige Grill Sandwich Toaster</div>",
-              "target": [
-                ".card:nth-child(2) > .content > .productName"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<h2 _ngcontent-ng-c1983750911=\"\">$139.99</h2>",
-              "target": [
-                ".card:nth-child(2) > .content > .price-rating > h2"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"imgBx\">",
-              "target": [
-                ".card:nth-child(3) > .imgBx"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"productName\">Sweets</div>",
-              "target": [
-                ".card:nth-child(3) > .content > .productName"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<h2 _ngcontent-ng-c1983750911=\"\">$99.99</h2>",
-              "target": [
-                ".card:nth-child(3) > .content > .price-rating > h2"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"imgBx\">",
-              "target": [
-                ".card:nth-child(4) > .imgBx"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"productName\">Amazon Fire HD 10 Kids Pro tablet</div>",
-              "target": [
-                ".card:nth-child(4) > .content > .productName"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<h2 _ngcontent-ng-c1983750911=\"\">$219.99</h2>",
-              "target": [
-                ".card:nth-child(4) > .content > .price-rating > h2"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"imgBx\">",
-              "target": [
-                ".card:nth-child(5) > .imgBx"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"productName\">Amazon Echo Dot Kids</div>",
-              "target": [
-                ".card:nth-child(5) > .content > .productName"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<h2 _ngcontent-ng-c1983750911=\"\">$59.99</h2>",
-              "target": [
-                ".card:nth-child(5) > .content > .price-rating > h2"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"imgBx\">",
-              "target": [
-                ".card:nth-child(6) > .imgBx"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<div _ngcontent-ng-c1983750911=\"\" class=\"productName\">Fire TV Stick with Alexa Voice</div>",
-              "target": [
-                ".card:nth-child(6) > .content > .productName"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<h2 _ngcontent-ng-c1983750911=\"\">$21.99</h2>",
-              "target": [
-                ".card:nth-child(6) > .content > .price-rating > h2"
+                ".items-center"
               ],
               "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
             }
@@ -852,205 +270,14 @@
           ]
         }
       ],
-      "passes": 30,
+      "passes": 26,
       "incomplete": 0
     },
     {
       "page": "Product Detail",
       "url": "http://localhost:4200/product/1",
-      "timestamp": "2026-08-11T10:20:51.261Z",
+      "timestamp": "2026-08-12T05:21:40.834Z",
       "violations": [
-        {
-          "id": "color-contrast",
-          "impact": "serious",
-          "tags": [
-            "cat.color",
-            "wcag2aa",
-            "wcag143",
-            "TTv5",
-            "TT13.c",
-            "EN-301-549",
-            "EN-9.1.4.3",
-            "ACT",
-            "RGAAv4",
-            "RGAA-3.2.1"
-          ],
-          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
-          "help": "Elements must meet minimum color contrast ratio thresholds",
-          "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
-          "nodes": [
-            {
-              "any": [
-                {
-                  "id": "color-contrast",
-                  "data": {
-                    "fgColor": "#808080",
-                    "bgColor": "#fbeceb",
-                    "contrastRatio": 3.44,
-                    "fontSize": "9.2pt (12.32px)",
-                    "fontWeight": "normal",
-                    "messageKey": null,
-                    "expectedContrastRatio": "4.5:1"
-                  },
-                  "relatedNodes": [
-                    {
-                      "html": "<section _ngcontent-ng-c157748587=\"\" class=\"box\" style=\"margin-top: 100px;\">",
-                      "target": [
-                        "section"
-                      ]
-                    }
-                  ],
-                  "impact": "serious",
-                  "message": "Element has insufficient color contrast of 3.44 (foreground color: #808080, background color: #fbeceb, font size: 9.2pt (12.32px), font weight: normal). Expected contrast ratio of 4.5:1"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "serious",
-              "html": "<span _ngcontent-ng-c157748587=\"\" class=\"price_original\">$4000</span>",
-              "target": [
-                ".price_original"
-              ],
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.44 (foreground color: #808080, background color: #fbeceb, font size: 9.2pt (12.32px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "any": [
-                {
-                  "id": "color-contrast",
-                  "data": {
-                    "fgColor": "#03ac13",
-                    "bgColor": "#fbeceb",
-                    "contrastRatio": 2.64,
-                    "fontSize": "13.2pt (17.6px)",
-                    "fontWeight": "normal",
-                    "messageKey": null,
-                    "expectedContrastRatio": "4.5:1"
-                  },
-                  "relatedNodes": [
-                    {
-                      "html": "<section _ngcontent-ng-c157748587=\"\" class=\"box\" style=\"margin-top: 100px;\">",
-                      "target": [
-                        "section"
-                      ]
-                    }
-                  ],
-                  "impact": "serious",
-                  "message": "Element has insufficient color contrast of 2.64 (foreground color: #03ac13, background color: #fbeceb, font size: 13.2pt (17.6px), font weight: normal). Expected contrast ratio of 4.5:1"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "serious",
-              "html": "<span _ngcontent-ng-c157748587=\"\" class=\"offer\"> 79% OFF</span>",
-              "target": [
-                ".offer"
-              ],
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.64 (foreground color: #03ac13, background color: #fbeceb, font size: 13.2pt (17.6px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "any": [
-                {
-                  "id": "color-contrast",
-                  "data": {
-                    "fgColor": "#808080",
-                    "bgColor": "#fbeceb",
-                    "contrastRatio": 3.44,
-                    "fontSize": "9.6pt (12.8px)",
-                    "fontWeight": "normal",
-                    "messageKey": null,
-                    "expectedContrastRatio": "4.5:1"
-                  },
-                  "relatedNodes": [
-                    {
-                      "html": "<section _ngcontent-ng-c157748587=\"\" class=\"box\" style=\"margin-top: 100px;\">",
-                      "target": [
-                        "section"
-                      ]
-                    }
-                  ],
-                  "impact": "serious",
-                  "message": "Element has insufficient color contrast of 3.44 (foreground color: #808080, background color: #fbeceb, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "serious",
-              "html": "<p _ngcontent-ng-c157748587=\"\" class=\"other\">inclusive of all taxes</p>",
-              "target": [
-                ".other"
-              ],
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.44 (foreground color: #808080, background color: #fbeceb, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "any": [
-                {
-                  "id": "color-contrast",
-                  "data": {
-                    "fgColor": "#808080",
-                    "bgColor": "#fbeceb",
-                    "contrastRatio": 3.44,
-                    "fontSize": "9.6pt (12.8px)",
-                    "fontWeight": "normal",
-                    "messageKey": null,
-                    "expectedContrastRatio": "4.5:1"
-                  },
-                  "relatedNodes": [
-                    {
-                      "html": "<section _ngcontent-ng-c157748587=\"\" class=\"box\" style=\"margin-top: 100px;\">",
-                      "target": [
-                        "section"
-                      ]
-                    }
-                  ],
-                  "impact": "serious",
-                  "message": "Element has insufficient color contrast of 3.44 (foreground color: #808080, background color: #fbeceb, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "serious",
-              "html": "<p _ngcontent-ng-c157748587=\"\"> Instant Print Camera for Kids, 1080P HD Instant Print Photo, Birthday Gifts for Age 4 5 6 7 8 9 10 Girls Boys, Portable Toy with 1 Roll Photo Paper, HD Digital Video Cameras. High Definition Dual Cameras </p>",
-              "target": [
-                ".product_description > p:nth-child(2)"
-              ],
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.44 (foreground color: #808080, background color: #fbeceb, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1"
-            },
-            {
-              "any": [
-                {
-                  "id": "color-contrast",
-                  "data": {
-                    "fgColor": "#808080",
-                    "bgColor": "#fbeceb",
-                    "contrastRatio": 3.44,
-                    "fontSize": "9.6pt (12.8px)",
-                    "fontWeight": "normal",
-                    "messageKey": null,
-                    "expectedContrastRatio": "4.5:1"
-                  },
-                  "relatedNodes": [
-                    {
-                      "html": "<section _ngcontent-ng-c157748587=\"\" class=\"box\" style=\"margin-top: 100px;\">",
-                      "target": [
-                        "section"
-                      ]
-                    }
-                  ],
-                  "impact": "serious",
-                  "message": "Element has insufficient color contrast of 3.44 (foreground color: #808080, background color: #fbeceb, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "serious",
-              "html": "<p _ngcontent-ng-c157748587=\"\"><span _ngcontent-ng-c157748587=\"\" class=\"highlight\">Country of Origin -</span> India </p>",
-              "target": [
-                ".product_description > p:nth-child(3)"
-              ],
-              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.44 (foreground color: #808080, background color: #fbeceb, font size: 9.6pt (12.8px), font weight: normal). Expected contrast ratio of 4.5:1"
-            }
-          ]
-        },
         {
           "id": "image-alt",
           "impact": "critical",
@@ -1187,114 +414,15 @@
               "failureSummary": "Fix all of the following:\n  Page must have a level-one heading"
             }
           ]
-        },
-        {
-          "id": "region",
-          "impact": "moderate",
-          "tags": [
-            "cat.keyboard",
-            "best-practice",
-            "RGAAv4",
-            "RGAA-9.2.1"
-          ],
-          "description": "Ensure all page content is contained by landmarks",
-          "help": "All page content should be contained by landmarks",
-          "helpUrl": "https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-          "nodes": [
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<div _ngcontent-ng-c157748587=\"\" class=\"left\">",
-              "target": [
-                ".left"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<h4 _ngcontent-ng-c157748587=\"\">PRODUCT DESCRIPTION</h4>",
-              "target": [
-                ".product_description > h4"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<p _ngcontent-ng-c157748587=\"\"> Instant Print Camera for Kids, 1080P HD Instant Print Photo, Birthday Gifts for Age 4 5 6 7 8 9 10 Girls Boys, Portable Toy with 1 Roll Photo Paper, HD Digital Video Cameras. High Definition Dual Cameras </p>",
-              "target": [
-                ".product_description > p:nth-child(2)"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            },
-            {
-              "any": [
-                {
-                  "id": "region",
-                  "data": {
-                    "isIframe": false
-                  },
-                  "relatedNodes": [],
-                  "impact": "moderate",
-                  "message": "Some page content is not contained by landmarks"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "moderate",
-              "html": "<p _ngcontent-ng-c157748587=\"\"><span _ngcontent-ng-c157748587=\"\" class=\"highlight\">Country of Origin -</span> India </p>",
-              "target": [
-                ".product_description > p:nth-child(3)"
-              ],
-              "failureSummary": "Fix any of the following:\n  Some page content is not contained by landmarks"
-            }
-          ]
         }
       ],
-      "passes": 17,
-      "incomplete": 0
+      "passes": 14,
+      "incomplete": 1
     },
     {
       "page": "Cart",
       "url": "http://localhost:4200/cart",
-      "timestamp": "2026-08-11T10:20:53.547Z",
+      "timestamp": "2026-08-12T05:21:43.058Z",
       "violations": [
         {
           "id": "image-alt",
@@ -1470,13 +598,13 @@
           ]
         }
       ],
-      "passes": 22,
+      "passes": 23,
       "incomplete": 0
     },
     {
       "page": "Checkout",
       "url": "http://localhost:4200/checkout",
-      "timestamp": "2026-08-11T10:20:55.748Z",
+      "timestamp": "2026-08-12T05:21:45.425Z",
       "violations": [
         {
           "id": "color-contrast",
@@ -1639,13 +767,13 @@
           ]
         }
       ],
-      "passes": 26,
+      "passes": 27,
       "incomplete": 0
     },
     {
       "page": "Login",
       "url": "http://localhost:4200/login",
-      "timestamp": "2026-08-11T10:20:57.957Z",
+      "timestamp": "2026-08-12T05:21:47.653Z",
       "violations": [
         {
           "id": "image-alt",
@@ -1785,13 +913,13 @@
           ]
         }
       ],
-      "passes": 12,
+      "passes": 13,
       "incomplete": 1
     },
     {
       "page": "About",
       "url": "http://localhost:4200/about",
-      "timestamp": "2026-08-11T10:21:00.208Z",
+      "timestamp": "2026-08-12T05:21:49.909Z",
       "violations": [
         {
           "id": "color-contrast",
@@ -2064,13 +1192,13 @@
           ]
         }
       ],
-      "passes": 21,
+      "passes": 22,
       "incomplete": 1
     },
     {
       "page": "Contact",
       "url": "http://localhost:4200/contact",
-      "timestamp": "2026-08-11T10:21:02.415Z",
+      "timestamp": "2026-08-12T05:21:52.204Z",
       "violations": [
         {
           "id": "color-contrast",
@@ -2666,7 +1794,7 @@
           ]
         }
       ],
-      "passes": 24,
+      "passes": 25,
       "incomplete": 0
     }
   ]

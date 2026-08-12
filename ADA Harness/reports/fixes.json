@@ -1,77 +1,11 @@
 {
-  "generatedAt": "2026-08-12T05:01:35.831Z",
+  "generatedAt": "2026-08-12T05:23:21.978Z",
   "source": "merged-report.json",
   "mode": "report-only",
   "applied": 0,
-  "suggested": 55,
-  "skipped": 18,
+  "suggested": 22,
+  "skipped": 19,
   "results": [
-    {
-      "ruleId": "color-contrast",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"color-contrast\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
-      "priority": "critical",
-      "impact": "serious",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(1) > .content > .price-rating > h2",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "color-contrast",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"color-contrast\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
-      "priority": "critical",
-      "impact": "serious",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(2) > .content > .price-rating > h2",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "color-contrast",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"color-contrast\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
-      "priority": "critical",
-      "impact": "serious",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(3) > .content > .price-rating > h2",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "color-contrast",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"color-contrast\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
-      "priority": "critical",
-      "impact": "serious",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(4) > .content > .price-rating > h2",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "color-contrast",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"color-contrast\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
-      "priority": "critical",
-      "impact": "serious",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(5) > .content > .price-rating > h2",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "color-contrast",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"color-contrast\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
-      "priority": "critical",
-      "impact": "serious",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(6) > .content > .price-rating > h2",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
     {
       "ruleId": "image-alt",
       "page": "Home",
@@ -80,7 +14,7 @@
       "priority": "critical",
       "impact": "critical",
       "url": "http://localhost:4200/",
-      "target": "span > img",
+      "target": "img",
       "correlation": "Confirmed by axe-core, Playwright Accessibility Tree and DOM."
     },
     {
@@ -93,72 +27,6 @@
       "url": "http://localhost:4200/",
       "target": "select",
       "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "color-contrast",
-      "page": "Product Detail",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"color-contrast\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
-      "priority": "critical",
-      "impact": "serious",
-      "url": "http://localhost:4200/product/1",
-      "target": ".price_original",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "color-contrast",
-      "page": "Product Detail",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"color-contrast\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
-      "priority": "critical",
-      "impact": "serious",
-      "url": "http://localhost:4200/product/1",
-      "target": ".offer",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "color-contrast",
-      "page": "Product Detail",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"color-contrast\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
-      "priority": "critical",
-      "impact": "serious",
-      "url": "http://localhost:4200/product/1",
-      "target": ".other",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "color-contrast",
-      "page": "Product Detail",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"color-contrast\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
-      "priority": "critical",
-      "impact": "serious",
-      "url": "http://localhost:4200/product/1",
-      "target": ".product_description > p:nth-child(2)",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "color-contrast",
-      "page": "Product Detail",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"color-contrast\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright",
-      "priority": "critical",
-      "impact": "serious",
-      "url": "http://localhost:4200/product/1",
-      "target": ".product_description > p:nth-child(3)",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "image-alt",
-      "page": "Product Detail",
-      "status": "suggested",
-      "message": "Add a descriptive alt attribute, e.g. alt=\"Png;Base6...\".",
-      "priority": "critical",
-      "impact": "critical",
-      "url": "http://localhost:4200/product/1",
-      "target": "img",
-      "correlation": "Confirmed by axe-core, Playwright Accessibility Tree and DOM."
     },
     {
       "ruleId": "color-contrast",
@@ -247,194 +115,7 @@
       "priority": "high",
       "impact": "moderate",
       "url": "http://localhost:4200/",
-      "target": ".card:nth-child(1) > .imgBx",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(1) > .content > .productName",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(1) > .content > .price-rating > h2",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(2) > .imgBx",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(2) > .content > .productName",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(2) > .content > .price-rating > h2",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(3) > .imgBx",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(3) > .content > .productName",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(3) > .content > .price-rating > h2",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(4) > .imgBx",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(4) > .content > .productName",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(4) > .content > .price-rating > h2",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(5) > .imgBx",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(5) > .content > .productName",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(5) > .content > .price-rating > h2",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(6) > .imgBx",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(6) > .content > .productName",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Home",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/",
-      "target": ".card:nth-child(6) > .content > .price-rating > h2",
+      "target": ".items-center",
       "correlation": "Confirmed by axe-core and DOM."
     },
     {
@@ -446,50 +127,6 @@
       "impact": "moderate",
       "url": "http://localhost:4200/product/1",
       "target": "html",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Product Detail",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/product/1",
-      "target": ".left",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Product Detail",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/product/1",
-      "target": ".product_description > h4",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Product Detail",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/product/1",
-      "target": ".product_description > p:nth-child(2)",
-      "correlation": "Confirmed by axe-core and DOM."
-    },
-    {
-      "ruleId": "region",
-      "page": "Product Detail",
-      "status": "suggested",
-      "message": "Unsafe/complex rule \"region\" — manual review required. See https://dequeuniversity.com/rules/axe/4.12/region?application=playwright",
-      "priority": "high",
-      "impact": "moderate",
-      "url": "http://localhost:4200/product/1",
-      "target": ".product_description > p:nth-child(3)",
       "correlation": "Confirmed by axe-core and DOM."
     },
     {
@@ -612,6 +249,15 @@
       "url": "http://localhost:4200/contact",
       "target": "textarea",
       "correlation": "Confirmed by axe-core and DOM."
+    },
+    {
+      "ruleId": "image-alt",
+      "page": "Product Detail",
+      "url": "http://localhost:4200/product/1",
+      "target": "img",
+      "impact": "critical",
+      "status": "skipped",
+      "message": "Duplicate of an already-processed finding for the same rule and element."
     },
     {
       "ruleId": "landmark-one-main",

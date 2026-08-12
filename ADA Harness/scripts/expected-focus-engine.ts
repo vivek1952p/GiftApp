@@ -9,7 +9,7 @@
  *
  * Three checks:
  *   1. Tab-navigable AX nodes that were never reached by Tab
- *      â†’ only roles that belong in the natural Tab order (button, link,
+ *      → only roles that belong in the natural Tab order (button, link,
  *        checkbox, combobox, textbox, …). Roles that use arrow-key navigation
  *        inside composite widgets (option, menuitem, treeitem, gridcell, tab)
  *        are intentionally excluded — they do NOT belong in the Tab order.
@@ -18,9 +18,9 @@
  *        where only 1 is reachable, a presence-only check would treat all 20
  *        as fine. Counting surfaces the numeric deficit instead.
  *   2. Elements in the Tab order with no accessible name
- *      â†’ screen reader users will hear "button" with no context.
+ *      → screen reader users will hear "button" with no context.
  *   3. Elements using a positive tabindex (disrupts natural order)
- *      â†’ already in keyboard-report; surfaced here with a WCAG fix.
+ *      → already in keyboard-report; surfaced here with a WCAG fix.
  *
  * Cross-page deduplication: if the same role+name gap appears on N pages
  * (shared component), it is reported once with an affected-pages count.

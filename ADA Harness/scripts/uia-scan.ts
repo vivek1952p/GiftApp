@@ -137,7 +137,7 @@ async function main(): Promise<void> {
       headless: false,
       ...(adaConfig.channel ? { channel: adaConfig.channel } : {}),
     });
-    const storageState = fs.existsSync(SESSION_FILE) ? SESSION_FILE : undefined;
+    const storageState = adaConfig.auth.enabled && fs.existsSync(SESSION_FILE) ? SESSION_FILE : undefined;
     if (storageState) log.info('UIA: loading saved auth session from auth/session.json');
     const ctx = await br.newContext({
       viewport: adaConfig.viewport,

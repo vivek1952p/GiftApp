@@ -30,8 +30,7 @@
 import fs from 'fs';
 import path from 'path';
 import { adaConfig } from '../playwright/config';
-import { AccessibilityRuleEngine } from './accessibility-rule-engine/engine';
-import { allRules } from './accessibility-rule-engine/rules/index';
+import { AccessibilityRuleEngine, allRules } from './accessibility-rule-engine';
 import { createLogger } from './logger';
 import type {
     DomSnapshotReport,

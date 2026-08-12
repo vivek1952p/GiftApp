@@ -331,7 +331,7 @@ async function main(): Promise<void> {
     headless: true,
     ...(adaConfig.channel ? { channel: adaConfig.channel } : {}),
   });
-  const storageState = fs.existsSync(SESSION_FILE) ? SESSION_FILE : undefined;
+  const storageState = adaConfig.auth.enabled && fs.existsSync(SESSION_FILE) ? SESSION_FILE : undefined;
   const context = await browser.newContext({
     viewport: adaConfig.viewport,
     ...(storageState ? { storageState } : {}),

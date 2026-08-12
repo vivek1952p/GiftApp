@@ -10,9 +10,10 @@
  *      directory and wires up the reporters/timeouts we need for a11y scans.
  *
  *   2. It exports the *harness configuration* (`adaConfig`) — the list of pages
- *      to scan, the base URL of the target React app, the WCAG rule tags to
- *      evaluate against, and the canonical filesystem paths for every artifact
- *      the harness produces (raw axe report, summary, comparison, dashboard).
+ *      to scan, the base URL of the target application (any framework), the
+ *      WCAG rule tags to evaluate against, and the canonical filesystem paths
+ *      for every artifact the harness produces (raw axe report, summary,
+ *      comparison, dashboard).
  *
  * Keeping both in one file means there is a single source of truth for "what
  * do we scan and where do the results go".
@@ -142,7 +143,13 @@ export interface WidgetsConfig {
  * forms with known selectors.
  */
 export interface AuthConfig {
-  /** When false, `save-auth` still runs but skips the readiness wait. */
+  /**
+   * Gates whether a saved `auth/session.json` is loaded by the main scan, the
+   * UIA scan, and the 4 specialized engines. `save-auth` itself always runs
+   * regardless of this flag (it's how the session file gets created); this
+   * only controls whether an already-saved session is *reused*, so you can
+   * temporarily disable session reuse without deleting the file.
+   */
   enabled: boolean;
   /** Max time to wait for the user to complete login manually. */
   manualLoginTimeoutMs: number;
@@ -303,6 +310,17 @@ const HARNESS_ROOT = path.resolve(__dirname, '..');
 const CONFIG_FILE = path.join(HARNESS_ROOT, 'config.json');
 
 /**
+ * Session file produced by `npm run save-auth`, for apps that need a real
+ * login (SSO/ADFS/OAuth/…) the scripted `login` block can't handle. Loaded
+ * into the main scan's browser context below when present and enabled — the
+ * specialized engines and UIA scan already load it themselves, and without
+ * this the main axe-core scan (the source of the primary summary.json
+ * violation counts) would run unauthenticated while everything else ran
+ * authenticated, producing inconsistent results.
+ */
+const AUTH_SESSION_FILE = path.join(HARNESS_ROOT, 'auth', 'session.json');
+
+/**
  * Load and parse config.json. This is the ONLY place project-specific values
  * enter the harness — nothing below is hardcoded.
  */
@@ -421,6 +439,9 @@ export default defineConfig({
     viewport: adaConfig.viewport,
     navigationTimeout: adaConfig.timeouts.navigationMs,
     trace: 'on-first-retry',
+    ...(adaConfig.auth.enabled && fs.existsSync(AUTH_SESSION_FILE)
+      ? { storageState: AUTH_SESSION_FILE }
+      : {}),
   },
 
   projects: [

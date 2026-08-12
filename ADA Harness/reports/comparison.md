@@ -1,6 +1,6 @@
 # Accessibility Comparison Report
 
-_Generated: 2026-08-11T10:22:20.860Z_
+_Generated: 2026-08-12T05:23:09.732Z_
 
 _Covers all 7 scanners (axe-core + the Accessibility Rule Engine + keyboard + all 4 specialized engines) — the same totals_ `dashboard.md` _shows for the current scan._
 
@@ -8,57 +8,25 @@ _Covers all 7 scanners (axe-core + the Accessibility Rule Engine + keyboard + al
 
 | Scan | Total Findings | Score |
 | --- | --- | --- |
-| Previous | 121 | 0/100 |
-| Current | 121 | 0/100 |
+| Previous | 79 | 0/100 |
+| Current | 79 | 0/100 |
 | **Change** | **0** | **0** |
 
 ## ✅ Resolved Issues (0)
 
 _None._
 
-## ⚠️ Remaining Issues (121)
+## ⚠️ Remaining Issues (79)
 
-- `color-contrast` (serious) on **Home** — .card:nth-child(1) > .content > .price-rating > h2
-- `color-contrast` (serious) on **Home** — .card:nth-child(2) > .content > .price-rating > h2
-- `color-contrast` (serious) on **Home** — .card:nth-child(3) > .content > .price-rating > h2
-- `color-contrast` (serious) on **Home** — .card:nth-child(4) > .content > .price-rating > h2
-- `color-contrast` (serious) on **Home** — .card:nth-child(5) > .content > .price-rating > h2
-- `color-contrast` (serious) on **Home** — .card:nth-child(6) > .content > .price-rating > h2
-- `image-alt` (critical) on **Home** — span > img
+- `image-alt` (critical) on **Home** — img
 - `landmark-one-main` (moderate) on **Home** — html
 - `region` (moderate) on **Home** — h1
 - `region` (moderate) on **Home** — .search-sort-bar
-- `region` (moderate) on **Home** — .card:nth-child(1) > .imgBx
-- `region` (moderate) on **Home** — .card:nth-child(1) > .content > .productName
-- `region` (moderate) on **Home** — .card:nth-child(1) > .content > .price-rating > h2
-- `region` (moderate) on **Home** — .card:nth-child(2) > .imgBx
-- `region` (moderate) on **Home** — .card:nth-child(2) > .content > .productName
-- `region` (moderate) on **Home** — .card:nth-child(2) > .content > .price-rating > h2
-- `region` (moderate) on **Home** — .card:nth-child(3) > .imgBx
-- `region` (moderate) on **Home** — .card:nth-child(3) > .content > .productName
-- `region` (moderate) on **Home** — .card:nth-child(3) > .content > .price-rating > h2
-- `region` (moderate) on **Home** — .card:nth-child(4) > .imgBx
-- `region` (moderate) on **Home** — .card:nth-child(4) > .content > .productName
-- `region` (moderate) on **Home** — .card:nth-child(4) > .content > .price-rating > h2
-- `region` (moderate) on **Home** — .card:nth-child(5) > .imgBx
-- `region` (moderate) on **Home** — .card:nth-child(5) > .content > .productName
-- `region` (moderate) on **Home** — .card:nth-child(5) > .content > .price-rating > h2
-- `region` (moderate) on **Home** — .card:nth-child(6) > .imgBx
-- `region` (moderate) on **Home** — .card:nth-child(6) > .content > .productName
-- `region` (moderate) on **Home** — .card:nth-child(6) > .content > .price-rating > h2
+- `region` (moderate) on **Home** — .items-center
 - `select-name` (critical) on **Home** — select
-- `color-contrast` (serious) on **Product Detail** — .price_original
-- `color-contrast` (serious) on **Product Detail** — .offer
-- `color-contrast` (serious) on **Product Detail** — .other
-- `color-contrast` (serious) on **Product Detail** — .product_description > p:nth-child(2)
-- `color-contrast` (serious) on **Product Detail** — .product_description > p:nth-child(3)
 - `image-alt` (critical) on **Product Detail** — img
 - `landmark-one-main` (moderate) on **Product Detail** — html
 - `page-has-heading-one` (moderate) on **Product Detail** — html
-- `region` (moderate) on **Product Detail** — .left
-- `region` (moderate) on **Product Detail** — .product_description > h4
-- `region` (moderate) on **Product Detail** — .product_description > p:nth-child(2)
-- `region` (moderate) on **Product Detail** — .product_description > p:nth-child(3)
 - `image-alt` (critical) on **Cart** — img
 - `landmark-one-main` (moderate) on **Cart** — html
 - `page-has-heading-one` (moderate) on **Cart** — html
@@ -96,22 +64,12 @@ _None._
 - `uia-input-name` (critical) on **Contact** — EditControl
 - `uia-input-name` (critical) on **Contact** — EditControl
 - `uia-input-name` (critical) on **Contact** — EditControl
-- `dom-color-contrast` (moderate) on **Home** — .card:nth-child(1) > .content > .price-rating > h2
-- `dom-color-contrast` (moderate) on **Home** — .card:nth-child(2) > .content > .price-rating > h2
-- `dom-color-contrast` (moderate) on **Home** — .card:nth-child(3) > .content > .price-rating > h2
-- `dom-color-contrast` (moderate) on **Home** — .card:nth-child(4) > .content > .price-rating > h2
-- `dom-color-contrast` (moderate) on **Home** — .card:nth-child(5) > .content > .price-rating > h2
-- `dom-color-contrast` (moderate) on **Home** — .card:nth-child(6) > .content > .price-rating > h2
-- `dom-color-contrast` (moderate) on **Product Detail** — .price_original
-- `dom-color-contrast` (serious) on **Product Detail** — .offer
-- `dom-color-contrast` (moderate) on **Product Detail** — .other
-- `dom-color-contrast` (moderate) on **Product Detail** — .product_description > p:nth-child(2)
-- `dom-color-contrast` (moderate) on **Product Detail** — .product_description > p:nth-child(3)
 - `dom-color-contrast` (serious) on **Checkout** — button
 - `dom-color-contrast` (moderate) on **About** — button
 - `dom-color-contrast` (moderate) on **Contact** — button
 - `ax-image-alt` (serious) on **Home** — image
 - `ax-interactive-name` (serious) on **Home** — combobox
+- `ax-image-alt` (serious) on **Home** — image
 - `ax-image-alt` (serious) on **Product Detail** — image
 - `ax-image-alt` (serious) on **Cart** — image
 - `ax-image-alt` (serious) on **Cart** — image

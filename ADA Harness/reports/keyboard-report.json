@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-08-11T10:21:02.486Z",
+  "generatedAt": "2026-08-12T05:21:52.284Z",
   "baseUrl": "http://localhost:4200",
   "results": [
     {
       "page": "Home",
       "url": "http://localhost:4200/",
-      "timestamp": "2026-08-11T10:20:48.786Z",
-      "reached": 13,
-      "interactiveTotal": 13,
+      "timestamp": "2026-08-12T05:21:38.469Z",
+      "reached": 7,
+      "interactiveTotal": 7,
       "tabOrder": [
         {
           "order": 1,
@@ -50,42 +50,6 @@
           "tag": "select",
           "name": "Sort by NameSort by Price: Low to HighSort by Price: High to",
           "kb": "6"
-        },
-        {
-          "order": 8,
-          "tag": "a",
-          "name": "View Details",
-          "kb": "7"
-        },
-        {
-          "order": 9,
-          "tag": "a",
-          "name": "View Details",
-          "kb": "8"
-        },
-        {
-          "order": 10,
-          "tag": "a",
-          "name": "View Details",
-          "kb": "9"
-        },
-        {
-          "order": 11,
-          "tag": "a",
-          "name": "View Details",
-          "kb": "10"
-        },
-        {
-          "order": 12,
-          "tag": "a",
-          "name": "View Details",
-          "kb": "11"
-        },
-        {
-          "order": 13,
-          "tag": "a",
-          "name": "View Details",
-          "kb": "12"
         }
       ],
       "unreachable": [],
@@ -94,9 +58,9 @@
     {
       "page": "Product Detail",
       "url": "http://localhost:4200/product/1",
-      "timestamp": "2026-08-11T10:20:51.340Z",
-      "reached": 6,
-      "interactiveTotal": 6,
+      "timestamp": "2026-08-12T05:21:40.900Z",
+      "reached": 5,
+      "interactiveTotal": 5,
       "tabOrder": [
         {
           "order": 1,
@@ -127,12 +91,6 @@
           "tag": "a",
           "name": "0",
           "kb": "4"
-        },
-        {
-          "order": 6,
-          "tag": "button",
-          "name": "Add to Cart",
-          "kb": "5"
         }
       ],
       "unreachable": [],
@@ -141,7 +99,7 @@
     {
       "page": "Cart",
       "url": "http://localhost:4200/cart",
-      "timestamp": "2026-08-11T10:20:53.597Z",
+      "timestamp": "2026-08-12T05:21:43.113Z",
       "reached": 5,
       "interactiveTotal": 5,
       "tabOrder": [
@@ -182,7 +140,7 @@
     {
       "page": "Checkout",
       "url": "http://localhost:4200/checkout",
-      "timestamp": "2026-08-11T10:20:55.831Z",
+      "timestamp": "2026-08-12T05:21:45.519Z",
       "reached": 11,
       "interactiveTotal": 11,
       "tabOrder": [
@@ -259,7 +217,7 @@
     {
       "page": "Login",
       "url": "http://localhost:4200/login",
-      "timestamp": "2026-08-11T10:20:58.018Z",
+      "timestamp": "2026-08-12T05:21:47.701Z",
       "reached": 5,
       "interactiveTotal": 5,
       "tabOrder": [
@@ -300,7 +258,7 @@
     {
       "page": "About",
       "url": "http://localhost:4200/about",
-      "timestamp": "2026-08-11T10:21:00.261Z",
+      "timestamp": "2026-08-12T05:21:49.963Z",
       "reached": 6,
       "interactiveTotal": 6,
       "tabOrder": [
@@ -347,7 +305,7 @@
     {
       "page": "Contact",
       "url": "http://localhost:4200/contact",
-      "timestamp": "2026-08-11T10:21:02.482Z",
+      "timestamp": "2026-08-12T05:21:52.278Z",
       "reached": 9,
       "interactiveTotal": 9,
       "tabOrder": [

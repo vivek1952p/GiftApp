@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-11T10:21:21.994Z",
+  "generatedAt": "2026-08-12T05:22:11.623Z",
   "baseUrl": "http://localhost:4200",
   "platform": "win32",
   "available": true,
@@ -7,7 +7,7 @@
     {
       "page": "Home",
       "url": "http://localhost:4200/",
-      "timestamp": "2026-08-11T10:21:08.164Z",
+      "timestamp": "2026-08-12T05:21:57.618Z",
       "available": true,
       "window": "OnlineGiftStoreGfg - Profile 1 - Microsoft​ Edge",
       "nodeCount": 252,
@@ -4130,10 +4130,10 @@
     {
       "page": "Product Detail",
       "url": "http://localhost:4200/product/1",
-      "timestamp": "2026-08-11T10:21:10.575Z",
+      "timestamp": "2026-08-12T05:22:00.122Z",
       "available": true,
       "window": "OnlineGiftStoreGfg - Profile 1 - Microsoft​ Edge",
-      "nodeCount": 285,
+      "nodeCount": 268,
       "tree": {
         "name": "OnlineGiftStoreGfg - Profile 1 - Microsoft​ Edge",
         "role": "WindowControl",
@@ -6926,7 +6926,7 @@
                                                   {
                                                     "name": "Chrome Legacy Window",
                                                     "role": "PaneControl",
-                                                    "automationId": "992",
+                                                    "automationId": "836",
                                                     "className": "Chrome_RenderWidgetHostHWND",
                                                     "isEnabled": true,
                                                     "isKeyboardFocusable": false,
@@ -6965,7 +6965,7 @@
                                                               "left": 32,
                                                               "top": 135,
                                                               "right": 1952,
-                                                              "bottom": 842
+                                                              "bottom": 735
                                                             },
                                                             "children": [
                                                               {
@@ -7195,7 +7195,7 @@
                                                                   "left": 32,
                                                                   "top": 135,
                                                                   "right": 1952,
-                                                                  "bottom": 842
+                                                                  "bottom": 735
                                                                 },
                                                                 "children": [
                                                                   {
@@ -7207,292 +7207,12 @@
                                                                     "isKeyboardFocusable": false,
                                                                     "isOffscreen": false,
                                                                     "boundingRectangle": {
-                                                                      "left": 467,
-                                                                      "top": 285,
-                                                                      "right": 1517,
-                                                                      "bottom": 842
+                                                                      "left": 0,
+                                                                      "top": 0,
+                                                                      "right": 0,
+                                                                      "bottom": 0
                                                                     },
-                                                                    "children": [
-                                                                      {
-                                                                        "name": "Instant Print Camera",
-                                                                        "role": "TextControl",
-                                                                        "automationId": "",
-                                                                        "className": "title",
-                                                                        "isEnabled": true,
-                                                                        "isKeyboardFocusable": false,
-                                                                        "isOffscreen": false,
-                                                                        "boundingRectangle": {
-                                                                          "left": 489,
-                                                                          "top": 697,
-                                                                          "right": 820,
-                                                                          "bottom": 745
-                                                                        },
-                                                                        "children": [
-                                                                          {
-                                                                            "name": "Instant Print Camera",
-                                                                            "role": "TextControl",
-                                                                            "automationId": "",
-                                                                            "className": "",
-                                                                            "isEnabled": true,
-                                                                            "isKeyboardFocusable": false,
-                                                                            "isOffscreen": false,
-                                                                            "boundingRectangle": {
-                                                                              "left": 489,
-                                                                              "top": 698,
-                                                                              "right": 771,
-                                                                              "bottom": 742
-                                                                            },
-                                                                            "children": []
-                                                                          }
-                                                                        ]
-                                                                      },
-                                                                      {
-                                                                        "name": "",
-                                                                        "role": "GroupControl",
-                                                                        "automationId": "",
-                                                                        "className": "price",
-                                                                        "isEnabled": true,
-                                                                        "isKeyboardFocusable": false,
-                                                                        "isOffscreen": false,
-                                                                        "boundingRectangle": {
-                                                                          "left": 489,
-                                                                          "top": 750,
-                                                                          "right": 820,
-                                                                          "bottom": 790
-                                                                        },
-                                                                        "children": [
-                                                                          {
-                                                                            "name": " $29.99 ",
-                                                                            "role": "TextControl",
-                                                                            "automationId": "",
-                                                                            "className": "",
-                                                                            "isEnabled": true,
-                                                                            "isKeyboardFocusable": false,
-                                                                            "isOffscreen": false,
-                                                                            "boundingRectangle": {
-                                                                              "left": 489,
-                                                                              "top": 751,
-                                                                              "right": 588,
-                                                                              "bottom": 788
-                                                                            },
-                                                                            "children": []
-                                                                          },
-                                                                          {
-                                                                            "name": "$4000",
-                                                                            "role": "TextControl",
-                                                                            "automationId": "",
-                                                                            "className": "",
-                                                                            "isEnabled": true,
-                                                                            "isKeyboardFocusable": false,
-                                                                            "isOffscreen": false,
-                                                                            "boundingRectangle": {
-                                                                              "left": 587,
-                                                                              "top": 759,
-                                                                              "right": 644,
-                                                                              "bottom": 786
-                                                                            },
-                                                                            "children": []
-                                                                          },
-                                                                          {
-                                                                            "name": " 79% OFF",
-                                                                            "role": "TextControl",
-                                                                            "automationId": "",
-                                                                            "className": "",
-                                                                            "isEnabled": true,
-                                                                            "isKeyboardFocusable": false,
-                                                                            "isOffscreen": false,
-                                                                            "boundingRectangle": {
-                                                                              "left": 643,
-                                                                              "top": 751,
-                                                                              "right": 762,
-                                                                              "bottom": 788
-                                                                            },
-                                                                            "children": []
-                                                                          }
-                                                                        ]
-                                                                      },
-                                                                      {
-                                                                        "name": "",
-                                                                        "role": "GroupControl",
-                                                                        "automationId": "",
-                                                                        "className": "other",
-                                                                        "isEnabled": true,
-                                                                        "isKeyboardFocusable": false,
-                                                                        "isOffscreen": false,
-                                                                        "boundingRectangle": {
-                                                                          "left": 489,
-                                                                          "top": 789,
-                                                                          "right": 820,
-                                                                          "bottom": 819
-                                                                        },
-                                                                        "children": [
-                                                                          {
-                                                                            "name": "inclusive of all taxes",
-                                                                            "role": "TextControl",
-                                                                            "automationId": "",
-                                                                            "className": "",
-                                                                            "isEnabled": true,
-                                                                            "isKeyboardFocusable": false,
-                                                                            "isOffscreen": false,
-                                                                            "boundingRectangle": {
-                                                                              "left": 489,
-                                                                              "top": 790,
-                                                                              "right": 661,
-                                                                              "bottom": 817
-                                                                            },
-                                                                            "children": []
-                                                                          }
-                                                                        ]
-                                                                      },
-                                                                      {
-                                                                        "name": "PRODUCT DESCRIPTION",
-                                                                        "role": "TextControl",
-                                                                        "automationId": "",
-                                                                        "className": "",
-                                                                        "isEnabled": true,
-                                                                        "isKeyboardFocusable": false,
-                                                                        "isOffscreen": false,
-                                                                        "boundingRectangle": {
-                                                                          "left": 872,
-                                                                          "top": 330,
-                                                                          "right": 1487,
-                                                                          "bottom": 363
-                                                                        },
-                                                                        "children": [
-                                                                          {
-                                                                            "name": "PRODUCT DESCRIPTION",
-                                                                            "role": "TextControl",
-                                                                            "automationId": "",
-                                                                            "className": "",
-                                                                            "isEnabled": true,
-                                                                            "isKeyboardFocusable": false,
-                                                                            "isOffscreen": false,
-                                                                            "boundingRectangle": {
-                                                                              "left": 872,
-                                                                              "top": 331,
-                                                                              "right": 1119,
-                                                                              "bottom": 361
-                                                                            },
-                                                                            "children": []
-                                                                          }
-                                                                        ]
-                                                                      },
-                                                                      {
-                                                                        "name": "",
-                                                                        "role": "GroupControl",
-                                                                        "automationId": "",
-                                                                        "className": "",
-                                                                        "isEnabled": true,
-                                                                        "isKeyboardFocusable": false,
-                                                                        "isOffscreen": false,
-                                                                        "boundingRectangle": {
-                                                                          "left": 872,
-                                                                          "top": 392,
-                                                                          "right": 1487,
-                                                                          "bottom": 479
-                                                                        },
-                                                                        "children": [
-                                                                          {
-                                                                            "name": "Instant Print Camera for Kids, 1080P HD Instant Print Photo, Birthday Gifts for Age 4 5 6 7 8 9 10 Girls Boys, Portable Toy with 1 Roll Photo Paper, HD Digital Video Cameras. High Definition Dual Cameras",
-                                                                            "role": "TextControl",
-                                                                            "automationId": "",
-                                                                            "className": "",
-                                                                            "isEnabled": true,
-                                                                            "isKeyboardFocusable": false,
-                                                                            "isOffscreen": false,
-                                                                            "boundingRectangle": {
-                                                                              "left": 872,
-                                                                              "top": 393,
-                                                                              "right": 1465,
-                                                                              "bottom": 477
-                                                                            },
-                                                                            "children": []
-                                                                          }
-                                                                        ]
-                                                                      },
-                                                                      {
-                                                                        "name": "",
-                                                                        "role": "GroupControl",
-                                                                        "automationId": "",
-                                                                        "className": "",
-                                                                        "isEnabled": true,
-                                                                        "isKeyboardFocusable": false,
-                                                                        "isOffscreen": false,
-                                                                        "boundingRectangle": {
-                                                                          "left": 872,
-                                                                          "top": 501,
-                                                                          "right": 1487,
-                                                                          "bottom": 531
-                                                                        },
-                                                                        "children": [
-                                                                          {
-                                                                            "name": "Country of Origin -",
-                                                                            "role": "TextControl",
-                                                                            "automationId": "",
-                                                                            "className": "",
-                                                                            "isEnabled": true,
-                                                                            "isKeyboardFocusable": false,
-                                                                            "isOffscreen": false,
-                                                                            "boundingRectangle": {
-                                                                              "left": 872,
-                                                                              "top": 502,
-                                                                              "right": 1031,
-                                                                              "bottom": 529
-                                                                            },
-                                                                            "children": []
-                                                                          },
-                                                                          {
-                                                                            "name": " India",
-                                                                            "role": "TextControl",
-                                                                            "automationId": "",
-                                                                            "className": "",
-                                                                            "isEnabled": true,
-                                                                            "isKeyboardFocusable": false,
-                                                                            "isOffscreen": false,
-                                                                            "boundingRectangle": {
-                                                                              "left": 1030,
-                                                                              "top": 502,
-                                                                              "right": 1076,
-                                                                              "bottom": 529
-                                                                            },
-                                                                            "children": []
-                                                                          }
-                                                                        ]
-                                                                      },
-                                                                      {
-                                                                        "name": "",
-                                                                        "role": "GroupControl",
-                                                                        "automationId": "",
-                                                                        "className": "",
-                                                                        "isEnabled": true,
-                                                                        "isKeyboardFocusable": false,
-                                                                        "isOffscreen": false,
-                                                                        "boundingRectangle": {
-                                                                          "left": 872,
-                                                                          "top": 552,
-                                                                          "right": 1487,
-                                                                          "bottom": 606
-                                                                        },
-                                                                        "children": [
-                                                                          {
-                                                                            "name": "Add to Cart",
-                                                                            "role": "ButtonControl",
-                                                                            "automationId": "",
-                                                                            "className": "bg-red-700 text-white",
-                                                                            "isEnabled": true,
-                                                                            "isKeyboardFocusable": true,
-                                                                            "isOffscreen": false,
-                                                                            "boundingRectangle": {
-                                                                              "left": 872,
-                                                                              "top": 552,
-                                                                              "right": 995,
-                                                                              "bottom": 606
-                                                                            },
-                                                                            "children": []
-                                                                          }
-                                                                        ]
-                                                                      }
-                                                                    ]
+                                                                    "children": []
                                                                   }
                                                                 ]
                                                               }
@@ -8799,7 +8519,7 @@
     {
       "page": "Cart",
       "url": "http://localhost:4200/cart",
-      "timestamp": "2026-08-11T10:21:12.786Z",
+      "timestamp": "2026-08-12T05:22:02.351Z",
       "available": true,
       "window": "OnlineGiftStoreGfg - Profile 1 - Microsoft​ Edge",
       "nodeCount": 271,
@@ -11595,7 +11315,7 @@
                                                   {
                                                     "name": "Chrome Legacy Window",
                                                     "role": "PaneControl",
-                                                    "automationId": "1046",
+                                                    "automationId": "860",
                                                     "className": "Chrome_RenderWidgetHostHWND",
                                                     "isEnabled": true,
                                                     "isKeyboardFocusable": false,
@@ -13237,7 +12957,7 @@
     {
       "page": "Checkout",
       "url": "http://localhost:4200/checkout",
-      "timestamp": "2026-08-11T10:21:15.053Z",
+      "timestamp": "2026-08-12T05:22:04.622Z",
       "available": true,
       "window": "OnlineGiftStoreGfg - Profile 1 - Microsoft​ Edge",
       "nodeCount": 295,
@@ -16033,7 +15753,7 @@
                                                   {
                                                     "name": "Chrome Legacy Window",
                                                     "role": "PaneControl",
-                                                    "automationId": "1078",
+                                                    "automationId": "892",
                                                     "className": "Chrome_RenderWidgetHostHWND",
                                                     "isEnabled": true,
                                                     "isKeyboardFocusable": false,
@@ -18073,7 +17793,7 @@
     {
       "page": "Login",
       "url": "http://localhost:4200/login",
-      "timestamp": "2026-08-11T10:21:17.293Z",
+      "timestamp": "2026-08-12T05:22:06.845Z",
       "available": true,
       "window": "OnlineGiftStoreGfg - Profile 1 - Microsoft​ Edge",
       "nodeCount": 266,
@@ -20869,7 +20589,7 @@
                                                   {
                                                     "name": "Chrome Legacy Window",
                                                     "role": "PaneControl",
-                                                    "automationId": "1136",
+                                                    "automationId": "950",
                                                     "className": "Chrome_RenderWidgetHostHWND",
                                                     "isEnabled": true,
                                                     "isKeyboardFocusable": false,
@@ -22429,7 +22149,7 @@
     {
       "page": "About",
       "url": "http://localhost:4200/about",
-      "timestamp": "2026-08-11T10:21:19.476Z",
+      "timestamp": "2026-08-12T05:22:09.077Z",
       "available": true,
       "window": "OnlineGiftStoreGfg - Profile 1 - Microsoft​ Edge",
       "nodeCount": 287,
@@ -25225,7 +24945,7 @@
                                                   {
                                                     "name": "Chrome Legacy Window",
                                                     "role": "PaneControl",
-                                                    "automationId": "1158",
+                                                    "automationId": "972",
                                                     "className": "Chrome_RenderWidgetHostHWND",
                                                     "isEnabled": true,
                                                     "isKeyboardFocusable": false,
@@ -27133,7 +26853,7 @@
     {
       "page": "Contact",
       "url": "http://localhost:4200/contact",
-      "timestamp": "2026-08-11T10:21:21.660Z",
+      "timestamp": "2026-08-12T05:22:11.305Z",
       "available": true,
       "window": "OnlineGiftStoreGfg - Profile 1 - Microsoft​ Edge",
       "nodeCount": 282,
@@ -29929,7 +29649,7 @@
                                                   {
                                                     "name": "Chrome Legacy Window",
                                                     "role": "PaneControl",
-                                                    "automationId": "1204",
+                                                    "automationId": "1018",
                                                     "className": "Chrome_RenderWidgetHostHWND",
                                                     "isEnabled": true,
                                                     "isKeyboardFocusable": false,

@@ -301,9 +301,11 @@ Open `reports/comparison.md`:
 
 ```markdown
 ## Accessibility Score
-| Scan     | Total Violations | Score  |
-| Previous | 4                | 60/100 |
-| Current  | 0                | 100/100|
+| Scan | Total Findings | Score |
+| --- | --- | --- |
+| Previous | 4 | 60/100 |
+| Current | 0 | 100/100 |
+| **Change** | **-4** | **40** |
 
 ## ✅ Resolved Issues (4)
 ## ⚠️ Remaining Issues (0)

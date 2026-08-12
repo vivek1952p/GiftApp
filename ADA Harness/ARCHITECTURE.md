@@ -394,6 +394,7 @@ flowchart LR
 | --- | --- |
 | `npm run ada` | Full 9-stage scan → `compare` → `dashboard` — the one command that leaves every report fresh |
 | `npm run scan` | The 9-stage scan only (no compare/dashboard regeneration) |
+| `npm run summary` | Rebuild `summary.json` from the existing raw axe report (snapshots the prior one first) |
 | `npm run uia` | Windows UI Automation capture only |
 | `npm run uia:rules` | Rebuild `uia-findings.json` from existing artifacts |
 | `npm run merge` | Rebuild `merged-report.json` |

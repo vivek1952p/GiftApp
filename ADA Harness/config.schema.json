@@ -148,7 +148,10 @@
       "type": "object",
       "description": "Optional interactive session capture (npm run save-auth) for apps needing a real login (SSO/ADFS/OAuth/etc.) before scanning.",
       "properties": {
-        "enabled": { "type": "boolean" },
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether a saved auth/session.json is loaded and reused by the main scan, UIA scan, and specialized engines. save-auth itself always runs regardless — this only gates reuse of an already-saved session."
+        },
         "manualLoginTimeoutMs": { "type": "integer", "minimum": 0 },
         "readySelector": {
           "type": "string",

@@ -1,62 +1,14 @@
 {
-  "generatedAt": "2026-08-11T10:22:20.861Z",
-  "count": 121,
+  "generatedAt": "2026-08-12T05:23:09.733Z",
+  "count": 79,
   "introduced": 0,
   "issues": [
     {
-      "key": "axe::Home::color-contrast::.card:nth-child(1) > .content > .price-rating > h2",
-      "page": "Home",
-      "rule": "color-contrast",
-      "severity": "serious",
-      "detail": ".card:nth-child(1) > .content > .price-rating > h2",
-      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
-    },
-    {
-      "key": "axe::Home::color-contrast::.card:nth-child(2) > .content > .price-rating > h2",
-      "page": "Home",
-      "rule": "color-contrast",
-      "severity": "serious",
-      "detail": ".card:nth-child(2) > .content > .price-rating > h2",
-      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
-    },
-    {
-      "key": "axe::Home::color-contrast::.card:nth-child(3) > .content > .price-rating > h2",
-      "page": "Home",
-      "rule": "color-contrast",
-      "severity": "serious",
-      "detail": ".card:nth-child(3) > .content > .price-rating > h2",
-      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
-    },
-    {
-      "key": "axe::Home::color-contrast::.card:nth-child(4) > .content > .price-rating > h2",
-      "page": "Home",
-      "rule": "color-contrast",
-      "severity": "serious",
-      "detail": ".card:nth-child(4) > .content > .price-rating > h2",
-      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
-    },
-    {
-      "key": "axe::Home::color-contrast::.card:nth-child(5) > .content > .price-rating > h2",
-      "page": "Home",
-      "rule": "color-contrast",
-      "severity": "serious",
-      "detail": ".card:nth-child(5) > .content > .price-rating > h2",
-      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
-    },
-    {
-      "key": "axe::Home::color-contrast::.card:nth-child(6) > .content > .price-rating > h2",
-      "page": "Home",
-      "rule": "color-contrast",
-      "severity": "serious",
-      "detail": ".card:nth-child(6) > .content > .price-rating > h2",
-      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
-    },
-    {
-      "key": "axe::Home::image-alt::span > img",
+      "key": "axe::Home::image-alt::img",
       "page": "Home",
       "rule": "image-alt",
       "severity": "critical",
-      "detail": "span > img",
+      "detail": "img",
       "issue": "Ensure <img> elements have alternative text or a role of none or presentation"
     },
     {
@@ -84,147 +36,11 @@
       "issue": "Ensure all page content is contained by landmarks"
     },
     {
-      "key": "axe::Home::region::.card:nth-child(1) > .imgBx",
+      "key": "axe::Home::region::.items-center",
       "page": "Home",
       "rule": "region",
       "severity": "moderate",
-      "detail": ".card:nth-child(1) > .imgBx",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Home::region::.card:nth-child(1) > .content > .productName",
-      "page": "Home",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".card:nth-child(1) > .content > .productName",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Home::region::.card:nth-child(1) > .content > .price-rating > h2",
-      "page": "Home",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".card:nth-child(1) > .content > .price-rating > h2",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Home::region::.card:nth-child(2) > .imgBx",
-      "page": "Home",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".card:nth-child(2) > .imgBx",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Home::region::.card:nth-child(2) > .content > .productName",
-      "page": "Home",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".card:nth-child(2) > .content > .productName",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Home::region::.card:nth-child(2) > .content > .price-rating > h2",
-      "page": "Home",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".card:nth-child(2) > .content > .price-rating > h2",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Home::region::.card:nth-child(3) > .imgBx",
-      "page": "Home",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".card:nth-child(3) > .imgBx",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Home::region::.card:nth-child(3) > .content > .productName",
-      "page": "Home",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".card:nth-child(3) > .content > .productName",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Home::region::.card:nth-child(3) > .content > .price-rating > h2",
-      "page": "Home",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".card:nth-child(3) > .content > .price-rating > h2",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Home::region::.card:nth-child(4) > .imgBx",
-      "page": "Home",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".card:nth-child(4) > .imgBx",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Home::region::.card:nth-child(4) > .content > .productName",
-      "page": "Home",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".card:nth-child(4) > .content > .productName",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Home::region::.card:nth-child(4) > .content > .price-rating > h2",
-      "page": "Home",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".card:nth-child(4) > .content > .price-rating > h2",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Home::region::.card:nth-child(5) > .imgBx",
-      "page": "Home",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".card:nth-child(5) > .imgBx",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Home::region::.card:nth-child(5) > .content > .productName",
-      "page": "Home",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".card:nth-child(5) > .content > .productName",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Home::region::.card:nth-child(5) > .content > .price-rating > h2",
-      "page": "Home",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".card:nth-child(5) > .content > .price-rating > h2",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Home::region::.card:nth-child(6) > .imgBx",
-      "page": "Home",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".card:nth-child(6) > .imgBx",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Home::region::.card:nth-child(6) > .content > .productName",
-      "page": "Home",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".card:nth-child(6) > .content > .productName",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Home::region::.card:nth-child(6) > .content > .price-rating > h2",
-      "page": "Home",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".card:nth-child(6) > .content > .price-rating > h2",
+      "detail": ".items-center",
       "issue": "Ensure all page content is contained by landmarks"
     },
     {
@@ -234,46 +50,6 @@
       "severity": "critical",
       "detail": "select",
       "issue": "Ensure select element has an accessible name"
-    },
-    {
-      "key": "axe::Product Detail::color-contrast::.price_original",
-      "page": "Product Detail",
-      "rule": "color-contrast",
-      "severity": "serious",
-      "detail": ".price_original",
-      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
-    },
-    {
-      "key": "axe::Product Detail::color-contrast::.offer",
-      "page": "Product Detail",
-      "rule": "color-contrast",
-      "severity": "serious",
-      "detail": ".offer",
-      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
-    },
-    {
-      "key": "axe::Product Detail::color-contrast::.other",
-      "page": "Product Detail",
-      "rule": "color-contrast",
-      "severity": "serious",
-      "detail": ".other",
-      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
-    },
-    {
-      "key": "axe::Product Detail::color-contrast::.product_description > p:nth-child(2)",
-      "page": "Product Detail",
-      "rule": "color-contrast",
-      "severity": "serious",
-      "detail": ".product_description > p:nth-child(2)",
-      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
-    },
-    {
-      "key": "axe::Product Detail::color-contrast::.product_description > p:nth-child(3)",
-      "page": "Product Detail",
-      "rule": "color-contrast",
-      "severity": "serious",
-      "detail": ".product_description > p:nth-child(3)",
-      "issue": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"
     },
     {
       "key": "axe::Product Detail::image-alt::img",
@@ -298,38 +74,6 @@
       "severity": "moderate",
       "detail": "html",
       "issue": "Ensure that the page, or at least one of its frames contains a level-one heading"
-    },
-    {
-      "key": "axe::Product Detail::region::.left",
-      "page": "Product Detail",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".left",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Product Detail::region::.product_description > h4",
-      "page": "Product Detail",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".product_description > h4",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Product Detail::region::.product_description > p:nth-child(2)",
-      "page": "Product Detail",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".product_description > p:nth-child(2)",
-      "issue": "Ensure all page content is contained by landmarks"
-    },
-    {
-      "key": "axe::Product Detail::region::.product_description > p:nth-child(3)",
-      "page": "Product Detail",
-      "rule": "region",
-      "severity": "moderate",
-      "detail": ".product_description > p:nth-child(3)",
-      "issue": "Ensure all page content is contained by landmarks"
     },
     {
       "key": "axe::Cart::image-alt::img",
@@ -628,94 +372,6 @@
       "issue": "Input field has no accessible label"
     },
     {
-      "key": "uia::Home::dom-color-contrast::.card:nth-child(1) > .content > .price-rating > h2",
-      "page": "Home",
-      "rule": "dom-color-contrast",
-      "severity": "moderate",
-      "detail": ".card:nth-child(1) > .content > .price-rating > h2",
-      "issue": "Insufficient colour contrast 3.83:1 on \"$29.99\" (required 4.5:1)"
-    },
-    {
-      "key": "uia::Home::dom-color-contrast::.card:nth-child(2) > .content > .price-rating > h2",
-      "page": "Home",
-      "rule": "dom-color-contrast",
-      "severity": "moderate",
-      "detail": ".card:nth-child(2) > .content > .price-rating > h2",
-      "issue": "Insufficient colour contrast 3.83:1 on \"$139.99\" (required 4.5:1)"
-    },
-    {
-      "key": "uia::Home::dom-color-contrast::.card:nth-child(3) > .content > .price-rating > h2",
-      "page": "Home",
-      "rule": "dom-color-contrast",
-      "severity": "moderate",
-      "detail": ".card:nth-child(3) > .content > .price-rating > h2",
-      "issue": "Insufficient colour contrast 3.83:1 on \"$99.99\" (required 4.5:1)"
-    },
-    {
-      "key": "uia::Home::dom-color-contrast::.card:nth-child(4) > .content > .price-rating > h2",
-      "page": "Home",
-      "rule": "dom-color-contrast",
-      "severity": "moderate",
-      "detail": ".card:nth-child(4) > .content > .price-rating > h2",
-      "issue": "Insufficient colour contrast 3.83:1 on \"$219.99\" (required 4.5:1)"
-    },
-    {
-      "key": "uia::Home::dom-color-contrast::.card:nth-child(5) > .content > .price-rating > h2",
-      "page": "Home",
-      "rule": "dom-color-contrast",
-      "severity": "moderate",
-      "detail": ".card:nth-child(5) > .content > .price-rating > h2",
-      "issue": "Insufficient colour contrast 3.83:1 on \"$59.99\" (required 4.5:1)"
-    },
-    {
-      "key": "uia::Home::dom-color-contrast::.card:nth-child(6) > .content > .price-rating > h2",
-      "page": "Home",
-      "rule": "dom-color-contrast",
-      "severity": "moderate",
-      "detail": ".card:nth-child(6) > .content > .price-rating > h2",
-      "issue": "Insufficient colour contrast 3.83:1 on \"$21.99\" (required 4.5:1)"
-    },
-    {
-      "key": "uia::Product Detail::dom-color-contrast::.price_original",
-      "page": "Product Detail",
-      "rule": "dom-color-contrast",
-      "severity": "moderate",
-      "detail": ".price_original",
-      "issue": "Insufficient colour contrast 3.44:1 on \"$4000\" (required 4.5:1)"
-    },
-    {
-      "key": "uia::Product Detail::dom-color-contrast::.offer",
-      "page": "Product Detail",
-      "rule": "dom-color-contrast",
-      "severity": "serious",
-      "detail": ".offer",
-      "issue": "Insufficient colour contrast 2.65:1 on \"79% OFF\" (required 4.5:1)"
-    },
-    {
-      "key": "uia::Product Detail::dom-color-contrast::.other",
-      "page": "Product Detail",
-      "rule": "dom-color-contrast",
-      "severity": "moderate",
-      "detail": ".other",
-      "issue": "Insufficient colour contrast 3.44:1 on \"inclusive of all taxes\" (required 4.5:1)"
-    },
-    {
-      "key": "uia::Product Detail::dom-color-contrast::.product_description > p:nth-child(2)",
-      "page": "Product Detail",
-      "rule": "dom-color-contrast",
-      "severity": "moderate",
-      "detail": ".product_description > p:nth-child(2)",
-      "issue": "Insufficient colour contrast 3.44:1 on \"Instant Print Camera for Kids, 1080P HD Instant Print Photo,\" (required 4.5:1)"
-    },
-    {
-      "key": "uia::Product Detail::dom-color-contrast::.product_description > p:nth-child(3)",
-      "page": "Product Detail",
-      "rule": "dom-color-contrast",
-      "severity": "moderate",
-      "detail": ".product_description > p:nth-child(3)",
-      "issue": "Insufficient colour contrast 3.44:1 on \"Country of Origin - India\" (required 4.5:1)"
-    },
-    {
       "key": "uia::Checkout::dom-color-contrast::button",
       "page": "Checkout",
       "rule": "dom-color-contrast",
@@ -754,6 +410,14 @@
       "severity": "serious",
       "detail": "combobox",
       "issue": "combobox has no accessible name in the browser AX tree"
+    },
+    {
+      "key": "uia::Home::ax-image-alt::",
+      "page": "Home",
+      "rule": "ax-image-alt",
+      "severity": "serious",
+      "detail": "image",
+      "issue": "Image has no accessible name in the browser AX tree"
     },
     {
       "key": "uia::Product Detail::ax-image-alt::",

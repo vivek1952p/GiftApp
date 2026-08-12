@@ -56,5 +56,3 @@ export function createLogger(scope: string) {
     error: (msg: string, extra?: unknown) => emit('error', scope, msg, extra),
   };
 }
-
-export type Logger = ReturnType<typeof createLogger>;

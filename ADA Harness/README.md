@@ -233,7 +233,7 @@ ADA Harness/
 | `reports/` | Every artifact the harness produces. Safe to delete; regenerated on each run. |
 | `scripts/` | The TypeScript pipeline that orchestrates scanning, UIA capture, rule evaluation, the specialized engines, merging, comparing, and reporting. |
 | `scripts/navigate.ts` | The single, config-driven place that decides how the specialized engines move between pages — full reload (default, works everywhere) or opt-in SPA navigation. |
-| `package.json` | Defines the `ada`, `scan`, `uia`, `uia:rules`, `merge`, `compare`, `dashboard`, `auto-fix`, `auto-fix:apply`, and `save-auth` entry points, plus dev dependencies. |
+| `package.json` | Defines the `ada`, `scan`, `summary`, `uia`, `uia:rules`, `merge`, `compare`, `dashboard`, `auto-fix`, `auto-fix:apply`, and `save-auth` entry points, plus dev dependencies. |
 | `tsconfig.json` | Strict TypeScript configuration for the scripts and spec. |
 
 ---

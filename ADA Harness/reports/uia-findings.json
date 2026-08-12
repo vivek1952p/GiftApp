@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-11T10:21:23.800Z",
+  "generatedAt": "2026-08-12T05:22:13.590Z",
   "baseUrl": "http://localhost:4200",
-  "totalFindings": 31,
+  "totalFindings": 21,
   "severityCounts": {
     "critical": 3,
     "serious": 15,
-    "moderate": 12,
+    "moderate": 2,
     "minor": 1
   },
   "findings": [
@@ -71,138 +71,6 @@
     },
     {
       "ruleId": "dom-color-contrast",
-      "page": "Home",
-      "url": "http://localhost:4200/",
-      "controlType": "",
-      "automationId": "",
-      "name": ".card:nth-child(1) > .content > .price-rating > h2",
-      "issue": "Insufficient colour contrast 3.83:1 on \"$29.99\" (required 4.5:1)",
-      "severity": "moderate",
-      "wcag": "1.4.3",
-      "recommendation": "Darken the foreground (rgb(255, 32, 32)) or lighten the background (rgb(255, 255, 255)) until contrast ≥ 4.5:1."
-    },
-    {
-      "ruleId": "dom-color-contrast",
-      "page": "Home",
-      "url": "http://localhost:4200/",
-      "controlType": "",
-      "automationId": "",
-      "name": ".card:nth-child(2) > .content > .price-rating > h2",
-      "issue": "Insufficient colour contrast 3.83:1 on \"$139.99\" (required 4.5:1)",
-      "severity": "moderate",
-      "wcag": "1.4.3",
-      "recommendation": "Darken the foreground (rgb(255, 32, 32)) or lighten the background (rgb(255, 255, 255)) until contrast ≥ 4.5:1."
-    },
-    {
-      "ruleId": "dom-color-contrast",
-      "page": "Home",
-      "url": "http://localhost:4200/",
-      "controlType": "",
-      "automationId": "",
-      "name": ".card:nth-child(3) > .content > .price-rating > h2",
-      "issue": "Insufficient colour contrast 3.83:1 on \"$99.99\" (required 4.5:1)",
-      "severity": "moderate",
-      "wcag": "1.4.3",
-      "recommendation": "Darken the foreground (rgb(255, 32, 32)) or lighten the background (rgb(255, 255, 255)) until contrast ≥ 4.5:1."
-    },
-    {
-      "ruleId": "dom-color-contrast",
-      "page": "Home",
-      "url": "http://localhost:4200/",
-      "controlType": "",
-      "automationId": "",
-      "name": ".card:nth-child(4) > .content > .price-rating > h2",
-      "issue": "Insufficient colour contrast 3.83:1 on \"$219.99\" (required 4.5:1)",
-      "severity": "moderate",
-      "wcag": "1.4.3",
-      "recommendation": "Darken the foreground (rgb(255, 32, 32)) or lighten the background (rgb(255, 255, 255)) until contrast ≥ 4.5:1."
-    },
-    {
-      "ruleId": "dom-color-contrast",
-      "page": "Home",
-      "url": "http://localhost:4200/",
-      "controlType": "",
-      "automationId": "",
-      "name": ".card:nth-child(5) > .content > .price-rating > h2",
-      "issue": "Insufficient colour contrast 3.83:1 on \"$59.99\" (required 4.5:1)",
-      "severity": "moderate",
-      "wcag": "1.4.3",
-      "recommendation": "Darken the foreground (rgb(255, 32, 32)) or lighten the background (rgb(255, 255, 255)) until contrast ≥ 4.5:1."
-    },
-    {
-      "ruleId": "dom-color-contrast",
-      "page": "Home",
-      "url": "http://localhost:4200/",
-      "controlType": "",
-      "automationId": "",
-      "name": ".card:nth-child(6) > .content > .price-rating > h2",
-      "issue": "Insufficient colour contrast 3.83:1 on \"$21.99\" (required 4.5:1)",
-      "severity": "moderate",
-      "wcag": "1.4.3",
-      "recommendation": "Darken the foreground (rgb(255, 32, 32)) or lighten the background (rgb(255, 255, 255)) until contrast ≥ 4.5:1."
-    },
-    {
-      "ruleId": "dom-color-contrast",
-      "page": "Product Detail",
-      "url": "http://localhost:4200/product/1",
-      "controlType": "",
-      "automationId": "",
-      "name": ".price_original",
-      "issue": "Insufficient colour contrast 3.44:1 on \"$4000\" (required 4.5:1)",
-      "severity": "moderate",
-      "wcag": "1.4.3",
-      "recommendation": "Darken the foreground (rgb(128, 128, 128)) or lighten the background (rgb(251, 236, 235)) until contrast ≥ 4.5:1."
-    },
-    {
-      "ruleId": "dom-color-contrast",
-      "page": "Product Detail",
-      "url": "http://localhost:4200/product/1",
-      "controlType": "",
-      "automationId": "",
-      "name": ".offer",
-      "issue": "Insufficient colour contrast 2.65:1 on \"79% OFF\" (required 4.5:1)",
-      "severity": "serious",
-      "wcag": "1.4.3",
-      "recommendation": "Darken the foreground (rgb(3, 172, 19)) or lighten the background (rgb(251, 236, 235)) until contrast ≥ 4.5:1."
-    },
-    {
-      "ruleId": "dom-color-contrast",
-      "page": "Product Detail",
-      "url": "http://localhost:4200/product/1",
-      "controlType": "",
-      "automationId": "",
-      "name": ".other",
-      "issue": "Insufficient colour contrast 3.44:1 on \"inclusive of all taxes\" (required 4.5:1)",
-      "severity": "moderate",
-      "wcag": "1.4.3",
-      "recommendation": "Darken the foreground (rgb(128, 128, 128)) or lighten the background (rgb(251, 236, 235)) until contrast ≥ 4.5:1."
-    },
-    {
-      "ruleId": "dom-color-contrast",
-      "page": "Product Detail",
-      "url": "http://localhost:4200/product/1",
-      "controlType": "",
-      "automationId": "",
-      "name": ".product_description > p:nth-child(2)",
-      "issue": "Insufficient colour contrast 3.44:1 on \"Instant Print Camera for Kids, 1080P HD Instant Print Photo,\" (required 4.5:1)",
-      "severity": "moderate",
-      "wcag": "1.4.3",
-      "recommendation": "Darken the foreground (rgb(128, 128, 128)) or lighten the background (rgb(251, 236, 235)) until contrast ≥ 4.5:1."
-    },
-    {
-      "ruleId": "dom-color-contrast",
-      "page": "Product Detail",
-      "url": "http://localhost:4200/product/1",
-      "controlType": "",
-      "automationId": "",
-      "name": ".product_description > p:nth-child(3)",
-      "issue": "Insufficient colour contrast 3.44:1 on \"Country of Origin - India\" (required 4.5:1)",
-      "severity": "moderate",
-      "wcag": "1.4.3",
-      "recommendation": "Darken the foreground (rgb(128, 128, 128)) or lighten the background (rgb(251, 236, 235)) until contrast ≥ 4.5:1."
-    },
-    {
-      "ruleId": "dom-color-contrast",
       "page": "Checkout",
       "url": "http://localhost:4200/checkout",
       "controlType": "",
@@ -260,6 +128,18 @@
       "severity": "serious",
       "wcag": "4.1.2",
       "recommendation": "Add aria-label, aria-labelledby, or visible label text to this combobox."
+    },
+    {
+      "ruleId": "ax-image-alt",
+      "page": "Home",
+      "url": "http://localhost:4200/",
+      "controlType": "image",
+      "automationId": "",
+      "name": "",
+      "issue": "Image has no accessible name in the browser AX tree",
+      "severity": "serious",
+      "wcag": "1.1.1",
+      "recommendation": "Add alt text, aria-label, or aria-labelledby to the image."
     },
     {
       "ruleId": "ax-image-alt",
