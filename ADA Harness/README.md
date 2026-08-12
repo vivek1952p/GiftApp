@@ -358,7 +358,8 @@ source. To point the harness at a different application, edit only this file.
 | **Timeouts** | `timeouts` | Navigation + per-test timeouts. |
 
 > **Environment overrides:** `ADA_BASE_URL` and `ADA_SETTLE_MS` let CI point the same
-> harness at staging/preview deployments without editing `config.json`.
+> harness at staging/preview deployments without editing `config.json`. `ADA_UIA_PYTHON`
+> overrides `uia.python` when a machine's interpreter isn't on `PATH` as plain `python`.
 >
 > **Editor validation:** `config.json`'s `$schema` points at the bundled
 > [`config.schema.json`](config.schema.json), so editors with JSON Schema support (VS Code

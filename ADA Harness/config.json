@@ -43,7 +43,7 @@
 
   "uia": {
     "enabled": true,
-    "python": "C:\\Users\\VivekPrasadMAQSoftwa\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "python": "python",
     "maxDepth": 40,
     "windowClass": "Chrome_WidgetWin_1",
     "documentOnly": true

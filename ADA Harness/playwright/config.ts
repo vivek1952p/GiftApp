@@ -79,7 +79,7 @@ export interface LoginConfig {
 export interface UiaConfig {
   /** When false the UIA capture is skipped (produces an unavailable report). */
   enabled: boolean;
-  /** Python executable used to run the UIA capture script. */
+  /** Python executable used to run the UIA capture script. Overridable via the ADA_UIA_PYTHON environment variable. */
   python: string;
   /** Maximum depth to walk the Windows accessibility tree. */
   maxDepth: number;
@@ -364,7 +364,7 @@ export const adaConfig: AdaConfig = {
   ignoredRoutes: raw.ignoredRoutes ?? [],
 
   login: raw.login,
-  uia: raw.uia,
+  uia: { ...raw.uia, python: process.env.ADA_UIA_PYTHON ?? raw.uia.python },
   dom: raw.dom ?? { enabled: true, fullHtml: true },
   keyboard: raw.keyboard ?? { enabled: true, maxTabs: 200 },
   screenshots: raw.screenshots,

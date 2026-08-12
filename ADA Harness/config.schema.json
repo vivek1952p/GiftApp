@@ -101,7 +101,7 @@
       "description": "Windows UI Automation capture settings.",
       "properties": {
         "enabled": { "type": "boolean" },
-        "python": { "type": "string" },
+        "python": { "type": "string", "description": "Python executable/path. Defaults to \"python\" (resolved via PATH). Overridable via the ADA_UIA_PYTHON environment variable." },
         "maxDepth": { "type": "integer", "minimum": 1 },
         "windowClass": { "type": "string" },
         "documentOnly": { "type": "boolean" }
