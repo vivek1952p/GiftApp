@@ -159,7 +159,8 @@ Revert your test edits when done.
 | `npm run merge` | `scripts/merge-report.ts` | Rebuild `merged-report.json` from existing reports |
 | `npm run compare` | `scripts/compare.ts` | Write `comparison.md` (resolved / remaining / new + score) — already included in `npm run ada` |
 | `npm run dashboard` | `scripts/dashboard.ts` | Rebuild `dashboard.md` |
-| `npm run auto-fix` | `scripts/auto-fix.ts` | Apply/suggest safe fixes non-interactively (`fixes.json` / `fixes.md`) |
+| `npm run auto-fix` | `scripts/auto-fix.ts` | Report-only pass over axe findings (`fixes.json` / `fixes.md`) — never edits source |
+| `npm run auto-fix:apply` | `scripts/auto-fix.ts --apply` | Same, but writes the unambiguous safe fixes to source |
 | `npm run save-auth` | `scripts/save-auth.ts` | Capture an interactive login session to `auth/session.json` |
 
 ### Ad-hoc inspection (Node one-liners)

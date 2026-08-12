@@ -235,8 +235,10 @@ reports `available: false` elsewhere so the rest of the pipeline is unaffected.
 ## 4. Fix + Revalidate Workflow (AI agent)
 
 Remediation is driven by the **Accessibility Fix Agent** (GitHub Copilot Agent
-Mode) — there is no deterministic auto-fix command for the full workflow (though
-`npm run auto-fix` exists for a non-interactive safe-fix-only pass). The developer
+Mode) — there is no deterministic auto-fix command for the full workflow. A
+narrower, non-interactive `npm run auto-fix` also exists for the safe-fix subset
+only (see below); it's report-only by default and never touches source unless
+explicitly told to. The developer
 scans, the agent fixes selected gaps in the app source, then the developer re-runs
 `npm run ada`, which scans, compares against the pre-fix snapshot, and rebuilds the
 dashboard in one command.
@@ -274,9 +276,13 @@ flowchart TD
 **Two-tier remediation (the agent's decision boundary)**
 
 `auto-fix.ts`'s `SAFE_RULES` set defines the [AUTO] boundary exactly — everything else
-is [APPROVE]:
+is [APPROVE]. Note this table describes the Accessibility Fix Agent's own judgment
+boundary, not `npm run auto-fix`'s default behavior — that script reports every rule,
+[AUTO] or [APPROVE], as a suggestion unless `autoFix.applyFixes: true` or `--apply` is
+set, and even then only within [AUTO] rules that resolve to exactly one unambiguous
+source element project-wide:
 
-| [AUTO] — applied directly (safe, additive) | [APPROVE] — diff then apply (needs judgment) |
+| [AUTO] — additive, no judgment required | [APPROVE] — diff then apply (needs judgment) |
 | --- | --- |
 | `image-alt`, `input-image-alt` | `color-contrast` |
 | `button-name`, `input-button-name`, `link-name`, `select-name` | `heading-order`, `page-has-heading-one` |
@@ -393,12 +399,14 @@ flowchart LR
 | `npm run merge` | Rebuild `merged-report.json` |
 | `npm run compare` | Write `comparison.md` (resolved / remaining / new + score) — already included in `npm run ada`; run it standalone only to re-diff without a full re-scan |
 | `npm run dashboard` | Rebuild `dashboard.md` |
-| `npm run auto-fix` | Apply/suggest safe fixes non-interactively (`fixes.json` / `fixes.md`) |
+| `npm run auto-fix` | Report-only pass over axe findings (`fixes.json` / `fixes.md`) — never edits source |
+| `npm run auto-fix:apply` | Same, but writes the unambiguous [AUTO] fixes to source (equivalent to `autoFix.applyFixes: true`) |
 | `npm run save-auth` | Capture an interactive login session to `auth/session.json` |
 
 > Full interactive remediation (explain → plan → fix → revalidate) is performed by the
 > **Accessibility Fix Agent** (Copilot Agent Mode) — `npm run auto-fix` only covers the
-> deterministic safe-fix subset.
+> deterministic, axe-only safe-fix subset, and only writes to source when explicitly
+> told to.
 
 > Mermaid diagrams render automatically in VS Code's Markdown preview
 > (`Ctrl+Shift+V`) and on GitHub.

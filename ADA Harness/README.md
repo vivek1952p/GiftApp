@@ -177,7 +177,7 @@ ADA Harness/
 │   ├── merged-report.previous.json        # Snapshot of the prior merged report (all-scanner diffing)
 │   ├── comparison.md                      # Before/after Markdown comparison (all scanners)
 │   ├── dashboard.md                       # Human-readable Markdown dashboard
-│   ├── fixes.json / fixes.md              # Every gap: applied + suggested (all sources)
+│   ├── fixes.json / fixes.md              # axe findings only: applied/suggested/skipped (report-only by default)
 │   ├── resolved-issues.json               # Resolved issues (after re-scan)
 │   ├── remaining-issues.json              # Remaining + newly introduced issues
 │   └── screenshots/                       # Per-page screenshots (optional)
@@ -205,7 +205,7 @@ ADA Harness/
 │   ├── merge-report.ts               # Correlates every scanner/engine → merged-report.json
 │   │                                  #   (also snapshots merged-report.previous.json)
 │   ├── all-findings.ts               # Shared all-7-scanner normalizer (dashboard.ts + compare.ts)
-│   ├── auto-fix.ts                   # Safe fixes + prioritization; writes fixes.json/md
+│   ├── auto-fix.ts                   # Report-only by default; --apply / autoFix.applyFixes writes safe fixes
 │   ├── prioritize.ts                 # Critical/High/Medium/Low prioritization
 │   ├── knowledge-base.ts             # Continuous-learning store
 │   ├── save-auth.ts                  # Interactive login capture → auth/session.json
@@ -233,7 +233,7 @@ ADA Harness/
 | `reports/` | Every artifact the harness produces. Safe to delete; regenerated on each run. |
 | `scripts/` | The TypeScript pipeline that orchestrates scanning, UIA capture, rule evaluation, the specialized engines, merging, comparing, and reporting. |
 | `scripts/navigate.ts` | The single, config-driven place that decides how the specialized engines move between pages — full reload (default, works everywhere) or opt-in SPA navigation. |
-| `package.json` | Defines the `ada`, `scan`, `uia`, `uia:rules`, `merge`, `compare`, `dashboard`, `auto-fix`, and `save-auth` entry points, plus dev dependencies. |
+| `package.json` | Defines the `ada`, `scan`, `uia`, `uia:rules`, `merge`, `compare`, `dashboard`, `auto-fix`, `auto-fix:apply`, and `save-auth` entry points, plus dev dependencies. |
 | `tsconfig.json` | Strict TypeScript configuration for the scripts and spec. |
 
 ---

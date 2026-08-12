@@ -169,6 +169,10 @@
           "type": "array",
           "items": { "type": "string" },
           "description": "Candidate paths (relative to the application root) for the <html lang> fix, tried in order."
+        },
+        "applyFixes": {
+          "type": "boolean",
+          "description": "When false (default), npm run auto-fix never edits source — every fix is reported only, same as unsafe rules. Set true to let it write the small set of unambiguous, additive fixes directly to source. Alternatively, leave this false and run 'npm run auto-fix:apply' (adds --apply) for a one-off apply without editing config.json."
         }
       }
     }

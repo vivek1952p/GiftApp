@@ -12,6 +12,7 @@
     "compare": "npx tsx scripts/compare.ts",
     "dashboard": "npx tsx scripts/dashboard.ts",
     "auto-fix": "npx tsx scripts/auto-fix.ts",
+    "auto-fix:apply": "npx tsx scripts/auto-fix.ts --apply",
     "save-auth": "npx tsx scripts/save-auth.ts",
     "ada": "npm run scan && npm run compare && npm run dashboard"
   },

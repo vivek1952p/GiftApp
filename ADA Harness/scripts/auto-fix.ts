@@ -3,22 +3,39 @@
  * ADA Harness — Auto Fix Engine (Steps 4 & 5)
  * ============================================================================
  *
- * Reads reports/summary.json and, for every violation, attempts to locate the
- * offending element in the application source under `appSrcDir` and fix it.
- * File types eligible for fixing are config-driven (`autoFix.sourceExtensions`
- * in config.json) — not tied to any single framework.
+ * Reads the axe-correlated findings from reports/merged-report.json (falling
+ * back to reports/summary.json if the merged report isn't available yet) and,
+ * for every violation, attempts to locate the offending element in the
+ * application source under `appSrcDir` and fix it. File types eligible for
+ * fixing are config-driven (`autoFix.sourceExtensions` in config.json) — not
+ * tied to any single framework.
+ *
+ * Scope: this engine only handles axe-core rule ids, since those are the only
+ * findings with a known, mechanical, additive fix strategy (add an attribute).
+ * The 4 specialized engines' behavioral findings (focus management, widget
+ * behavior, interaction prediction, expected focus) require human or AI
+ * judgment and are intentionally out of scope here — see them in
+ * dashboard.md/comparison.md, or hand merged-report.json to the Copilot
+ * Accessibility Fix Agent (.github/agents/accessibility-fix.agent.md), which
+ * covers all sources with AI-driven reasoning instead of mechanical rules.
  *
  * Fixes are classified by confidence:
  *
- *   SAFE      -> applied automatically (missing alt, aria-label, label,
- *                accessible button/link name, html lang).
+ *   SAFE      -> applied to source (missing alt, aria-label, label,
+ *                accessible button/link name, html lang) — but ONLY when
+ *                writing is enabled, via `autoFix.applyFixes: true` in
+ *                config.json (persistent) or the one-off `--apply` CLI flag
+ *                (`npm run auto-fix:apply`). Neither enabled is the default,
+ *                in which case SAFE fixes are reported exactly like UNSAFE
+ *                ones: specific, actionable, but never written.
  *   UNSAFE    -> suggestion only, never written (colour contrast, heading
  *                order, landmark structure, duplicate ids, role changes, …).
  *
  * A handler may *downgrade* a nominally safe fix to a suggestion when it cannot
  * confidently identify a single source element — this guarantees we never make
- * a blind, potentially-breaking edit. Every decision is logged and written to
- * reports/fixes.json for auditability.
+ * a blind, potentially-breaking edit. Every decision (applied, suggested, or
+ * skipped as a duplicate) is logged and written to reports/fixes.json for
+ * auditability.
  * ============================================================================
  */
 
@@ -31,6 +48,13 @@ import { KnowledgeStore } from './knowledge-base';
 import type { Summary, SummaryViolation, MergedReport, MergedFinding } from './types';
 
 const log = createLogger('auto-fix');
+
+/**
+ * Whether this run is allowed to write fixes to source: the persistent config
+ * flag OR the one-off `--apply` CLI flag (`npm run auto-fix:apply`). Resolved
+ * once at module load — `process.argv` doesn't change mid-run.
+ */
+const APPLY_FIXES = adaConfig.autoFix.applyFixes || process.argv.includes('--apply');
 
 /** axe rule ids the harness is allowed to fix automatically (safe, additive). */
 const SAFE_RULES = new Set<string>([
@@ -153,6 +177,80 @@ function applyEdit(file: string, oldStr: string, newStr: string): boolean {
   return true;
 }
 
+/**
+ * Render a source file path relative to the application root (parent of
+ * `appSrcDir`), with forward slashes, for portable, machine-independent
+ * reports — an absolute filesystem path in fixes.json would embed local
+ * machine specifics into an artifact meant to be diffed/shared across CI runs
+ * and machines.
+ */
+function toRelative(file: string): string {
+  return path.relative(adaConfig.paths.appSrc, file).split(path.sep).join('/');
+}
+
+/**
+ * Gate for every SAFE-rule handler: an unambiguous single-candidate fix has
+ * been found (`oldStr` -> `newStr` in `file`), described by `appliedMessage`.
+ * When `APPLY_FIXES` is off (the default) this reports the fix as a
+ * suggestion — identical in specificity to an applied one, just not written —
+ * so `npm run auto-fix` never edits source unless explicitly opted in (via
+ * config or `npm run auto-fix:apply`).
+ * Returns null when applying was requested but the edit could not be written
+ * (e.g. `oldStr` no longer unique), letting the caller fall through to the
+ * next candidate file or the generic suggestion.
+ */
+function applyOrSuggest(
+  v: SummaryViolation,
+  file: string,
+  oldStr: string,
+  newStr: string,
+  appliedMessage: string
+): FixResult | null {
+  const relFile = toRelative(file);
+  if (!APPLY_FIXES) {
+    return {
+      ruleId: v.ruleId,
+      page: v.page,
+      file: relFile,
+      status: 'suggested',
+      message: `${appliedMessage} (not applied — auto-fix is in report-only mode; set autoFix.applyFixes: true in config.json, or run "npm run auto-fix:apply", to enable automatic edits)`,
+    };
+  }
+  if (applyEdit(file, oldStr, newStr)) {
+    return { ruleId: v.ruleId, page: v.page, file: relFile, status: 'applied', message: appliedMessage };
+  }
+  return null;
+}
+
+/**
+ * Search EVERY candidate file for elements matching `tagRegex` + `matcher`,
+ * and return the single match only when there is exactly one across the
+ * ENTIRE project — not just the first file examined. Per-file uniqueness
+ * alone is not a safety guarantee: two different files can each have exactly
+ * one bare, unlabeled element of the same kind (e.g. two components each with
+ * one unlabeled `<select>`), and picking whichever file happens to be scanned
+ * first can silently "fix" a different, unrelated element than the one axe
+ * actually flagged — caught in testing: a generic `select` target (axe gave
+ * no id/class to narrow by) matched an unrelated `<select>` in one component
+ * before ever reaching the real one in another.
+ */
+function findUniqueCandidate(
+  files: string[],
+  tagRegex: RegExp,
+  matcher: (tag: string) => boolean,
+  target: string | undefined
+): { file: string; tag: string } | null {
+  const matches: { file: string; tag: string }[] = [];
+  for (const file of files) {
+    const content = fs.readFileSync(file, 'utf-8');
+    const raw = content.match(tagRegex) ?? [];
+    const candidates = narrowByTarget(raw.filter(matcher), target);
+    for (const tag of candidates) matches.push({ file, tag });
+    if (matches.length > 1) return null; // already ambiguous — no need to keep scanning
+  }
+  return matches.length === 1 ? matches[0] : null;
+}
+
 // ---------------------------------------------------------------------------
 // Handlers — each returns a FixResult.
 // ---------------------------------------------------------------------------
@@ -165,28 +263,16 @@ function fixImageAlt(v: SummaryViolation, files: string[]): FixResult {
   const altText = humanize(src ?? 'image');
   const basename = src ? src.split('/').pop()?.split('?')[0] ?? '' : '';
 
-  for (const file of files) {
-    const content = fs.readFileSync(file, 'utf-8');
-    // Find <img ...> tags with no alt attribute.
-    const imgTags = content.match(/<img\b[^>]*?\/?>/gi) ?? [];
-    const candidates = narrowByTarget(
-      imgTags.filter((tag) => !/\balt\s*=/.test(tag) && (!basename || tag.includes(basename))),
-      v.target
-    );
-
-    if (candidates.length === 1) {
-      const tag = candidates[0];
-      const fixed = tag.replace(/\/?>$/, (end) => ` alt="${altText}"${end}`);
-      if (applyEdit(file, tag, fixed)) {
-        return {
-          ruleId: v.ruleId,
-          page: v.page,
-          file,
-          status: 'applied',
-          message: `Added alt="${altText}" to <img>`,
-        };
-      }
-    }
+  const match = findUniqueCandidate(
+    files,
+    /<img\b[^>]*?\/?>/gi,
+    (tag) => !/\balt\s*=/.test(tag) && (!basename || tag.includes(basename)),
+    v.target
+  );
+  if (match) {
+    const fixed = match.tag.replace(/\/?>$/, (end) => ` alt="${altText}"${end}`);
+    const result = applyOrSuggest(v, match.file, match.tag, fixed, `Added alt="${altText}" to <img>`);
+    if (result) return result;
   }
   return suggest(v, `Add a descriptive alt attribute, e.g. alt="${altText}".`);
 }
@@ -197,37 +283,33 @@ function fixImageAlt(v: SummaryViolation, files: string[]): FixResult {
  * can be derived and a single matching source element exists.
  */
 function fixControlName(v: SummaryViolation, files: string[], tagName: string): FixResult {
-  // Derive a candidate accessible name from existing attributes.
+  // Derive a candidate accessible name from existing attributes. Deliberately
+  // NOT from `class`: axe's captured `html` is the live, rendered DOM, whose
+  // class list routinely includes framework-injected state classes (e.g.
+  // Angular's ng-valid/ng-dirty/ng-untouched on any [(ngModel)] control) that
+  // have nothing to do with the element's purpose — humanizing one of those
+  // produces a wrong, misleading name (caught in testing: an Angular <select>
+  // got aria-label="Ng Valid" from its ng-valid class). name/id are the
+  // element's own authored identifiers and don't have this problem.
   const derived =
     attr('title', v.html) ??
-    (attr('class', v.html) ? humanize(attr('class', v.html)!.split(' ').pop()!) : undefined) ??
-    (attr('name', v.html) ? humanize(attr('name', v.html)!) : undefined);
+    (attr('name', v.html) ? humanize(attr('name', v.html)!) : undefined) ??
+    (attr('id', v.html) ? humanize(attr('id', v.html)!) : undefined);
 
   if (!derived) {
     return suggest(v, `Add an accessible name, e.g. aria-label or visible text on the <${tagName}>.`);
   }
 
-  for (const file of files) {
-    const content = fs.readFileSync(file, 'utf-8');
-    const tags = content.match(new RegExp(`<${tagName}\\b[^>]*?>`, 'gi')) ?? [];
-    const candidates = narrowByTarget(
-      tags.filter((t) => !/\baria-label\s*=/.test(t) && !/\baria-labelledby\s*=/.test(t)),
-      v.target
-    );
-
-    if (candidates.length === 1) {
-      const tag = candidates[0];
-      const fixed = tag.replace(/\s*\/?>$/, (end) => ` aria-label="${derived}"${end}`);
-      if (applyEdit(file, tag, fixed)) {
-        return {
-          ruleId: v.ruleId,
-          page: v.page,
-          file,
-          status: 'applied',
-          message: `Added aria-label="${derived}" to <${tagName}>`,
-        };
-      }
-    }
+  const match = findUniqueCandidate(
+    files,
+    new RegExp(`<${tagName}\\b[^>]*?>`, 'gi'),
+    (t) => !/\baria-label\s*=/.test(t) && !/\baria-labelledby\s*=/.test(t),
+    v.target
+  );
+  if (match) {
+    const fixed = match.tag.replace(/\s*\/?>$/, (end) => ` aria-label="${derived}"${end}`);
+    const result = applyOrSuggest(v, match.file, match.tag, fixed, `Added aria-label="${derived}" to <${tagName}>`);
+    if (result) return result;
   }
   return suggest(v, `Add aria-label="${derived}" to the <${tagName}>.`);
 }
@@ -247,32 +329,21 @@ function fixLabel(v: SummaryViolation, files: string[]): FixResult {
   const id = attr('id', v.html);
   const name = attr('name', v.html);
 
-  for (const file of files) {
-    const content = fs.readFileSync(file, 'utf-8');
-    const inputs = content.match(/<input\b[^>]*?\/?>/gi) ?? [];
-    const candidates = narrowByTarget(
-      inputs.filter((t) => {
-        if (/\baria-label\s*=/.test(t)) return false;
-        if (id && t.includes(`id="${id}"`)) return true;
-        if (name && t.includes(`name="${name}"`)) return true;
-        return false;
-      }),
-      v.target
-    );
-
-    if (candidates.length === 1) {
-      const tag = candidates[0];
-      const fixed = tag.replace(/\/?>$/, (end) => ` aria-label="${labelText}"${end}`);
-      if (applyEdit(file, tag, fixed)) {
-        return {
-          ruleId: v.ruleId,
-          page: v.page,
-          file,
-          status: 'applied',
-          message: `Added aria-label="${labelText}" to <input>`,
-        };
-      }
-    }
+  const match = findUniqueCandidate(
+    files,
+    /<input\b[^>]*?\/?>/gi,
+    (t) => {
+      if (/\baria-label\s*=/.test(t)) return false;
+      if (id && t.includes(`id="${id}"`)) return true;
+      if (name && t.includes(`name="${name}"`)) return true;
+      return false;
+    },
+    v.target
+  );
+  if (match) {
+    const fixed = match.tag.replace(/\/?>$/, (end) => ` aria-label="${labelText}"${end}`);
+    const result = applyOrSuggest(v, match.file, match.tag, fixed, `Added aria-label="${labelText}" to <input>`);
+    if (result) return result;
   }
   return suggest(
     v,
@@ -294,12 +365,22 @@ function fixHtmlLang(v: SummaryViolation): FixResult {
     if (!fs.existsSync(indexHtml)) continue;
     const content = fs.readFileSync(indexHtml, 'utf-8');
     if (/<html\b(?![^>]*\blang=)[^>]*>/i.test(content)) {
+      if (!APPLY_FIXES) {
+        return {
+          ruleId: v.ruleId,
+          page: v.page,
+          file: toRelative(indexHtml),
+          status: 'suggested',
+          message:
+            'Add lang="en" to <html> (not applied — auto-fix is in report-only mode; set autoFix.applyFixes: true in config.json, or run "npm run auto-fix:apply", to enable automatic edits)',
+        };
+      }
       const fixed = content.replace(/<html\b/i, '<html lang="en"');
       fs.writeFileSync(indexHtml, fixed, 'utf-8');
       return {
         ruleId: v.ruleId,
         page: v.page,
-        file: indexHtml,
+        file: toRelative(indexHtml),
         status: 'applied',
         message: 'Added lang="en" to <html>',
       };
@@ -322,23 +403,11 @@ function suggest(v: SummaryViolation, message: string): FixResult {
  */
 function fixFrameTitle(v: SummaryViolation, files: string[]): FixResult {
   const title = humanize(attr('src', v.html) ?? attr('name', v.html) ?? 'embedded content');
-  for (const file of files) {
-    const content = fs.readFileSync(file, 'utf-8');
-    const frames = content.match(/<iframe\b[^>]*?>/gi) ?? [];
-    const candidates = narrowByTarget(frames.filter((t) => !/\btitle\s*=/.test(t)), v.target);
-    if (candidates.length === 1) {
-      const tag = candidates[0];
-      const fixed = tag.replace(/\s*\/?>$/, (end) => ` title="${title}"${end}`);
-      if (applyEdit(file, tag, fixed)) {
-        return {
-          ruleId: v.ruleId,
-          page: v.page,
-          file,
-          status: 'applied',
-          message: `Added title="${title}" to <iframe>`,
-        };
-      }
-    }
+  const match = findUniqueCandidate(files, /<iframe\b[^>]*?>/gi, (t) => !/\btitle\s*=/.test(t), v.target);
+  if (match) {
+    const fixed = match.tag.replace(/\s*\/?>$/, (end) => ` title="${title}"${end}`);
+    const result = applyOrSuggest(v, match.file, match.tag, fixed, `Added title="${title}" to <iframe>`);
+    if (result) return result;
   }
   return suggest(v, `Add title="${title}" to the <iframe>.`);
 }
@@ -348,26 +417,16 @@ function fixFrameTitle(v: SummaryViolation, files: string[]): FixResult {
  */
 function fixInputImageAlt(v: SummaryViolation, files: string[]): FixResult {
   const altText = humanize(attr('src', v.html) ?? attr('name', v.html) ?? 'submit');
-  for (const file of files) {
-    const content = fs.readFileSync(file, 'utf-8');
-    const inputs = content.match(/<input\b[^>]*?\/?>/gi) ?? [];
-    const candidates = narrowByTarget(
-      inputs.filter((t) => /type=["']image["']/i.test(t) && !/\balt\s*=/.test(t)),
-      v.target
-    );
-    if (candidates.length === 1) {
-      const tag = candidates[0];
-      const fixed = tag.replace(/\/?>$/, (end) => ` alt="${altText}"${end}`);
-      if (applyEdit(file, tag, fixed)) {
-        return {
-          ruleId: v.ruleId,
-          page: v.page,
-          file,
-          status: 'applied',
-          message: `Added alt="${altText}" to <input type="image">`,
-        };
-      }
-    }
+  const match = findUniqueCandidate(
+    files,
+    /<input\b[^>]*?\/?>/gi,
+    (t) => /type=["']image["']/i.test(t) && !/\balt\s*=/.test(t),
+    v.target
+  );
+  if (match) {
+    const fixed = match.tag.replace(/\/?>$/, (end) => ` alt="${altText}"${end}`);
+    const result = applyOrSuggest(v, match.file, match.tag, fixed, `Added alt="${altText}" to <input type="image">`);
+    if (result) return result;
   }
   return suggest(v, `Add alt="${altText}" to the <input type="image">.`);
 }
@@ -462,6 +521,7 @@ function strategyFor(ruleId: string): string {
 function writeFixesMarkdown(results: FixResult[], source: string): void {
   const applied = results.filter((r) => r.status === 'applied');
   const suggested = results.filter((r) => r.status === 'suggested');
+  const skipped = results.filter((r) => r.status === 'skipped');
   const order: Priority[] = ['critical', 'high', 'medium', 'low'];
 
   const lines: string[] = [
@@ -469,6 +529,7 @@ function writeFixesMarkdown(results: FixResult[], source: string): void {
     '',
     `_Generated: ${new Date().toISOString()}_`,
     `_Source: ${source}_`,
+    `_Mode: ${APPLY_FIXES ? 'auto-apply safe fixes' : 'report-only (no source files were modified)'}_`,
     '',
     '## Summary',
     '',
@@ -476,6 +537,7 @@ function writeFixesMarkdown(results: FixResult[], source: string): void {
     '| --- | --- |',
     `| Applied (safe) | ${applied.length} |`,
     `| Suggested (needs review) | ${suggested.length} |`,
+    `| Skipped (duplicate of another finding) | ${skipped.length} |`,
     '',
     '## Applied Fixes (by priority)',
     '',
@@ -483,7 +545,7 @@ function writeFixesMarkdown(results: FixResult[], source: string): void {
 
   const row = (r: FixResult) =>
     `- **[${(r.priority ?? 'low').toUpperCase()}]** \`${r.ruleId}\` on **${r.page}** ` +
-    `\`${r.target ?? ''}\` — ${r.message}${r.file ? ` (\`${path.relative(adaConfig.paths.appSrc, r.file)}\`)` : ''}`;
+    `\`${r.target ?? ''}\` — ${r.message}${r.file ? ` (\`${r.file}\`)` : ''}`;
 
   for (const p of order) {
     const group = applied.filter((r) => (r.priority ?? 'low') === p);
@@ -528,7 +590,21 @@ function main(): void {
 
     for (const v of violations) {
       const key = `${v.ruleId}::${v.target}`;
-      if (seen.has(key)) continue;
+      if (seen.has(key)) {
+        // Same rule + element already processed (reported redundantly by
+        // multiple correlated sources) — recorded, not silently dropped, so
+        // every input violation is accounted for in fixes.json.
+        results.push({
+          ruleId: v.ruleId,
+          page: v.page,
+          url: v.url,
+          target: v.target,
+          impact: v.impact,
+          status: 'skipped',
+          message: 'Duplicate of an already-processed finding for the same rule and element.',
+        });
+        continue;
+      }
       seen.add(key);
 
       // Phase 2: compute remediation priority (impact + reach + confirmations).
@@ -573,16 +649,29 @@ function main(): void {
 
     const applied = results.filter((r) => r.status === 'applied').length;
     const suggested = results.filter((r) => r.status === 'suggested').length;
+    const skipped = results.filter((r) => r.status === 'skipped').length;
 
     fs.writeFileSync(
       adaConfig.paths.fixes,
-      JSON.stringify({ generatedAt: new Date().toISOString(), source, applied, suggested, results }, null, 2),
+      JSON.stringify(
+        {
+          generatedAt: new Date().toISOString(),
+          source,
+          mode: APPLY_FIXES ? 'apply' : 'report-only',
+          applied,
+          suggested,
+          skipped,
+          results,
+        },
+        null,
+        2
+      ),
       'utf-8'
     );
     writeFixesMarkdown(results, source);
     kb.save();
 
-    log.info(`Auto-fix complete: ${applied} applied, ${suggested} suggested.`);
+    log.info(`Auto-fix complete (${APPLY_FIXES ? 'apply' : 'report-only'}): ${applied} applied, ${suggested} suggested, ${skipped} skipped (duplicate).`);
     log.info(`Fix log -> ${path.relative(process.cwd(), adaConfig.paths.fixes)}`);
   } catch (err) {
     log.error('Auto-fix failed', (err as Error).message);

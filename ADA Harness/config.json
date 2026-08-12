@@ -16,7 +16,7 @@
 
   "screenshots": { "enabled": true, "dir": "reports/screenshots" },
 
-  "wcagTags": ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "best-practice"],
+  "wcagTags": ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22a", "wcag22aa", "best-practice"],
   "ignoredRules": [],
 
   "routes": [
@@ -77,7 +77,9 @@
   },
 
   "autoFix": {
+    "//": "applyFixes: false (default) means npm run auto-fix never edits source — every fix, safe or unsafe, is reported only. Set true to make npm run auto-fix always write the small set of unambiguous, additive fixes (missing alt/aria-label/label/lang) directly to source, or leave false and use 'npm run auto-fix:apply' for a one-off apply run without changing this file.",
     "sourceExtensions": [".tsx", ".ts", ".jsx", ".js", ".vue", ".html"],
-    "htmlEntryPoints": ["public/index.html", "src/index.html", "index.html"]
+    "htmlEntryPoints": ["public/index.html", "src/index.html", "index.html"],
+    "applyFixes": false
   }
 }

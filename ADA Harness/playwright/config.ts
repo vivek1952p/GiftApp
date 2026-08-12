@@ -156,6 +156,14 @@ export interface AutoFixConfig {
   sourceExtensions: string[];
   /** Candidate paths (relative to the application root, i.e. the parent of `appSrcDir`) for the `<html lang>` fix, tried in order. */
   htmlEntryPoints: string[];
+  /**
+   * When false (the default), the auto-fix engine never edits source files —
+   * every SAFE-rule fix it would otherwise apply is instead reported as a
+   * suggestion (same as UNSAFE rules), so `npm run auto-fix` is a pure report.
+   * Set true to let it write the small set of unambiguous, additive fixes
+   * (missing alt/aria-label/label/lang) directly to source.
+   */
+  applyFixes: boolean;
 }
 
 /**
@@ -350,6 +358,7 @@ export const adaConfig: AdaConfig = {
   autoFix: raw.autoFix ?? {
     sourceExtensions: ['.tsx', '.ts', '.jsx', '.js', '.vue', '.html'],
     htmlEntryPoints: ['public/index.html', 'src/index.html', 'index.html'],
+    applyFixes: false,
   },
 
   paths: {
