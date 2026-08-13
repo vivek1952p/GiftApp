@@ -45,14 +45,45 @@ it so the user chooses what to fix before any source modifications occur.
 
 1. Parse `merged-report.json` completely.
 2. Read every accessibility finding from:
-   - `findings`
-   - `keyboardFindings`
-   - `uiaFindings`
-   - `expectedFocusGaps`
-   - `widgetFindings`
-   - `focusManagementFindings`
-   - `interactionFindings`
-3. Group findings by:
+   - `findings` (axe-core + DOM, id prefix `AXE-`)
+   - `keyboardFindings` (id prefix `KB-`)
+   - `uiaFindings` (Windows UI Automation + AX-tree rule engine, id prefix `UIA-`)
+   - `expectedFocusGaps` (Expected Focus engine, id prefix `EFG-`)
+   - `widgetFindings` (Widget Behavior engine, id prefix `WB-`)
+   - `focusManagementFindings` (id prefix `FM-`)
+   - `interactionFindings` (Interaction Prediction engine, id prefix `INT-`)
+3. **Assign a stable finding ID to every entry**: `<prefix>-<1-based index in its array>`
+   (e.g. `AXE-1`, `AXE-2`, `UIA-7`, `EFG-3`, `FM-2`). `merged-report.json` does not
+   carry IDs, so this ID is what every later phase, prompt, and report must use to
+   reference a finding — never re-derive or renumber it mid-run.
+4. **Derive a Category for every finding** (none of the arrays carry a `category`
+   field directly — infer it):
+
+   | Source | Signal | Category |
+   | --- | --- | --- |
+   | `findings` (axe) | `ruleId: color-contrast` | Color Contrast |
+   | `findings` (axe) | `ruleId: image-alt` | Images |
+   | `findings` (axe) | `ruleId: landmark-one-main`, `region` | Landmarks |
+   | `findings` (axe) | `ruleId: page-has-heading-one` | Headings |
+   | `findings` (axe) | `ruleId: label`, `select-name` | Forms |
+   | `uiaFindings` | `ruleId: uia-image-name`, `ax-image-alt` | Images |
+   | `uiaFindings` | `ruleId: uia-input-name`, `ax-interactive-name` | Accessible Names |
+   | `uiaFindings` | `ruleId: dom-color-contrast` | Color Contrast |
+   | `uiaFindings` | `ruleId: uia-disabled-interactive` | Widget Behaviour |
+   | `expectedFocusGaps` | issue text contains "never reached during Tab traversal" | Expected Focus |
+   | `expectedFocusGaps` | issue text contains "no accessible name" | Accessible Names |
+   | `focusManagementFindings` | `scenario: route-navigation` | Focus Management |
+   | `focusManagementFindings` | `scenario: focus-visible` | Focus Visibility |
+   | `widgetFindings` | any | Widget Behaviour |
+   | `interactionFindings` | any | Interaction Prediction |
+   | `keyboardFindings` | any | Keyboard Accessibility |
+
+   For a `ruleId`, `issue`, or `scenario` not covered above (this table reflects
+   what a given scan run produced, not every rule the harness can emit), fall
+   back to matching against the full "Categories supported" list below by
+   keyword (e.g. an unseen `ruleId` containing `table-*` → Tables, `dialog` →
+   Dialogs). Never invent a category outside that list.
+5. Group the ID-tagged, category-tagged findings by:
    - Category
    - Accessibility Engine
    - Severity
@@ -61,8 +92,10 @@ it so the user chooses what to fix before any source modifications occur.
    - Page
    - File
    - Issue Type
-4. Merge duplicate findings affecting the same source/component.
-5. Build an accessibility remediation inventory.
+6. Merge duplicate findings affecting the same source/component, but keep every
+   merged ID listed (e.g. `AXE-1, AXE-2, AXE-3 → same fix`) so nothing is lost
+   from the selectable inventory in Phase 2.
+7. Build an accessibility remediation inventory keyed by finding ID.
 
 > Do NOT modify any files during this phase.
 
@@ -85,10 +118,11 @@ By Category
 Keyboard Accessibility : XX
 Focus Management : XX
 Focus Visibility : XX
-ARIA Issues : XX
+Expected Focus : XX
+ARIA Roles/States/Properties : XX
 Accessible Names : XX
 Widget Behaviour : XX
-Interaction Issues : XX
+Interaction Prediction : XX
 Forms : XX
 Images : XX
 Navigation : XX
@@ -96,56 +130,85 @@ Headings : XX
 Landmarks : XX
 Tables : XX
 Color Contrast : XX
+(... any other category from "Categories supported" that has findings)
 
 By Engine
 --------------
-Expected Focus Engine
-Focus Management Engine
-Interaction Prediction Engine
-Widget Behavior Engine
-Accessibility Rule Engine
-  - DOM Rules
-  - AX Tree Rules
-  - ARIA Pattern Rules
-  - UIA Rules
+Expected Focus Engine : XX          (expectedFocusGaps)
+Focus Management Engine : XX        (focusManagementFindings)
+Interaction Prediction Engine : XX  (interactionFindings)
+Widget Behavior Engine : XX         (widgetFindings)
+Keyboard Engine : XX                (keyboardFindings)
+Accessibility Rule Engine : XX      (findings + uiaFindings)
+  - DOM Rules : XX
+  - AX Tree Rules : XX
+  - UIA Rules : XX
 --------------------------------------------------
 
 ### Phase 2 — Ask the user what they want to fix
 
-Present remediation modes and let the user choose:
+This is a two-step decision. Never skip straight to fixing — always stop and
+wait for the user's answer at each step.
 
-1. Fix Everything
-2. Fix by Category
-3. Fix by Accessibility Engine
-4. Fix by Severity
-5. Fix by WCAG
-6. Fix by Component
-7. Fix by Page
-8. Fix by Issue Type
-9. Fix Individual Findings
+#### Step 2a — Scope: everything, or by category?
 
-Provide example values for each mode and allow the user to select one or
-multiple filters.
+Ask exactly this, filled in with the real numbers from the Phase 1 summary:
 
-Examples:
-- Keyboard Accessibility
-- Focus Management
-- Expected Focus Engine
-- UI Automation Rules
-- Critical
-- 2.1.1
-- Button Component
-- Home
-- Missing aria-label
-- Finding #12
+--------------------------------------------------
+How would you like to proceed?
 
-If the user chooses individual findings, only those IDs should be remediated.
+1. Fix All Issues — remediate all XX findings across every category
+2. Fix by Category — pick one or more categories to work through
+   (Keyboard Accessibility: XX, Focus Management: XX, Color Contrast: XX, ...)
+3. Advanced filter — by Accessibility Engine, Severity, WCAG criterion,
+   Component, Page, or a specific finding ID (for power users)
+--------------------------------------------------
+
+- **If (1) Fix All Issues:** the full inventory from Phase 1 is the selection.
+  Skip Step 2b and go directly to Phase 3 with every finding ID in scope.
+- **If (2) Fix by Category:** list every category present in the report with
+  its finding count (only categories that actually have findings — never list
+  a category with 0). Let the user pick one or more (e.g. "Color Contrast,
+  Images"). Then continue to Step 2b **for each category picked**.
+- **If (3) Advanced filter:** ask which dimension (Engine / Severity / WCAG /
+  Component / Page / Finding ID), show the available values with counts, take
+  the selection, and skip Step 2b — the selected findings go straight to
+  Phase 3.
+
+#### Step 2b — Depth: all of this category, or just some?
+
+For each category selected in Step 2a, ask:
+
+--------------------------------------------------
+Category: <Category Name> (XX findings)
+
+1. Fix all XX findings in this category
+2. Choose specific findings from this category
+--------------------------------------------------
+
+- **If (1):** every finding ID in that category is added to the selection.
+- **If (2):** list the findings in that category, one line each, with its ID,
+  page/component, and a short description, e.g.:
+  ```
+  AXE-1  Home       color-contrast on ".card:nth-child(1) ... h2" ($29.99, 40% confidence)
+  EFG-3  Checkout   textbox "E-mail" is Tab-navigable but never reached during Tab traversal
+  ```
+  Let the user pick one, several (comma-separated IDs), or a range. Only the
+  chosen IDs are added to the selection.
+
+If multiple categories were picked in Step 2a, repeat Step 2b for each one in
+turn, then combine all resulting IDs into a single selection before moving to
+Phase 3.
+
+Regardless of path, end Step 2 with an explicit, de-duplicated list of finding
+IDs that is the sole input to Phase 3 — do not silently add or drop findings
+afterward.
 
 ### Phase 3 — Generate a remediation plan
 
 After selection, create a plan that includes:
 
-- Total Findings Selected
+- Finding IDs Selected
 - Components Affected
 - Pages Affected
 - Files Expected To Change
@@ -159,11 +222,7 @@ Remediation Plan
 
 Scope
 
-Keyboard Accessibility
-
-Total Findings
-
-18
+Keyboard Accessibility (18 findings: KB-1..KB-9, EFG-2, EFG-5..EFG-10, FM-3)
 
 Components
 
@@ -191,9 +250,37 @@ Estimated Changes
 
 Ask for explicit confirmation before modifying code.
 
+#### Classify every selected finding: AUTO or APPROVE
+
+Before touching any file, tag each finding ID in the confirmed selection:
+
+- **[AUTO]** — a single, unambiguous, purely additive fix with no visual or
+  behavioural side effect: missing `alt`, missing accessible name
+  (`aria-label`/`aria-labelledby`), missing form `label` association, missing
+  `<html lang>`. This mirrors the harness's own `SAFE_RULES` in
+  [`ADA Harness/scripts/auto-fix.ts`](../../ADA%20Harness/scripts/auto-fix.ts) —
+  if that script would apply a finding's `ruleId` automatically, classify it
+  `[AUTO]` here too. If the target element can't be uniquely matched (the same
+  ambiguity gate `auto-fix.ts` uses), downgrade it to `[APPROVE]` instead.
+- **[APPROVE]** — anything with a visual, structural, or behavioural
+  consequence: colour/contrast changes, heading or landmark restructuring,
+  focus order or focus-visible styling, widget/ARIA state or keyboard
+  behaviour, table or dialog markup changes. Default to `[APPROVE]` whenever
+  unsure — never guess a finding into `[AUTO]`.
+
+List the classification per finding ID as part of the plan output, e.g.
+`AXE-4 [AUTO] add alt text`, `FM-1 [APPROVE] focus management on route change`.
+
 ### Phase 4 — Intelligent code remediation
 
 Only remediate the findings selected by the user.
+
+- **[AUTO]** findings are written directly — no per-item pause — but every
+  edit still appears in the Phase 4/7 diff review and the Phase 9 report.
+- **[APPROVE]** findings are never written silently: show the exact before/after
+  diff for that finding ID and wait for an explicit yes before applying it.
+  A "no" or no response leaves it `SUGGESTED` (documented, not applied) and it
+  is reported that way in Phase 9 — do not re-ask later in the same run.
 
 While fixing issues:
 - Preserve existing business logic.
@@ -259,11 +346,11 @@ After remediation and revalidation, generate a report containing:
 --------------------------------------------------
 Accessibility Fix Summary
 
-Total Findings Selected
+Total Findings Selected (IDs)
 
-Total Fixed
+Total Fixed (IDs)
 
-Total Skipped
+Total Skipped (IDs)
 
 Files Modified
 
@@ -271,11 +358,11 @@ Components Modified
 
 WCAG Criteria Covered
 
-Remaining Findings
+Remaining Findings (IDs, from comparison.md)
 
-Skipped Findings
+Skipped Findings (IDs)
 
-Reason For Skipping
+Reason For Skipping (per ID)
 
 Validation Status
 
@@ -346,7 +433,9 @@ Unless the user specifies otherwise, always fix in the following order:
    - Suggested fix snippets
 2. A remediation plan with scope, affected components, pages, files, and WCAG coverage.
 3. A clear confirmation prompt before making any source edits.
-4. A list of `APPLIED` vs `SUGGESTED` fixes with file paths, rule ids, and priority.
+4. A list of every finding ID tagged `[AUTO]`/`[APPROVE]` and its outcome —
+   `APPLIED` or `SUGGESTED` (documented but not written, with the reason) —
+   alongside file paths, rule ids, and priority.
 5. A short summary of `comparison.md`: how many fixed / remaining / new, and the score delta.
 6. A final accessibility fix report with totals, modified files, components changed, WCAG rules covered, and validation status.
 
@@ -382,10 +471,13 @@ and static HTML.
 
 ## Definition of done
 
-- Selected findings are the only ones remediated.
-- Every **[AUTO]** issue is fixed in source.
-- Every **[APPROVE]** issue is either fixed (with an approved diff) or, if the
-  user declines, documented with a concrete recommendation.
+- Selected findings are the only ones remediated (see Phase 2 for how the
+  selection is built, and "Classify every selected finding" in Phase 3 for how
+  each one is tagged `[AUTO]`/`[APPROVE]`).
+- Every **[AUTO]** finding is fixed in source and reported `APPLIED`.
+- Every **[APPROVE]** finding is either `APPLIED` (with a diff the user
+  explicitly approved) or `SUGGESTED` (documented with a concrete
+  recommendation, not written) if the user declines or doesn't respond.
 - A re-scan shows the selected issues under **Resolved** in `comparison.md`
   with **no new** issues, and the accessibility score improved.
 

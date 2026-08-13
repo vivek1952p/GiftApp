@@ -21,6 +21,7 @@
 import fs from 'fs';
 import path from 'path';
 import { adaConfig } from '../playwright/config';
+import { collectAllFindings, severityCountsOf } from './all-findings';
 import { createLogger } from './logger';
 import type {
   A11yPageTree,
@@ -284,6 +285,19 @@ function main(): void {
     const uiaNodeCount = (uia?.results ?? []).reduce((s, r) => s + r.nodeCount, 0);
     const domElementsCaptured = (dom?.results ?? []).reduce((s, r) => s + r.elements.length, 0);
 
+    // totalFindings/severityCounts must span all 7 scanners, not just axe-core,
+    // otherwise this "single source of truth" field silently disagrees with
+    // dashboard.md's total (which already aggregates via collectAllFindings).
+    const allFindings = collectAllFindings(summary, {
+      uiaFindings,
+      keyboardFindings,
+      expectedFocusGaps,
+      widgetFindings,
+      focusManagementFindings,
+      interactionFindings,
+    } as MergedReport);
+    const allSeverityCounts = severityCountsOf(allFindings);
+
     const merged: MergedReport = {
       generatedAt: new Date().toISOString(),
       baseUrl: summary.baseUrl,
@@ -299,8 +313,8 @@ function main(): void {
         focusManagement: Boolean(focusMgmtReport),
         interactionPrediction: Boolean(interactionReport),
       },
-      totalFindings: findings.length,
-      severityCounts: summary.severityCounts,
+      totalFindings: allFindings.length,
+      severityCounts: allSeverityCounts,
       findings,
       uiaFindings,
       keyboardFindings,

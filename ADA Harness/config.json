@@ -2,7 +2,7 @@
   "$schema": "./config.schema.json",
   "//": "Single source of PROJECT-SPECIFIC configuration. Point the harness at a new application by editing ONLY this file. No values are hardcoded anywhere in the source.",
 
-  "baseUrl": "http://localhost:4200",
+  "baseUrl": "http://localhost:63366",
   "browser": "chromium",
   "channel": "msedge",
 
@@ -24,9 +24,9 @@
     { "name": "Product Detail", "path": "/product/1" },
     { "name": "Cart", "path": "/cart" },
     { "name": "Checkout", "path": "/checkout" },
-    { "name": "Login", "path": "/login" },
     { "name": "About", "path": "/about" },
-    { "name": "Contact", "path": "/contact" }
+    { "name": "Contact", "path": "/contact" },
+    { "name": "Modals", "path": "/modals" }
   ],
   "ignoredRoutes": [],
 
@@ -43,7 +43,7 @@
 
   "uia": {
     "enabled": true,
-    "python": "python",
+    "python": "C:\\Users\\VivekPrasadMAQSoftwa\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
     "maxDepth": 40,
     "windowClass": "Chrome_WidgetWin_1",
     "documentOnly": true
