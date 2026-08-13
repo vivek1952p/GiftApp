@@ -40,6 +40,8 @@ import type {
   MergedFinding,
   MergedReport,
   PlaywrightA11yReport,
+  ScreenReaderFinding,
+  ScreenReaderReport,
   Summary,
   SummaryViolation,
   UiaFinding,
@@ -55,7 +57,7 @@ import type {
 const log = createLogger('merge');
 
 /** Safely read + parse a JSON artifact, returning null when it is absent. */
-function readJson<T>(file: string): T | null {
+export function readJson<T>(file: string): T | null {
   if (!fs.existsSync(file)) return null;
   try {
     return JSON.parse(fs.readFileSync(file, 'utf-8')) as T;
@@ -71,7 +73,7 @@ function readJson<T>(file: string): T | null {
  * the other trees). Roles use lowercase ARIA names for the Playwright tree and
  * substring matches for UIA control-type names.
  */
-const NAME_RULES: Record<string, { ariaRoles: string[]; uiaRoles: string[] }> = {
+export const NAME_RULES: Record<string, { ariaRoles: string[]; uiaRoles: string[] }> = {
   'image-alt': { ariaRoles: ['img', 'image'], uiaRoles: ['Image'] },
   'button-name': { ariaRoles: ['button'], uiaRoles: ['Button'] },
   'input-button-name': { ariaRoles: ['button'], uiaRoles: ['Button'] },
@@ -88,7 +90,7 @@ const NAME_RULES: Record<string, { ariaRoles: string[]; uiaRoles: string[] }> = 
  * Map an axe rule id to the UIA base control type(s) the Rule Engine would flag
  * for the SAME problem, used to correlate axe findings with uia-findings.json.
  */
-const AXE_TO_UIA_BASETYPE: Record<string, string[]> = {
+export const AXE_TO_UIA_BASETYPE: Record<string, string[]> = {
   'image-alt': ['Image'],
   'button-name': ['Button'],
   'input-button-name': ['Button'],
@@ -100,12 +102,12 @@ const AXE_TO_UIA_BASETYPE: Record<string, string[]> = {
 };
 
 /** True when a node's accessible name is missing/blank. */
-function hasNoName(name?: string): boolean {
+export function hasNoName(name?: string): boolean {
   return !name || name.trim() === '';
 }
 
 /** Depth-first search of a Playwright a11y tree. */
-function searchA11y(
+export function searchA11y(
   node: A11yTreeNode | null,
   roles: string[]
 ): { anyRole: boolean; anyMissingName: boolean } {
@@ -127,7 +129,7 @@ function searchA11y(
 }
 
 /** Depth-first search of a UIA tree using control-type substring matches. */
-function searchUia(
+export function searchUia(
   node: UiaNode | null,
   roleSubstrings: string[]
 ): { anyRole: boolean; anyMissingName: boolean } {
@@ -149,7 +151,7 @@ function searchUia(
 }
 
 /** Correlate one violation against the Playwright accessibility tree. */
-function verifyInA11y(v: SummaryViolation, pageTree?: A11yPageTree): VerificationStatus {
+export function verifyInA11y(v: SummaryViolation, pageTree?: A11yPageTree): VerificationStatus {
   const spec = NAME_RULES[v.ruleId];
   if (!spec || !pageTree) return 'not-detected';
   const { anyRole, anyMissingName } = searchA11y(pageTree.tree, spec.ariaRoles);
@@ -159,7 +161,7 @@ function verifyInA11y(v: SummaryViolation, pageTree?: A11yPageTree): Verificatio
 }
 
 /** Correlate one violation against the Windows UIA tree. */
-function verifyInUia(
+export function verifyInUia(
   v: SummaryViolation,
   uiaResult?: UiaPageResult,
   uiaAvailable?: boolean
@@ -180,7 +182,7 @@ function verifyInUia(
  * `color-contrast` be verified, since the DOM exposes colour/font facts the
  * accessibility trees cannot.
  */
-function verifyInDom(
+export function verifyInDom(
   v: SummaryViolation,
   domPage?: DomPageSnapshot
 ): { status: VerificationStatus; props?: DomElementStyle } {
@@ -190,19 +192,45 @@ function verifyInDom(
   return { status: 'not-found' };
 }
 
+/**
+ * Correlate one violation against real NVDA screen reader announcements
+ * (guidepup). `screenReaderAvailable` mirrors the UIA availability pattern —
+ * NVDA is Windows-only, so `unavailable` reflects that rather than "checked
+ * and found nothing."
+ */
+export function verifyInScreenReader(
+  v: SummaryViolation,
+  screenReaderFindings: ScreenReaderFinding[],
+  screenReaderAvailable: boolean
+): VerificationStatus {
+  if (!screenReaderAvailable) return 'unavailable';
+  if (!(v.ruleId in NAME_RULES)) return 'not-detected';
+  const match = screenReaderFindings.find((f) => f.page === v.page && f.target === v.target);
+  return match ? 'confirmed' : 'not-detected';
+}
+
 /** Build a human-readable correlation summary. */
-function describeCorrelation(
+export function describeCorrelation(
   pw: VerificationStatus,
   uia: VerificationStatus,
-  dom: VerificationStatus
+  dom: VerificationStatus,
+  sr: VerificationStatus
 ): string {
   const parts = ['axe-core'];
   if (pw === 'confirmed') parts.push('Playwright Accessibility Tree');
   if (uia === 'confirmed') parts.push('Windows UI Automation');
   if (dom === 'confirmed') parts.push('DOM');
+  if (sr === 'confirmed') parts.push('NVDA (Screen Reader)');
   if (parts.length === 1) return 'Detected by axe-core.';
   const last = parts.pop();
   return `Confirmed by ${parts.join(', ')} and ${last}.`;
+}
+
+/** True when the Rule Engine independently flagged a matching control. */
+export function matchesUiaRuleEngine(v: SummaryViolation, uiaFindingKeys: Set<string>): boolean {
+  const baseTypes = AXE_TO_UIA_BASETYPE[v.ruleId];
+  if (!baseTypes) return false;
+  return baseTypes.some((bt) => uiaFindingKeys.has(`${v.page}::${bt}`));
 }
 
 /**
@@ -222,6 +250,7 @@ function main(): void {
     const widgetReport = readJson<WidgetBehaviorReport>(adaConfig.paths.widgetBehaviorReport);
     const focusMgmtReport = readJson<FocusManagementReport>(adaConfig.paths.focusManagementReport);
     const interactionReport = readJson<InteractionReport>(adaConfig.paths.interactionReport);
+    const screenReaderReport = readJson<ScreenReaderReport>(adaConfig.paths.screenReaderReport);
 
     // Index tree data by page name for quick lookup.
     const a11yByPage = new Map<string, A11yPageTree>((a11y?.results ?? []).map((r) => [r.page, r]));
@@ -244,22 +273,18 @@ function main(): void {
     const widgetFindings: WidgetFinding[] = widgetReport?.findings ?? [];
     const focusManagementFindings: FocusManagementFinding[] = focusMgmtReport?.findings ?? [];
     const interactionFindings: InteractionFinding[] = interactionReport?.findings ?? [];
+    const screenReaderFindings: ScreenReaderFinding[] = screenReaderReport?.findings ?? [];
+    const screenReaderAvailable = screenReaderReport?.available ?? false;
     const uiaFindingKeys = new Set<string>(
       uiaFindings.map((f) => `${f.page}::${(f.controlType || '').replace(/Control$/, '')}`)
     );
-
-    /** True when the Rule Engine independently flagged a matching control. */
-    const matchedByUiaRuleEngine = (v: SummaryViolation): boolean => {
-      const baseTypes = AXE_TO_UIA_BASETYPE[v.ruleId];
-      if (!baseTypes) return false;
-      return baseTypes.some((bt) => uiaFindingKeys.has(`${v.page}::${bt}`));
-    };
 
     const findings: MergedFinding[] = summary.violations.map((v) => {
       const pw = verifyInA11y(v, a11yByPage.get(v.page));
       const u = verifyInUia(v, uiaByPage.get(v.page), uiaAvailable);
       const d = verifyInDom(v, domByPage.get(v.page));
-      const uiaRuleFinding = matchedByUiaRuleEngine(v);
+      const sr = verifyInScreenReader(v, screenReaderFindings, screenReaderAvailable);
+      const uiaRuleFinding = matchesUiaRuleEngine(v, uiaFindingKeys);
 
       // Confidence: axe always counts; each confirming source adds weight.
       const confirmations =
@@ -267,17 +292,22 @@ function main(): void {
         (pw === 'confirmed' ? 1 : 0) +
         (u === 'confirmed' ? 1 : 0) +
         (d.status === 'confirmed' ? 1 : 0) +
+        (sr === 'confirmed' ? 1 : 0) +
         (uiaRuleFinding ? 1 : 0);
-      const confidence = Math.round((confirmations / 5) * 100);
+      const confidence = Math.round((confirmations / 6) * 100);
+
+      const detectedBy = ['axe-core'];
+      if (uiaRuleFinding) detectedBy.push('uia-rule-engine');
+      if (sr === 'confirmed') detectedBy.push('screen-reader');
 
       return {
         ...v,
-        detectedBy: uiaRuleFinding ? ['axe-core', 'uia-rule-engine'] : ['axe-core'],
-        verifiedIn: { playwrightTree: pw, uia: u, dom: d.status },
+        detectedBy,
+        verifiedIn: { playwrightTree: pw, uia: u, dom: d.status, screenReader: sr },
         uiaRuleFinding,
         confidence,
         domProperties: d.props,
-        correlation: describeCorrelation(pw, u, d.status),
+        correlation: describeCorrelation(pw, u, d.status, sr),
       };
     });
 
@@ -285,7 +315,7 @@ function main(): void {
     const uiaNodeCount = (uia?.results ?? []).reduce((s, r) => s + r.nodeCount, 0);
     const domElementsCaptured = (dom?.results ?? []).reduce((s, r) => s + r.elements.length, 0);
 
-    // totalFindings/severityCounts must span all 7 scanners, not just axe-core,
+    // totalFindings/severityCounts must span all 8 scanners, not just axe-core,
     // otherwise this "single source of truth" field silently disagrees with
     // dashboard.md's total (which already aggregates via collectAllFindings).
     const allFindings = collectAllFindings(summary, {
@@ -295,6 +325,7 @@ function main(): void {
       widgetFindings,
       focusManagementFindings,
       interactionFindings,
+      screenReaderFindings,
     } as MergedReport);
     const allSeverityCounts = severityCountsOf(allFindings);
 
@@ -312,6 +343,7 @@ function main(): void {
         widgetBehavior: Boolean(widgetReport),
         focusManagement: Boolean(focusMgmtReport),
         interactionPrediction: Boolean(interactionReport),
+        screenReader: Boolean(screenReaderReport),
       },
       totalFindings: allFindings.length,
       severityCounts: allSeverityCounts,
@@ -322,6 +354,7 @@ function main(): void {
       widgetFindings,
       focusManagementFindings,
       interactionFindings,
+      screenReaderFindings,
       trees: {
         playwrightNodeCount,
         uiaNodeCount,
@@ -333,13 +366,15 @@ function main(): void {
         widgetFindingCount: widgetFindings.length,
         focusManagementFindingCount: focusManagementFindings.length,
         interactionFindingCount: interactionFindings.length,
+        screenReaderAvailable,
+        screenReaderFindingCount: screenReaderFindings.length,
       },
     };
 
     fs.mkdirSync(adaConfig.paths.reportsDir, { recursive: true });
 
     // Snapshot the outgoing merged report BEFORE overwriting it, so compare.ts
-    // can diff ALL 7 scanners across runs (previousSummary/summary.json only
+    // can diff ALL 8 scanners across runs (previousSummary/summary.json only
     // ever covered axe-core, which is why comparison.md and dashboard.md used
     // to disagree on the total finding count).
     if (fs.existsSync(adaConfig.paths.merged)) {
@@ -364,4 +399,6 @@ function main(): void {
   }
 }
 
-main();
+if (require.main === module) {
+  main();
+}

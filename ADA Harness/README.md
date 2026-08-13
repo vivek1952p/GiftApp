@@ -3,7 +3,7 @@
 A reusable, framework-independent, enterprise-level accessibility toolkit that
 **collects evidence** from any running web application across Playwright (axe-core,
 accessibility tree, DOM snapshot, keyboard traversal) and Windows UI Automation,
-**analyzes** that evidence with a rule engine plus four specialized behavioral engines,
+**analyzes** that evidence with a rule engine plus five specialized behavioral engines,
 **merges** every finding into one correlated report, and **remediates** issues with an AI
 agent that explains each problem, locates the affected source code, and applies **safe**
 automatic fixes.
@@ -39,7 +39,7 @@ Both modules can be used **together** (scan → merge → fix → re-scan → co
 > 📊 For full diagrams (architecture, scan workflow, fix workflow, sequence, and data flow)
 > see [ARCHITECTURE.md](ARCHITECTURE.md).
 
-The harness runs the full pipeline — evidence collection, rule evaluation, and four
+The harness runs the full pipeline — evidence collection, rule evaluation, and five
 specialized behavioral engines — on every scan:
 
 | # | Technology | Role in the pipeline | Artifact |
@@ -55,7 +55,9 @@ specialized behavioral engines — on every scan:
 | 9 | **Widget Behavior Engine** | Drives real keyboard interactions against WAI-ARIA widget patterns (tabs, menus, accordions, dialogs, comboboxes) to verify they behave per the APG, not just that the markup looks right. | `widget-behavior-report.json` |
 | 10 | **Focus Management Engine** | Checks where focus lands after route navigation, sweeps every reachable element for a real visible focus indicator, and verifies focus returns to a dialog's trigger after it closes. | `focus-management-report.json` |
 | 11 | **Interaction Prediction Engine** | Tests custom (non-native) interactive elements — `role="button"`, custom checkboxes/switches/tabs — to confirm Enter/Space actually activate them. | `interaction-report.json` |
+| 12 | **Screen Reader Engine (NVDA via guidepup)** | Re-verifies elements already flagged as missing an accessible name by driving **real NVDA** and checking what it actually announces — UIA proves a node is exposed to the OS accessibility layer, this proves a real screen reader says something usable about it. Windows-only, degrades gracefully like UIA. | `screen-reader-report.json` |
 | ★ | **Report merger** | Correlates every scanner and engine so each finding shows *who detected it*, *where it was confirmed*, and a **confidence** score. | `merged-report.json` |
+| ★ | **Coverage report** | Maps every finding (and every engine's static capability) to its WCAG 2.2 success criterion, reporting which of the 55 A/AA criteria this scan found issues for, which the harness merely *checked* with no findings, and which are not automated at all. | `coverage.md` |
 
 ```mermaid
 flowchart LR
@@ -79,6 +81,8 @@ flowchart LR
     FME --> FMR[focus-management-report.json]
     P -->|keyboard activation| IPE[Interaction Prediction Engine]
     IPE --> IPR[interaction-report.json]
+    S --> SRE[Screen Reader Engine]
+    SRE -->|NVDA via guidepup| SRR[screen-reader-report.json]
     S --> M[merged-report.json]
     A11Y --> M
     DOMR --> M
@@ -88,6 +92,8 @@ flowchart LR
     WBR --> M
     FMR --> M
     IPR --> M
+    SRR --> M
+    M --> COV[coverage.md]
     M --> AGENT[AI Remediation Agent]
     AGENT --> FIX[All fixes applied to source with approval]
     FIX --> RESCAN[Re-scan everything]
@@ -116,8 +122,15 @@ flowchart LR
   sweep, and dialog focus-restoration checks
 - **Interaction Prediction Engine** — verifies custom interactive elements actually
   respond to Enter/Space
+- **Screen Reader Engine** — re-verifies missing-name findings against real NVDA
+  announcements (via guidepup), confirming the gap for actual screen reader users, not
+  just the OS accessibility tree
 - **Merged report** correlating every scanner and engine with a confidence score
   (`merged-report.json`)
+- **WCAG coverage report** (`coverage.md`) — which of the 55 WCAG 2.2 A/AA success
+  criteria were found, which are checked with no findings, and which aren't automated
+- **Unit-tested correlation logic** (`npm test`) protecting the merge/confidence scoring
+  in `merge-report.ts` from silent regressions
 - WCAG 2.0 / 2.1 **A & AA** validation + axe best-practice rules
 - JSON report generation (raw axe output + flattened summary + trees + merged)
 - Markdown summary + dashboard generation
@@ -250,10 +263,13 @@ ADA Harness/
 | **axe-core** | Accessibility rule engine | Installed via npm (`@axe-core/playwright`) |
 | **Python** (3.8+) | Runs the Windows UI Automation capture | Required for Technology 4 (UIA) |
 | **`uiautomation`** (Python pkg) | Reads the Windows accessibility tree | `pip install -r uia/requirements.txt` (Windows only) |
+| **NVDA** | Screen reader driven by the Screen Reader Engine | Windows only; installed/configured via `npx @guidepup/setup` (see below) |
+| **`@guidepup/guidepup`** / **`@guidepup/playwright`** | Drives NVDA and reads its announcements | Installed via npm (already in `devDependencies`) |
 
-> **Windows UI Automation is Windows-only.** On non-Windows hosts (or when `uiautomation`
-> is not installed) the UIA stage still executes and still writes `uia-tree.json`, but it
-> records `available: false` so the merge step and the rest of the pipeline continue to work.
+> **Windows UI Automation and the Screen Reader Engine are Windows-only.** On non-Windows
+> hosts (or when `uiautomation`/NVDA is not installed) those stages still execute and still
+> write their report files, but record `available: false` so the merge step and the rest of
+> the pipeline continue to work.
 
 ---
 
@@ -274,6 +290,10 @@ npx playwright install
 
 # 5. Install the Windows UI Automation dependency (Windows only)
 pip install -r uia/requirements.txt
+
+# 6. One-time NVDA + guidepup setup for the Screen Reader Engine (Windows only)
+npx @guidepup/setup setup
+npx @guidepup/setup install
 ```
 
 **Command explanations**
@@ -285,6 +305,7 @@ pip install -r uia/requirements.txt
 | `npm install` | Installs all dependencies listed in `package.json`. |
 | `npx playwright install` | Downloads the Chromium/Firefox/WebKit binaries Playwright needs to launch real browsers. |
 | `pip install -r uia/requirements.txt` | Installs the `uiautomation` package used by the Windows UI Automation stage. |
+| `npx @guidepup/setup setup` / `install` | Configures and installs NVDA for the Screen Reader Engine. One-time; skip on non-Windows hosts. |
 
 ---
 
@@ -491,10 +512,12 @@ violations.
 | `widget-behavior-report.json` | JSON | ARIA widget interaction failures (Widget Behavior Engine). |
 | `focus-management-report.json` | JSON | Focus-after-navigation, focus-visible sweep, and modal-restoration findings (Focus Management Engine). |
 | `interaction-report.json` | JSON | Custom-element keyboard activation failures (Interaction Prediction Engine). |
+| `screen-reader-report.json` | JSON | Missing-name findings re-verified against real NVDA announcements (Screen Reader Engine). |
 | `merged-report.json` | JSON | Correlated cross-scanner report — **the AI agent's input**. |
 | `merged-report.previous.json` | JSON | Snapshot of the prior merged report, covering all 7 scanners — what `comparison.md` diffs against. |
 | `comparison.md` | Markdown | Before/after comparison (resolved / remaining / new + score). |
 | `dashboard.md` | Markdown | Human-readable overview incl. scanner coverage. |
+| `coverage.md` | Markdown | WCAG 2.2 A/AA success-criterion coverage — found / checked / not automated. |
 | `screenshots/` | PNG | Per-page screenshots (when enabled). |
 
 ### `summary.json` sample
@@ -594,10 +617,10 @@ and `interaction-report.json` respectively.)
 | `sources` | Which of the 10 possible artifacts contributed to the merge. |
 | `trees` | Node/finding counts for every source, so the dashboard can show real coverage. |
 | `findings[].detectedBy` | Scanners that reported the issue. |
-| `findings[].verifiedIn.playwrightTree` / `.uia` / `.dom` | `confirmed` \| `not-detected` \| `not-found` \| `unavailable`, per source. |
+| `findings[].verifiedIn.playwrightTree` / `.uia` / `.dom` / `.screenReader` | `confirmed` \| `not-detected` \| `not-found` \| `unavailable`, per source. |
 | `findings[].confidence` | 0–100, weighted by how many independent sources confirmed the finding. |
 | `findings[].correlation` | Human-readable cross-scanner summary. |
-| `uiaFindings` / `keyboardFindings` / `expectedFocusGaps` / `widgetFindings` / `focusManagementFindings` / `interactionFindings` | Each source's own findings, attached as top-level arrays alongside the correlated axe `findings` — not just axe's issues, every engine's. |
+| `uiaFindings` / `keyboardFindings` / `expectedFocusGaps` / `widgetFindings` / `focusManagementFindings` / `interactionFindings` / `screenReaderFindings` | Each source's own findings, attached as top-level arrays alongside the correlated axe `findings` — not just axe's issues, every engine's. |
 
 ---
 
@@ -607,9 +630,10 @@ and `interaction-report.json` respectively.)
 2. **`merge-report.ts`** loads every artifact produced so far: `summary.json`,
    `playwright-accessibility-tree.json`, `uia-tree.json`, `dom-snapshot.json`,
    `uia-findings.json`, `keyboard-report.json`, `expected-focus-report.json`,
-   `widget-behavior-report.json`, `focus-management-report.json`, and
-   `interaction-report.json` — each read defensively, so a missing artifact (an optional
-   engine that didn't run) degrades gracefully rather than breaking the merge.
+   `widget-behavior-report.json`, `focus-management-report.json`,
+   `interaction-report.json`, and `screen-reader-report.json` — each read defensively, so a
+   missing artifact (an optional engine that didn't run) degrades gracefully rather than
+   breaking the merge.
 3. For each **axe violation**, three independent cross-checks run:
    - For name-related rules (e.g. `image-alt`, `button-name`, `link-name`, `label`), it
      searches the **Playwright tree** and the **UIA tree** for a control of the matching
@@ -619,14 +643,14 @@ and `interaction-report.json` respectively.)
      `color-contrast`).
    - It cross-references `uia-findings.json` (the Accessibility Rule Engine's output) for
      an independently-detected finding on the same control type and page.
-4. Each finding records `detectedBy`, `verifiedIn` (`playwrightTree` / `uia` / `dom`
-   status), a 0–100 `confidence` score weighted by how many sources confirmed it, and a
-   human-readable `correlation` string.
+4. Each finding records `detectedBy`, `verifiedIn` (`playwrightTree` / `uia` / `dom` /
+   `screenReader` status), a 0–100 `confidence` score weighted by how many sources
+   confirmed it, and a human-readable `correlation` string.
 5. The findings from every other source — the Accessibility Rule Engine, the keyboard scan,
-   and all four specialized engines — are attached as their own top-level arrays
+   and all five specialized engines — are attached as their own top-level arrays
    (`uiaFindings`, `keyboardFindings`, `expectedFocusGaps`, `widgetFindings`,
-   `focusManagementFindings`, `interactionFindings`) alongside the correlated axe
-   `findings`, so the AI agent sees every gap from every source in one file.
+   `focusManagementFindings`, `interactionFindings`, `screenReaderFindings`) alongside the
+   correlated axe `findings`, so the AI agent sees every gap from every source in one file.
 6. Before writing the new `merged-report.json`, the existing one (if any) is snapshotted to
    `merged-report.previous.json` — this is what lets `npm run compare` diff **every**
    scanner across runs, not just axe-core.
@@ -740,7 +764,7 @@ false positives by cross-referencing `keyboard-report.json`. Output: `uia-findin
 
 ## The Specialized Engines
 
-Beyond rule-based checking, four engines drive real browser interactions to catch classes
+Beyond rule-based checking, five engines drive real browser interactions to catch classes
 of bugs that static analysis cannot — the category of issue most accessibility scanners
 miss entirely.
 
@@ -808,9 +832,35 @@ are sampled per page, and **every** sampled instance is tested — a working ins
 doesn't hide failures found in others sampled on the same page; the finding reports how
 many of the sample failed. Output: `interaction-report.json`.
 
+### Screen Reader Engine (NVDA via guidepup)
+
+Windows UI Automation proves a control is *exposed* to the OS accessibility layer — it
+does not prove a real screen reader announces something a user could act on. This engine
+closes that gap by driving **real NVDA** (via [guidepup](https://www.guidepup.dev)) and
+checking what it actually says.
+
+Scope is intentionally **targeted**, not a full page audit: it re-verifies only the
+elements other engines already flagged as missing an accessible name (the same rule ids
+`merge-report.ts`'s `NAME_RULES` table cross-checks against the AX tree / UIA / DOM — e.g.
+`button-name`, `link-name`, `image-alt`, `label`). For each, it focuses the element with
+NVDA running and reads back `nvda.lastSpokenPhrase()`; a finding is only raised when the
+announcement **still** lacks a usable name (a heuristic strip of the expected role words
+from the announced text), confirming the gap for a real AT user on top of the existing
+structural checks. Capped at 5 elements per page to bound runtime.
+
+> **NVDA does not audibly speak during this stage.** guidepup reads NVDA's internal Speech
+> Viewer text log rather than producing audio output, so this is silent and CI-safe by
+> design. If you want to *hear* a page read aloud, install NVDA yourself and tab through
+> the app manually with speakers on — that's a separate, manual check this engine doesn't
+> perform.
+
+Windows-only, like UIA — on other hosts (or when NVDA/guidepup setup hasn't been run) it
+writes `available: false` and the rest of the pipeline continues unaffected. Output:
+`screen-reader-report.json`.
+
 ### Multi-page navigation strategy
 
-All four specialized engines (and the UIA capture stage) share one navigation helper,
+All five specialized engines (and the UIA capture stage) share one navigation helper,
 [`scripts/navigate.ts`](scripts/navigate.ts), controlled by `navigation.mode` in
 `config.json`:
 
@@ -1071,7 +1121,7 @@ This project is intentionally designed for reuse:
   login/auth, browser, viewport, widget selectors, navigation mode, source layout, etc.).
 - ✅ The harness genuinely runs the **full evidence-collection pipeline** — Playwright
   (axe-core, accessibility snapshot, DOM snapshot, keyboard traversal), Windows UI
-  Automation, the Accessibility Rule Engine, and all four specialized engines — on every
+  Automation, the Accessibility Rule Engine, and all five specialized engines — on every
   scan.
 - ✅ The **AI Agent dynamically analyzes** `merged-report.json` — it is not tied to any
   specific codebase.

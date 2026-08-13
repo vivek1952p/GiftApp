@@ -12,9 +12,9 @@
  *
  * Scope: this engine only handles axe-core rule ids, since those are the only
  * findings with a known, mechanical, additive fix strategy (add an attribute).
- * The 4 specialized engines' behavioral findings (focus management, widget
- * behavior, interaction prediction, expected focus) require human or AI
- * judgment and are intentionally out of scope here — see them in
+ * The 5 specialized engines' behavioral findings (focus management, widget
+ * behavior, interaction prediction, expected focus, screen reader) require
+ * human or AI judgment and are intentionally out of scope here — see them in
  * dashboard.md/comparison.md, or hand merged-report.json to the Copilot
  * Accessibility Fix Agent (.github/agents/accessibility-fix.agent.md), which
  * covers all sources with AI-driven reasoning instead of mechanical rules.

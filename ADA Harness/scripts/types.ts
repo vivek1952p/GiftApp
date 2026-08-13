@@ -417,6 +417,8 @@ export interface MergedFinding extends SummaryViolation {
     uia: VerificationStatus;
     /** Verified against real DOM computed styles (e.g. colour-contrast). */
     dom: VerificationStatus;
+    /** Verified against real NVDA screen reader announcements (guidepup). */
+    screenReader: VerificationStatus;
   };
   /** True when the UIA Rule Engine independently flagged a matching control. */
   uiaRuleFinding?: boolean;
@@ -443,6 +445,7 @@ export interface MergedReport {
     widgetBehavior: boolean;
     focusManagement: boolean;
     interactionPrediction: boolean;
+    screenReader: boolean;
   };
   totalFindings: number;
   severityCounts: SeverityCounts;
@@ -453,6 +456,7 @@ export interface MergedReport {
   widgetFindings: WidgetFinding[];
   focusManagementFindings: FocusManagementFinding[];
   interactionFindings: InteractionFinding[];
+  screenReaderFindings: ScreenReaderFinding[];
   trees: {
     playwrightNodeCount: number;
     uiaNodeCount: number;
@@ -464,6 +468,8 @@ export interface MergedReport {
     widgetFindingCount: number;
     focusManagementFindingCount: number;
     interactionFindingCount: number;
+    screenReaderAvailable: boolean;
+    screenReaderFindingCount: number;
   };
 }
 
@@ -584,4 +590,43 @@ export interface InteractionReport {
   baseUrl: string;
   totalFindings: number;
   findings: InteractionFinding[];
+}
+
+// ===========================================================================
+// Screen Reader Announcement Engine — real NVDA announcement verification
+// (guidepup). Re-verifies elements already flagged by other engines as
+// missing/ambiguous accessible names, confirming NVDA actually announces the
+// gap — the OS accessibility tree (UIA) proves a node is exposed; this proves
+// a real screen reader says something sensible about it.
+// ===========================================================================
+
+export interface ScreenReaderFinding {
+  page: string;
+  url: string;
+  /** The axe/rule-engine rule id this finding re-verifies, e.g. "button-name". */
+  ruleId: string;
+  /** CSS target selector of the element focused. */
+  target: string;
+  /** ARIA role of the element, when known. */
+  role: string;
+  /** Accessible name the element was expected to have (empty when re-verifying a missing-name finding). */
+  expectedName: string;
+  /** Exact text NVDA announced (nvda.lastSpokenPhrase()). */
+  announcedText: string;
+  issue: string;
+  severity: UiaSeverity;
+  wcag: string;
+  recommendation: string;
+}
+
+/** Top-level shape of reports/screen-reader-report.json. */
+export interface ScreenReaderReport {
+  generatedAt: string;
+  baseUrl: string;
+  /** Whether NVDA/guidepup ran at all on this host (Windows-only, like UIA). */
+  available: boolean;
+  /** Error message when unavailable. */
+  error?: string;
+  totalFindings: number;
+  findings: ScreenReaderFinding[];
 }

@@ -19,13 +19,38 @@ export interface NormalizedFinding {
   /** Stable identity for diffing the SAME finding across two scans. */
   key: string;
   page: string;
-  /** axe/UIA/keyboard rule id, or a synthesized `engine:label` for the 4 specialized engines. */
+  /** axe/UIA/keyboard rule id, or a synthesized `engine:label` for the 5 specialized engines. */
   rule: string;
   severity: string | null;
   /** Short locator shown in report bullet lists (selector, name, or widget/scenario label). */
   detail: string;
   /** Full human-readable issue description. */
   issue: string;
+  /** WCAG success criterion this finding maps to, e.g. "4.1.2", when known. */
+  wcag?: string;
+}
+
+/**
+ * Parse an axe-core WCAG tag (e.g. "wcag111", "wcag1412") into a dotted success
+ * criterion id ("1.1.1", "1.4.12"). axe encodes the first two digits as SC
+ * parts 1-2 and the remainder as part 3. Conformance-level tags that aren't a
+ * specific criterion (e.g. "wcag2a", "wcag21aa", "best-practice") don't match
+ * and return null.
+ */
+export function axeTagToWcag(tag: string): string | null {
+  const match = /^wcag(\d{3,4})$/.exec(tag);
+  if (!match) return null;
+  const digits = match[1];
+  return `${digits[0]}.${digits[1]}.${digits.slice(2)}`;
+}
+
+/** First valid WCAG success criterion found among an axe violation's tags, if any. */
+function firstWcag(tags: string[]): string | undefined {
+  for (const tag of tags) {
+    const wcag = axeTagToWcag(tag);
+    if (wcag) return wcag;
+  }
+  return undefined;
 }
 
 /**
@@ -44,6 +69,7 @@ export function collectAllFindings(summary: Summary, merged: MergedReport | null
     severity: v.impact,
     detail: v.target,
     issue: v.description,
+    wcag: firstWcag(v.wcagRuleIds),
   }));
   if (!merged) return out;
 
@@ -55,6 +81,7 @@ export function collectAllFindings(summary: Summary, merged: MergedReport | null
       severity: f.severity,
       detail: f.name || f.controlType,
       issue: f.issue,
+      wcag: f.wcag,
     });
   }
   for (const f of merged.keyboardFindings ?? []) {
@@ -65,6 +92,7 @@ export function collectAllFindings(summary: Summary, merged: MergedReport | null
       severity: f.severity,
       detail: `<${f.tag}> ${f.name}`.trim(),
       issue: f.issue,
+      wcag: f.wcag,
     });
   }
   for (const f of merged.expectedFocusGaps ?? []) {
@@ -75,6 +103,7 @@ export function collectAllFindings(summary: Summary, merged: MergedReport | null
       severity: f.severity,
       detail: `${f.role} ${f.name}`.trim(),
       issue: f.issue,
+      wcag: f.wcag,
     });
   }
   for (const f of merged.widgetFindings ?? []) {
@@ -85,6 +114,7 @@ export function collectAllFindings(summary: Summary, merged: MergedReport | null
       severity: f.severity,
       detail: f.name || f.selector,
       issue: f.issue,
+      wcag: f.wcag,
     });
   }
   for (const f of merged.focusManagementFindings ?? []) {
@@ -95,6 +125,7 @@ export function collectAllFindings(summary: Summary, merged: MergedReport | null
       severity: f.severity,
       detail: f.detail ?? f.scenario,
       issue: f.issue,
+      wcag: f.wcag,
     });
   }
   for (const f of merged.interactionFindings ?? []) {
@@ -105,6 +136,18 @@ export function collectAllFindings(summary: Summary, merged: MergedReport | null
       severity: f.severity,
       detail: `${f.name || f.selector} (${f.expectedKey})`,
       issue: f.issue,
+      wcag: f.wcag,
+    });
+  }
+  for (const f of merged.screenReaderFindings ?? []) {
+    out.push({
+      key: `screen-reader::${f.page}::${f.ruleId}::${f.target}`,
+      page: f.page,
+      rule: `screen-reader:${f.ruleId}`,
+      severity: f.severity,
+      detail: `${f.role} (${f.announcedText || '(nothing)'})`,
+      issue: f.issue,
+      wcag: f.wcag,
     });
   }
   return out;

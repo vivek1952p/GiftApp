@@ -63,6 +63,25 @@ const TAB_NAVIGABLE_ROLES = new Set([
 ]);
 
 /**
+ * DOM tags a given ARIA role is typically implemented with. Used only as a
+ * last-resort correlation in Check 1 (see buildUnnamedReachedByTag) — never
+ * exact, deliberately permissive since it's just absorbing a deficit against
+ * elements Check 2 already independently confirmed were reached.
+ */
+const ROLE_TO_TAGS: Record<string, string[]> = {
+  button: ['button', 'input'],
+  link: ['a'],
+  checkbox: ['input'],
+  radio: ['input'],
+  combobox: ['select', 'input'],
+  textbox: ['input', 'textarea'],
+  searchbox: ['input'],
+  slider: ['input'],
+  spinbutton: ['input'],
+  switch: ['input', 'button'],
+};
+
+/**
  * Composite widget container roles whose CHILDREN use arrow-key navigation
  * rather than Tab. Any element inside these must NOT be flagged as Tab-skipped.
  */
@@ -134,6 +153,30 @@ function buildTabNameCounts(kbPage: KeyboardPageResult): Map<string, number> {
 }
 
 /**
+ * Count reached-but-UNNAMED tab-order steps per DOM tag. The AX tree and the
+ * keyboard scan's own name heuristic can disagree on an element's name (e.g.
+ * an <input> whose only label source is `placeholder` — the browser's real
+ * accessible-name algorithm credits it, this harness's simpler keyboard-scan
+ * heuristic in accessibility.spec.ts does not, by design, since placeholder-
+ * only labelling is itself a real WCAG problem Check 2 needs to keep
+ * flagging). Without this, the SAME element gets reported twice — as a
+ * contradictory "never reached" (Check 1) AND "reached but unnamed"
+ * (Check 2) — because Check 1's name-string match fails even though the
+ * element genuinely was reached. These counts let Check 1 absorb its
+ * deficit against exactly the elements Check 2 is already flagging.
+ */
+function buildUnnamedReachedByTag(kbPage: KeyboardPageResult): Map<string, number> {
+  const counts = new Map<string, number>();
+  for (const step of kbPage.tabOrder ?? []) {
+    if (!step.name || step.name.trim() === '') {
+      const tag = step.tag.toLowerCase();
+      counts.set(tag, (counts.get(tag) ?? 0) + 1);
+    }
+  }
+  return counts;
+}
+
+/**
  * True when `axName` has a reasonable match somewhere in the tab order.
  * Substring matching absorbs minor truncation differences between how the AX
  * tree computes a name and how the keyboard scan reads DOM text/aria-label —
@@ -152,13 +195,14 @@ function hasSubstringMatch(axName: string, tabNames: Iterable<string>): boolean 
 
 // ── Per-page analysis ────────────────────────────────────────────────────────
 
-function analyseGaps(
+export function analyseGaps(
   a11yPage: { page: string; url: string; tree: A11yTreeNode | null },
   kbPage: KeyboardPageResult | undefined
 ): ExpectedFocusGap[] {
   const gaps: ExpectedFocusGap[] = [];
   const tabCounts = kbPage ? buildTabNameCounts(kbPage) : new Map<string, number>();
   const tabNames = new Set(tabCounts.keys());
+  const unnamedByTag = kbPage ? buildUnnamedReachedByTag(kbPage) : new Map<string, number>();
   const tabNavigable = collectTabNavigable(a11yPage.tree);
 
   // ── Check 1: Tab-navigable AX nodes not reached by Tab ──────────────────
@@ -180,6 +224,24 @@ function analyseGaps(
   for (const [key, { role, name, count: axCount }] of axByName) {
     let tabCount = tabCounts.get(key) ?? 0;
     if (tabCount === 0 && hasSubstringMatch(name, tabNames)) tabCount = 1; // truncation fallback
+
+    // Last-resort correlation: before concluding a deficit is a real gap,
+    // absorb it against reached-but-unnamed tab-order steps of a matching
+    // tag (see buildUnnamedReachedByTag) — these are exactly the elements
+    // Check 2 is already flagging, so this avoids double-reporting the same
+    // element as contradictory "never reached" + "reached but unnamed".
+    let remaining = axCount - tabCount;
+    if (remaining > 0) {
+      for (const tag of ROLE_TO_TAGS[role] ?? []) {
+        const available = unnamedByTag.get(tag) ?? 0;
+        if (available <= 0) continue;
+        const absorbed = Math.min(available, remaining);
+        unnamedByTag.set(tag, available - absorbed);
+        tabCount += absorbed;
+        remaining -= absorbed;
+        if (remaining <= 0) break;
+      }
+    }
 
     const deficit = axCount - tabCount;
     if (deficit <= 0) continue;
@@ -338,4 +400,6 @@ function main(): void {
   }
 }
 
-main();
+if (require.main === module) {
+  main();
+}

@@ -3,8 +3,8 @@
  * ADA Harness — Markdown Dashboard (Step 7)
  * ============================================================================
  *
- * Renders reports/dashboard.md covering all 7 scanners (axe-core + the
- * Accessibility Rule Engine + keyboard + all 4 specialized engines) for the
+ * Renders reports/dashboard.md covering all 8 scanners (axe-core + the
+ * Accessibility Rule Engine + keyboard + all 5 specialized engines) for the
  * CURRENT scan — the same population of findings that comparison.md diffs
  * across scans (see all-findings.ts, shared by both).
  * ============================================================================
@@ -84,7 +84,7 @@ function main(): void {
       `| Minor | ${allSeverity.minor} |`,
       `| **Accessibility Score** | **${score}/100** |`,
       '',
-      '_Covers all 7 scanners (axe-core + the Accessibility Rule Engine + keyboard + all 4' +
+      '_Covers all 8 scanners (axe-core + the Accessibility Rule Engine + keyboard + all 5' +
         ' specialized engines). See_ `comparison.md` _for how this total changed since the' +
         ' previous scan._',
       '',
@@ -102,6 +102,7 @@ function main(): void {
       `| Widget Behavior Engine | ${merged?.sources.widgetBehavior ? `✅ ${merged.trees.widgetFindingCount} finding(s)` : '—'} |`,
       `| Focus Management Engine | ${merged?.sources.focusManagement ? `✅ ${merged.trees.focusManagementFindingCount} finding(s)` : '—'} |`,
       `| Interaction Prediction Engine | ${merged?.sources.interactionPrediction ? `✅ ${merged.trees.interactionFindingCount} finding(s)` : '—'} |`,
+      `| Screen Reader Engine (NVDA via guidepup) | ${merged?.trees.screenReaderAvailable ? `✅ ${merged.trees.screenReaderFindingCount} finding(s)` : merged?.sources.screenReader ? '⚠️ unavailable on host' : '—'} |`,
       `| Findings confirmed by all scanners | ${confirmedByAll} |`,
       '',
       '## Findings by Page (All Scanners)',

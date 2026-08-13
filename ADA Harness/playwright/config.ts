@@ -193,6 +193,8 @@ export interface HarnessPaths {
   comparison: string;
   /** Markdown dashboard (Step 7). */
   dashboard: string;
+  /** Markdown WCAG success-criterion coverage report. */
+  coverage: string;
   /** Playwright accessibility-tree snapshot for every page. */
   a11yTree: string;
   /** Windows UI Automation tree capture for every page. */
@@ -211,6 +213,8 @@ export interface HarnessPaths {
   focusManagementReport: string;
   /** Interaction Prediction Engine report. */
   interactionReport: string;
+  /** Screen Reader Announcement Engine report. */
+  screenReaderReport: string;
   /** Correlated, cross-scanner merged report. */
   merged: string;
   /** Snapshot of the previous merged report — the basis for comparing ALL 7
@@ -387,6 +391,7 @@ export const adaConfig: AdaConfig = {
     previousSummary: path.join(REPORTS_DIR, 'summary.previous.json'),
     comparison: path.join(REPORTS_DIR, 'comparison.md'),
     dashboard: path.join(REPORTS_DIR, 'dashboard.md'),
+    coverage: path.join(REPORTS_DIR, 'coverage.md'),
     a11yTree: path.join(REPORTS_DIR, 'playwright-accessibility-tree.json'),
     uiaTree: path.join(REPORTS_DIR, 'uia-tree.json'),
     uiaFindings: path.join(REPORTS_DIR, 'uia-findings.json'),
@@ -396,6 +401,7 @@ export const adaConfig: AdaConfig = {
     widgetBehaviorReport: path.join(REPORTS_DIR, 'widget-behavior-report.json'),
     focusManagementReport: path.join(REPORTS_DIR, 'focus-management-report.json'),
     interactionReport: path.join(REPORTS_DIR, 'interaction-report.json'),
+    screenReaderReport: path.join(REPORTS_DIR, 'screen-reader-report.json'),
     merged: path.join(REPORTS_DIR, 'merged-report.json'),
     mergedPrevious: path.join(REPORTS_DIR, 'merged-report.previous.json'),
     fixes: path.join(REPORTS_DIR, 'fixes.json'),

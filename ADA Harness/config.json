@@ -2,7 +2,7 @@
   "$schema": "./config.schema.json",
   "//": "Single source of PROJECT-SPECIFIC configuration. Point the harness at a new application by editing ONLY this file. No values are hardcoded anywhere in the source.",
 
-  "baseUrl": "http://localhost:63366",
+  "baseUrl": "http://localhost:53901",
   "browser": "chromium",
   "channel": "msedge",
 

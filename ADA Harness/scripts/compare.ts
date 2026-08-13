@@ -3,8 +3,8 @@
  * ADA Harness — Before/After Comparison (Step 6)
  * ============================================================================
  *
- * Compares the previous scan against the current scan across ALL 7 scanners
- * (axe-core, the Accessibility Rule Engine, keyboard, and all 4 specialized
+ * Compares the previous scan against the current scan across ALL 8 scanners
+ * (axe-core, the Accessibility Rule Engine, keyboard, and all 5 specialized
  * engines) and writes reports/comparison.md containing:
  *
  *   - Resolved Issues   (present before, gone now)
@@ -92,7 +92,7 @@ function main(): void {
       '',
       `_Generated: ${new Date().toISOString()}_`,
       '',
-      '_Covers all 7 scanners (axe-core + the Accessibility Rule Engine + keyboard + all 4' +
+      '_Covers all 8 scanners (axe-core + the Accessibility Rule Engine + keyboard + all 5' +
         ' specialized engines) — the same totals_ `dashboard.md` _shows for the current scan._',
       '',
       '## Accessibility Score',
