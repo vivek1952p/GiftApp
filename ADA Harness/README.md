@@ -149,9 +149,9 @@ flowchart LR
 - Reports which scanner detected it and where it was confirmed
 - Prioritizes issues (Critical / High / Medium / Low)
 - Applies **[AUTO]** fixes directly and **[APPROVE]** fixes (contrast, headings, keyboard) with an approved diff
-- Resolves **every** gap in source — axe, keyboard, UIA rule engine, and all four
+- Resolves **every** gap in source — axe, keyboard, UIA rule engine, and all five
   specialized engines (expected focus, widget behavior, focus management, interaction
-  prediction)
+  prediction, screen reader)
 - Learns resolved patterns via a project-independent knowledge base
 - Re-runs the full scan after fixes and generates a before/after comparison
 
@@ -186,17 +186,20 @@ ADA Harness/
 │   ├── widget-behavior-report.json        # Widget Behavior Engine findings
 │   ├── focus-management-report.json       # Focus Management Engine findings
 │   ├── interaction-report.json            # Interaction Prediction Engine findings
+│   ├── screen-reader-report.json          # Screen Reader Engine findings (real NVDA via guidepup)
 │   ├── merged-report.json                 # Correlated, cross-scanner report (agent input)
 │   ├── merged-report.previous.json        # Snapshot of the prior merged report (all-scanner diffing)
 │   ├── comparison.md                      # Before/after Markdown comparison (all scanners)
 │   ├── dashboard.md                       # Human-readable Markdown dashboard
+│   ├── coverage.md                        # WCAG 2.2 A/AA success-criterion coverage
 │   ├── fixes.json / fixes.md              # axe findings only: applied/suggested/skipped (report-only by default)
 │   ├── resolved-issues.json               # Resolved issues (after re-scan)
 │   ├── remaining-issues.json              # Remaining + newly introduced issues
 │   └── screenshots/                       # Per-page screenshots (optional)
 ├── scripts/                     # TypeScript pipeline (executed with tsx)
-│   ├── analyze.ts                    # Orchestrates all 9 stages, in order
+│   ├── analyze.ts                    # Orchestrates all 10 stages, in order
 │   ├── navigate.ts                   # Shared, config-driven multi-page navigation helper
+│   ├── interactive-elements.ts       # Shared interactive-element selector (keyboard scan + focus-visible sweep)
 │   ├── generate-summary.ts           # Flattens axe-report.json into summary.json
 │   ├── uia-scan.ts                   # Drives a headed browser + runs uia_capture.py
 │   ├── uia-rule-engine.ts            # Runs the Accessibility Rule Engine
@@ -212,18 +215,23 @@ ADA Harness/
 │   │       ├── aria-pattern-rules.ts # Whole-page ARIA widget structure
 │   │       └── index.ts              # Combined rule registry
 │   ├── expected-focus-engine.ts      # Expected vs. actual Tab-order comparison
+│   ├── expected-focus-engine.test.ts # Unit tests for the Expected Focus Engine
 │   ├── widget-behavior-engine.ts     # WAI-ARIA widget interaction tests
 │   ├── focus-management-engine.ts    # Focus-after-nav + focus-visible sweep + modal restoration
 │   ├── interaction-prediction-engine.ts # Custom-element keyboard activation tests
+│   ├── screen-reader-engine.ts       # Re-verifies missing-name findings via real NVDA (guidepup)
 │   ├── merge-report.ts               # Correlates every scanner/engine → merged-report.json
 │   │                                  #   (also snapshots merged-report.previous.json)
-│   ├── all-findings.ts               # Shared all-7-scanner normalizer (dashboard.ts + compare.ts)
+│   ├── merge-report.test.ts          # Unit tests for the merge/confidence-scoring logic
+│   ├── all-findings.ts               # Shared all-8-scanner normalizer (dashboard.ts + compare.ts + coverage.ts)
 │   ├── auto-fix.ts                   # Report-only by default; --apply / autoFix.applyFixes writes safe fixes
 │   ├── prioritize.ts                 # Critical/High/Medium/Low prioritization
 │   ├── knowledge-base.ts             # Continuous-learning store
 │   ├── save-auth.ts                  # Interactive login capture → auth/session.json
 │   ├── compare.ts                    # Diffs current vs previous (all scanners) → comparison.md
 │   ├── dashboard.ts                  # Renders dashboard.md (all scanners + coverage)
+│   ├── coverage.ts                   # Renders coverage.md — WCAG 2.2 SC coverage (found/checked/not automated)
+│   ├── wcag-catalog.ts               # Static WCAG 2.2 A/AA success-criterion catalog (used by coverage.ts)
 │   ├── score.ts                      # Computes accessibility score / severity totals
 │   ├── logger.ts                     # Small structured console logger
 │   └── types.ts                      # Shared TypeScript contracts for all artifacts
@@ -246,7 +254,7 @@ ADA Harness/
 | `reports/` | Every artifact the harness produces. Safe to delete; regenerated on each run. |
 | `scripts/` | The TypeScript pipeline that orchestrates scanning, UIA capture, rule evaluation, the specialized engines, merging, comparing, and reporting. |
 | `scripts/navigate.ts` | The single, config-driven place that decides how the specialized engines move between pages — full reload (default, works everywhere) or opt-in SPA navigation. |
-| `package.json` | Defines the `ada`, `scan`, `summary`, `uia`, `uia:rules`, `merge`, `compare`, `dashboard`, `auto-fix`, `auto-fix:apply`, and `save-auth` entry points, plus dev dependencies. |
+| `package.json` | Defines the `ada`, `scan`, `summary`, `uia`, `uia:rules`, `merge`, `compare`, `dashboard`, `coverage`, `screen-reader`, `auto-fix`, `auto-fix:apply`, and `save-auth` entry points, plus dev dependencies. |
 | `tsconfig.json` | Strict TypeScript configuration for the scripts and spec. |
 
 ---
@@ -320,6 +328,7 @@ source. To point the harness at a different application, edit only this file.
   "$schema": "./config.schema.json",
   "baseUrl": "http://localhost:3000",   // running app URL (override with ADA_BASE_URL)
   "browser": "chromium",                // chromium | firefox | webkit
+  "channel": "msedge",                  // optional browser channel (e.g. "msedge", "chrome")
   "viewport": { "width": 1280, "height": 800 },
   "settleTimeoutMs": 1500,               // wait for hydration before scanning
   "timeouts": { "navigationMs": 30000, "testMs": 60000 },
@@ -348,14 +357,18 @@ source. To point the harness at a different application, edit only this file.
     "enabled": true,
     "python": "python",
     "maxDepth": 40,
-    "windowClass": "Chrome_WidgetWin_1"
+    "windowClass": "Chrome_WidgetWin_1",
+    "documentOnly": true                 // Rule Engine skips browser chrome, evaluates only the web document
   },
+  "dom": { "enabled": true, "fullHtml": true },  // Full DOM Snapshot toggle (Technology 5)
+  "keyboard": { "enabled": true, "maxTabs": 200 }, // Keyboard / Tab-order scan toggle + bound
   "navigation": { "mode": "reload" },    // "reload" (default, any app) | "spa" (opt-in)
   "widgets": { "accordionSelector": "details > summary, [role=\"button\"][aria-expanded]" },
   "auth": { "enabled": false, "manualLoginTimeoutMs": 300000, "readySelector": "" },
   "autoFix": {
     "sourceExtensions": [".tsx", ".ts", ".jsx", ".js", ".vue", ".html"],
-    "htmlEntryPoints": ["public/index.html", "src/index.html", "index.html"]
+    "htmlEntryPoints": ["public/index.html", "src/index.html", "index.html"],
+    "applyFixes": false                  // true = npm run auto-fix always writes [AUTO] fixes to source
   }
 }
 ```
@@ -364,6 +377,7 @@ source. To point the harness at a different application, edit only this file.
 | ------------------ | --- | ----- |
 | **Base URL** | `baseUrl` | Or set `ADA_BASE_URL` env var (wins over config). |
 | **Browser** | `browser` | `chromium` \| `firefox` \| `webkit`. |
+| **Browser channel** | `channel` | Optional, e.g. `"msedge"`, `"chrome"` — selects an installed browser channel instead of Playwright's bundled binary. |
 | **Viewport** | `viewport` | `{ width, height }`. |
 | **Application routes** | `routes` | Array of `{ name, path }`. |
 | **Ignored routes** | `ignoredRoutes` | Route paths removed before scanning. |
@@ -372,7 +386,10 @@ source. To point the harness at a different application, edit only this file.
 | **Interactive/SSO auth** | `auth` | See [How to Configure Interactive Authentication](#how-to-configure-interactive-authentication). |
 | **Multi-page navigation** | `navigation.mode` | `"reload"` (default) or `"spa"` — see [How to Extend](#how-to-extend). |
 | **Widget selectors** | `widgets.accordionSelector` | Selector the Widget Behavior Engine uses to find accordion headers. |
-| **Auto-fix file layout** | `autoFix` | `sourceExtensions` + `htmlEntryPoints`, so the fixer works with any project layout. |
+| **DOM snapshot** | `dom` | `enabled` + `fullHtml` — toggles the Full DOM Snapshot stage (Technology 5). |
+| **Keyboard scan** | `keyboard` | `enabled` + `maxTabs` — toggles/bounds the Tab-order scan. |
+| **UIA scope** | `uia.documentOnly` | `true` (default) restricts the Rule Engine to the web document, skipping browser chrome. |
+| **Auto-fix file layout** | `autoFix` | `sourceExtensions` + `htmlEntryPoints`, so the fixer works with any project layout; `applyFixes` toggles whether `npm run auto-fix` writes to source. |
 | **Screenshots** | `screenshots` | Toggle + output directory. |
 | **Report directory** | `reportDir` | Where all artifacts are written. |
 | **Source root** | `appSrcDir` | The code the agent applies fixes to. |
@@ -514,7 +531,7 @@ violations.
 | `interaction-report.json` | JSON | Custom-element keyboard activation failures (Interaction Prediction Engine). |
 | `screen-reader-report.json` | JSON | Missing-name findings re-verified against real NVDA announcements (Screen Reader Engine). |
 | `merged-report.json` | JSON | Correlated cross-scanner report — **the AI agent's input**. |
-| `merged-report.previous.json` | JSON | Snapshot of the prior merged report, covering all 7 scanners — what `comparison.md` diffs against. |
+| `merged-report.previous.json` | JSON | Snapshot of the prior merged report, covering all 8 scanners — what `comparison.md` diffs against. |
 | `comparison.md` | Markdown | Before/after comparison (resolved / remaining / new + score). |
 | `dashboard.md` | Markdown | Human-readable overview incl. scanner coverage. |
 | `coverage.md` | Markdown | WCAG 2.2 A/AA success-criterion coverage — found / checked / not automated. |
@@ -577,7 +594,8 @@ and the Windows UI Automation tree:
   "sources": {
     "axe": true, "playwrightTree": true, "uia": true, "dom": true,
     "uiaRuleEngine": true, "keyboard": true, "expectedFocus": true,
-    "widgetBehavior": true, "focusManagement": true, "interactionPrediction": true
+    "widgetBehavior": true, "focusManagement": true, "interactionPrediction": true,
+    "screenReader": true
   },
   "totalFindings": 1,
   "severityCounts": { "critical": 1, "serious": 0, "moderate": 0, "minor": 0 },
@@ -585,7 +603,8 @@ and the Windows UI Automation tree:
     "playwrightNodeCount": 412, "uiaNodeCount": 388, "uiaAvailable": true,
     "domElementsCaptured": 6, "uiaRuleFindingCount": 3, "keyboardFindingCount": 0,
     "expectedFocusGapCount": 0, "widgetFindingCount": 0,
-    "focusManagementFindingCount": 1, "interactionFindingCount": 0
+    "focusManagementFindingCount": 1, "interactionFindingCount": 0,
+    "screenReaderAvailable": true, "screenReaderFindingCount": 0
   },
   "findings": [
     {
@@ -603,18 +622,18 @@ and the Windows UI Automation tree:
     }
   ],
   "uiaFindings": [], "keyboardFindings": [], "expectedFocusGaps": [], "widgetFindings": [],
-  "focusManagementFindings": [], "interactionFindings": []
+  "focusManagementFindings": [], "interactionFindings": [], "screenReaderFindings": []
 }
 ```
 
-(Each of the six trailing arrays holds that engine's own finding objects — shown empty here
+(Each of the seven trailing arrays holds that engine's own finding objects — shown empty here
 for brevity; their shapes match `uia-findings.json`, `keyboard-report.json`,
 `expected-focus-report.json`, `widget-behavior-report.json`, `focus-management-report.json`,
-and `interaction-report.json` respectively.)
+`interaction-report.json`, and `screen-reader-report.json` respectively.)
 
 | Field | Meaning |
 | ----- | ------- |
-| `sources` | Which of the 10 possible artifacts contributed to the merge. |
+| `sources` | Which of the 11 possible artifacts contributed to the merge. |
 | `trees` | Node/finding counts for every source, so the dashboard can show real coverage. |
 | `findings[].detectedBy` | Scanners that reported the issue. |
 | `findings[].verifiedIn.playwrightTree` / `.uia` / `.dom` / `.screenReader` | `confirmed` \| `not-detected` \| `not-found` \| `unavailable`, per source. |
@@ -661,7 +680,7 @@ technology users — and every other engine's independent findings are included 
 just axe's.
 
 `dashboard.ts` and `compare.ts` both consume this same data through one shared module,
-[`scripts/all-findings.ts`](scripts/all-findings.ts), which flattens all 7 sources into a
+[`scripts/all-findings.ts`](scripts/all-findings.ts), which flattens all 8 sources into a
 common shape with a stable per-finding identity — this is what guarantees the two reports
 always agree on the total finding count instead of silently drifting apart.
 
@@ -878,7 +897,7 @@ All five specialized engines (and the UIA capture stage) share one navigation he
 flowchart TD
     A[Running Application] --> B[Playwright + UIA evidence collection]
     B --> C[Accessibility Rule Engine]
-    B --> D[4 Specialized Engines]
+    B --> D[5 Specialized Engines]
     C --> F[merged-report.json]
     D --> F
     F --> G[AI Agent]
@@ -888,14 +907,14 @@ flowchart TD
     J --> K[Final Report<br/>comparison.md + dashboard.md]
 ```
 
-Plain-text pipeline (see [ARCHITECTURE.md](ARCHITECTURE.md) for the full 9-stage diagram):
+Plain-text pipeline (see [ARCHITECTURE.md](ARCHITECTURE.md) for the full 10-stage diagram):
 
 ```text
 Application
    ↓
 Evidence collection (Playwright: axe-core, AX tree, DOM, keyboard — Windows UIA)
    ↓
-Evidence analysis (Accessibility Rule Engine + 4 specialized engines)
+Evidence analysis (Accessibility Rule Engine + 5 specialized engines)
    ↓
 Merge (correlate every scanner/engine)    → merged-report.json
    ↓
