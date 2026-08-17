@@ -263,6 +263,13 @@ export interface UiaFinding {
   wcag: string;
   /** How to fix it. */
   recommendation: string;
+  /**
+   * Set by merge-report.ts when this finding re-detects an axe-core finding
+   * already counted for the same page/issue (same accessible-name problem
+   * seen via UIA or the AX-tree). The entry is kept for corroboration
+   * evidence but excluded from totals/severityCounts by collectAllFindings.
+   */
+  duplicateOfAxe?: boolean;
 }
 
 /** Top-level shape of reports/uia-findings.json. */
@@ -506,6 +513,8 @@ export interface ExpectedFocusGap {
   severity: UiaSeverity;
   wcag: string;
   recommendation: string;
+  /** Set by merge-report.ts when this gap re-detects an axe-core "missing accessible name" finding already counted on the same page. See UiaFinding.duplicateOfAxe. */
+  duplicateOfAxe?: boolean;
 }
 
 export interface ExpectedFocusReport {

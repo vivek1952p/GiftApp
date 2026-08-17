@@ -84,6 +84,7 @@ export const NAME_RULES: Record<string, { ariaRoles: string[]; uiaRoles: string[
     ariaRoles: ['textbox', 'combobox', 'checkbox', 'radio'],
     uiaRoles: ['Edit', 'ComboBox', 'CheckBox', 'RadioButton'],
   },
+  'select-name': { ariaRoles: ['combobox', 'listbox'], uiaRoles: ['ComboBox'] },
 };
 
 /**
@@ -234,6 +235,111 @@ export function matchesUiaRuleEngine(v: SummaryViolation, uiaFindingKeys: Set<st
 }
 
 /**
+ * Rule Engine findings on the given page that describe the SAME "missing
+ * accessible name" problem as the given axe ruleId — `ax-*` findings (sourced
+ * from the Playwright AX-tree, whose `controlType` holds a lowercase ARIA
+ * role) matched via NAME_RULES, and `uia-*` findings (sourced from real
+ * Windows UI Automation, whose `controlType` holds a PascalCase base type
+ * like "ButtonControl") matched via AXE_TO_UIA_BASETYPE.
+ */
+function corroboratingRuleEngineFindings(ruleId: string, page: string, uiaFindings: UiaFinding[]): UiaFinding[] {
+  const ariaRoles = NAME_RULES[ruleId]?.ariaRoles ?? [];
+  const baseTypes = AXE_TO_UIA_BASETYPE[ruleId] ?? [];
+  return uiaFindings.filter((f) => {
+    if (f.page !== page) return false;
+    if (f.ruleId.startsWith('ax-')) return ariaRoles.includes(f.controlType);
+    if (f.ruleId.startsWith('uia-')) return baseTypes.includes(f.controlType.replace(/Control$/, ''));
+    return false;
+  });
+}
+
+/**
+ * Mark Rule Engine findings that re-detect an axe-core finding already
+ * counted for the same page/issue, so totalFindings/severityCounts don't
+ * double (or triple) count the same real defect once for axe, once for the
+ * AX-tree rule, and once for the UIA rule. The entries are kept in
+ * uiaFindings for corroboration evidence — only `duplicateOfAxe` is set;
+ * all-findings.ts is what actually excludes them from totals.
+ *
+ * Each corroborating SOURCE (AX-tree, UIA) is capped independently at axe's
+ * own count for that page+ruleId, not one shared cap across both sources. A
+ * page where axe found 3 and BOTH the AX-tree rule and the UIA rule each
+ * independently re-found the same 3 should have all 6 corroborations marked
+ * duplicate (each source is, on its own, fully redundant with axe). A single
+ * shared cap would only let one source's findings be claimed, wrongly leaving
+ * the other source's 3 counted as "real". Conversely, if one source finds
+ * MORE than axe did on a page (e.g. the AX-tree catches a second broken image
+ * axe missed), only up to axe's count from THAT source is claimed - the
+ * extra instance(s) stay counted as a genuine, distinct finding.
+ */
+export function markDuplicateRuleEngineFindings(
+  violations: SummaryViolation[],
+  uiaFindings: UiaFinding[]
+): UiaFinding[] {
+  const claimed = new Set<UiaFinding>();
+  const countByPageRule = new Map<string, { page: string; ruleId: string; count: number }>();
+  for (const v of violations) {
+    if (!NAME_RULES[v.ruleId] && !AXE_TO_UIA_BASETYPE[v.ruleId]) continue;
+    const key = `${v.page} ${v.ruleId}`;
+    const entry = countByPageRule.get(key) ?? { page: v.page, ruleId: v.ruleId, count: 0 };
+    entry.count += 1;
+    countByPageRule.set(key, entry);
+  }
+  for (const { page, ruleId, count } of countByPageRule.values()) {
+    const candidates = corroboratingRuleEngineFindings(ruleId, page, uiaFindings);
+    const bySource = [
+      candidates.filter((f) => f.ruleId.startsWith('ax-')),
+      candidates.filter((f) => f.ruleId.startsWith('uia-')),
+    ];
+    for (const sourceCandidates of bySource) {
+      for (const f of sourceCandidates.slice(0, count)) claimed.add(f);
+    }
+  }
+  return uiaFindings.map((f) => (claimed.has(f) ? { ...f, duplicateOfAxe: true } : f));
+}
+
+/** HTML tag/role (as recorded by expected-focus-engine.ts) -> axe ruleIds covering the same missing-name family. */
+const FOCUS_GAP_ROLE_TO_AXE_RULES: Record<string, string[]> = {
+  input: ['label', 'select-name'],
+  textarea: ['label'],
+  select: ['label', 'select-name'],
+  button: ['button-name', 'input-button-name', 'aria-command-name'],
+  a: ['link-name'],
+};
+
+/**
+ * Mark expected-focus gaps ("reachable by keyboard but no accessible name")
+ * that re-detect an axe-core finding already counted for the same page. Only
+ * a literal single-page gap can match — the engine's synthetic multi-page
+ * label (e.g. "(3 pages: Home, Checkout, Contact)") for a shared component
+ * never matches a real axe page name, so shared-component gaps on pages axe
+ * missed stay fully counted; only the exact single-page overlap is cut.
+ */
+export function markDuplicateExpectedFocusGaps(
+  violations: SummaryViolation[],
+  gaps: ExpectedFocusGap[]
+): ExpectedFocusGap[] {
+  const remainingByPageRule = new Map<string, number>();
+  for (const v of violations) {
+    const key = `${v.page} ${v.ruleId}`;
+    remainingByPageRule.set(key, (remainingByPageRule.get(key) ?? 0) + 1);
+  }
+  const claimed = new Set<ExpectedFocusGap>();
+  for (const gap of gaps) {
+    for (const ruleId of FOCUS_GAP_ROLE_TO_AXE_RULES[gap.role] ?? []) {
+      const key = `${gap.page} ${ruleId}`;
+      const remaining = remainingByPageRule.get(key) ?? 0;
+      if (remaining > 0) {
+        remainingByPageRule.set(key, remaining - 1);
+        claimed.add(gap);
+        break;
+      }
+    }
+  }
+  return gaps.map((g) => (claimed.has(g) ? { ...g, duplicateOfAxe: true } : g));
+}
+
+/**
  * Entry point: build merged-report.json from the three source artifacts.
  */
 function main(): void {
@@ -258,23 +364,28 @@ function main(): void {
     const domByPage = new Map<string, DomPageSnapshot>((dom?.results ?? []).map((r) => [r.page, r]));
     const uiaAvailable = uia?.available ?? false;
 
-    // Index Accessibility Rule Engine findings by `${page}::${baseControlType}`
-    // so an axe finding can be correlated to an independent corroborating
-    // finding. Despite the `uiaFindings`/`uia-findings.json` name (kept from
-    // before the rule engine was unified), this now also contains DOM, AX-tree,
-    // and ARIA-pattern findings — only genuine UIA-sourced entries use the
-    // Windows UIA PascalCase control-type strings this lookup is keyed on
-    // (e.g. "Button"), so DOM/AX-tree findings (lowercase ARIA role strings,
-    // or no role at all) never collide with it; this only ever corroborates
-    // against real UIA findings, as intended.
-    const uiaFindings: UiaFinding[] = uiaFindingsReport?.findings ?? [];
+    // Despite the `uiaFindings`/`uia-findings.json` name (kept from before the
+    // rule engine was unified), this also contains DOM, AX-tree, and
+    // ARIA-pattern findings. `duplicateOfAxe` is set below for any entry that
+    // re-detects a "missing accessible name" issue axe-core already counted
+    // on the same page (via NAME_RULES for `ax-*` AX-tree roles, and
+    // AXE_TO_UIA_BASETYPE for `uia-*` PascalCase control types) — the entry
+    // stays here for corroboration evidence, but all-findings.ts excludes
+    // flagged entries from totals so the same real defect isn't counted twice.
     const keyboardFindings: KeyboardFinding[] = keyboardReport?.findings ?? [];
-    const expectedFocusGaps: ExpectedFocusGap[] = expectedFocusReport?.allGaps ?? [];
     const widgetFindings: WidgetFinding[] = widgetReport?.findings ?? [];
     const focusManagementFindings: FocusManagementFinding[] = focusMgmtReport?.findings ?? [];
     const interactionFindings: InteractionFinding[] = interactionReport?.findings ?? [];
     const screenReaderFindings: ScreenReaderFinding[] = screenReaderReport?.findings ?? [];
     const screenReaderAvailable = screenReaderReport?.available ?? false;
+    const uiaFindings: UiaFinding[] = markDuplicateRuleEngineFindings(
+      summary.violations,
+      uiaFindingsReport?.findings ?? []
+    );
+    const expectedFocusGaps: ExpectedFocusGap[] = markDuplicateExpectedFocusGaps(
+      summary.violations,
+      expectedFocusReport?.allGaps ?? []
+    );
     const uiaFindingKeys = new Set<string>(
       uiaFindings.map((f) => `${f.page}::${(f.controlType || '').replace(/Control$/, '')}`)
     );

@@ -74,6 +74,7 @@ export function collectAllFindings(summary: Summary, merged: MergedReport | null
   if (!merged) return out;
 
   for (const f of merged.uiaFindings ?? []) {
+    if (f.duplicateOfAxe) continue;
     out.push({
       key: `uia::${f.page}::${f.ruleId}::${f.name}`,
       page: f.page,
@@ -96,6 +97,7 @@ export function collectAllFindings(summary: Summary, merged: MergedReport | null
     });
   }
   for (const f of merged.expectedFocusGaps ?? []) {
+    if (f.duplicateOfAxe) continue;
     out.push({
       key: `expected-focus::${f.page}::${f.role}::${f.name}::${f.wcag}`,
       page: f.page,
