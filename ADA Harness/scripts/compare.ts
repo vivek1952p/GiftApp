@@ -28,34 +28,24 @@ import path from 'path';
 import { collectAllFindings, severityCountsOf, type NormalizedFinding } from './all-findings';
 import { adaConfig } from '../playwright/config';
 import { createLogger } from './logger';
+import { readJson } from './merge-report';
 import { computeScore } from './score';
 import type { MergedReport, Summary } from './types';
 
 const log = createLogger('compare');
 
-/** Safely read a summary file, returning an empty summary when absent. */
+/** Safely read a summary file, returning an empty summary when absent (unlike readJson, never null — compare.ts always needs a Summary shape to diff against). */
 function readSummary(file: string): Summary {
-  if (!fs.existsSync(file)) {
-    return {
+  return (
+    readJson<Summary>(file) ?? {
       generatedAt: new Date().toISOString(),
       baseUrl: adaConfig.baseUrl,
       totalViolations: 0,
       pagesScanned: 0,
       severityCounts: { critical: 0, serious: 0, moderate: 0, minor: 0 },
       violations: [],
-    };
-  }
-  return JSON.parse(fs.readFileSync(file, 'utf-8')) as Summary;
-}
-
-/** Safely read a merged report, returning null when absent or unparseable. */
-function readMerged(file: string): MergedReport | null {
-  if (!fs.existsSync(file)) return null;
-  try {
-    return JSON.parse(fs.readFileSync(file, 'utf-8')) as MergedReport;
-  } catch {
-    return null;
-  }
+    }
+  );
 }
 
 /** Render a finding as a single Markdown bullet. */
@@ -71,8 +61,8 @@ function main(): void {
   try {
     const previousSummary = readSummary(adaConfig.paths.previousSummary);
     const currentSummary = readSummary(adaConfig.paths.summary);
-    const previousMerged = readMerged(adaConfig.paths.mergedPrevious);
-    const currentMerged = readMerged(adaConfig.paths.merged);
+    const previousMerged = readJson<MergedReport>(adaConfig.paths.mergedPrevious);
+    const currentMerged = readJson<MergedReport>(adaConfig.paths.merged);
 
     const previousFindings = collectAllFindings(previousSummary, previousMerged);
     const currentFindings = collectAllFindings(currentSummary, currentMerged);

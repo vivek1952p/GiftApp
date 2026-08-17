@@ -34,6 +34,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import { adaConfig } from '../playwright/config';
+import { firstWcag } from './all-findings';
 import { createLogger } from './logger';
 import { NAME_RULES, readJson } from './merge-report';
 import { gotoPage } from './navigate';
@@ -96,30 +97,26 @@ async function main(): Promise<void> {
   const findings: ScreenReaderFinding[] = [];
   const baseReport = { generatedAt: new Date().toISOString(), baseUrl: adaConfig.baseUrl };
 
+  /** Write an `available: false` report and log why, for any early-exit path. */
+  const bail = (error: string, logMsg: string): void => {
+    log.warn(logMsg);
+    writeReport({ ...baseReport, available: false, error, totalFindings: 0, findings });
+  };
+
   if (os.platform() !== 'win32') {
-    log.warn(
+    bail(
+      'Not running on Windows.',
       `Screen Reader Engine is Windows-only (NVDA); host is "${os.platform()}". Writing unavailable report.`
     );
-    writeReport({
-      ...baseReport,
-      available: false,
-      error: 'Not running on Windows.',
-      totalFindings: 0,
-      findings,
-    });
     return;
   }
 
   const summary = readJson<Summary>(adaConfig.paths.summary);
   if (!summary) {
-    log.warn('summary.json not found — run the scan first. Writing unavailable report.');
-    writeReport({
-      ...baseReport,
-      available: false,
-      error: 'summary.json not found.',
-      totalFindings: 0,
-      findings,
-    });
+    bail(
+      'summary.json not found.',
+      'summary.json not found — run the scan first. Writing unavailable report.'
+    );
     return;
   }
 
@@ -143,16 +140,10 @@ async function main(): Promise<void> {
   try {
     await nvda.start();
   } catch (err) {
-    log.warn(
+    bail(
+      (err as Error).message,
       `NVDA could not be started (install it and run "npx @guidepup/setup setup && npx @guidepup/setup install"): ${(err as Error).message}`
     );
-    writeReport({
-      ...baseReport,
-      available: false,
-      error: (err as Error).message,
-      totalFindings: 0,
-      findings,
-    });
     return;
   }
 
@@ -209,7 +200,10 @@ async function main(): Promise<void> {
                 `NVDA announced "${announced || '(nothing)'}" for this ${role || 'element'} — no accessible ` +
                 `name is spoken, confirming the ${v.ruleId} finding for real screen reader users.`,
               severity: (v.impact ?? 'moderate') as UiaSeverity,
-              wcag: v.ruleId === 'image-alt' ? '1.1.1' : '4.1.2',
+              // Reuse the WCAG criterion axe itself tagged this violation
+              // with, rather than special-casing one ruleId — select-name,
+              // aria-toggle-field-name, etc. don't all map to 4.1.2.
+              wcag: firstWcag(v.wcagRuleIds) ?? '4.1.2',
               recommendation:
                 'Provide an accessible name (aria-label, associated label, or visible text) so NVDA announces it.',
             });

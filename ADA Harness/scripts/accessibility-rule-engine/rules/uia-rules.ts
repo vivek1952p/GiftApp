@@ -33,6 +33,7 @@ function nameRule(
     id,
     source: 'uia',
     description: `${baseType} must have an accessible name`,
+    wcag,
     evaluate(el) {
       if (el.baseType !== baseType || !noName(el)) return null;
       return { issue, severity, wcag, recommendation };
@@ -107,12 +108,13 @@ export const UiaProgressRule: UiaRule = {
   id: 'uia-progressbar-desc',
   source: 'uia',
   description: 'ProgressBar should have an accessible name/description',
+  wcag: '1.1.1',
   evaluate(el) {
     if (el.baseType !== 'ProgressBar' || !noName(el)) return null;
     return {
       issue: 'Progress bar has no accessible description',
       severity: 'moderate',
-      wcag: '1.1.1',
+      wcag: this.wcag,
       recommendation: 'Add aria-label / aria-describedby describing the progress.',
     };
   },
@@ -122,6 +124,7 @@ export const UiaKeyboardRule: UiaRule = {
   id: 'uia-keyboard-focusable',
   source: 'uia',
   description: 'Interactive controls must be keyboard focusable',
+  wcag: '2.1.1',
   evaluate(el) {
     if (!INTERACTIVE.has(el.baseType)) return null;
     if (el.isKeyboardFocusable !== false) return null;
@@ -129,7 +132,7 @@ export const UiaKeyboardRule: UiaRule = {
     return {
       issue: `${el.baseType} reports IsKeyboardFocusable=false in Windows UIA (verify Tab reachability)`,
       severity: 'moderate',
-      wcag: '2.1.1',
+      wcag: this.wcag,
       recommendation:
         'Cross-check with keyboard-report.json. If reachable via Tab, add automationId or use a native focusable element.',
     };
@@ -140,12 +143,13 @@ export const UiaVisibilityRule: UiaRule = {
   id: 'uia-offscreen-interactive',
   source: 'uia',
   description: 'Interactive controls should not be unexpectedly offscreen',
+  wcag: '1.3.1',
   evaluate(el) {
     if (!INTERACTIVE.has(el.baseType) || el.isOffscreen !== true || el.isEnabled === false) return null;
     return {
       issue: `Potentially hidden interactive ${el.baseType} (offscreen but enabled)`,
       severity: 'moderate',
-      wcag: '1.3.1',
+      wcag: this.wcag,
       recommendation:
         'Verify the control is intentionally hidden; if active, ensure it is visible and reachable.',
     };
@@ -156,12 +160,13 @@ export const UiaEnabledRule: UiaRule = {
   id: 'uia-disabled-interactive',
   source: 'uia',
   description: 'Flag disabled interactive controls for review',
+  wcag: '1.3.1',
   evaluate(el) {
     if (!INTERACTIVE.has(el.baseType) || el.isEnabled !== false) return null;
     return {
       issue: `${el.baseType} is disabled — verify this is intended`,
       severity: 'minor',
-      wcag: '1.3.1',
+      wcag: this.wcag,
       recommendation:
         'Ensure disabled state is communicated to AT via aria-disabled="true" and is intentional.',
     };

@@ -27,12 +27,13 @@ export const DomSmallTextRule: DomRule = {
   id: 'dom-text-too-small',
   source: 'dom',
   description: 'Text should not be smaller than 10 px to support browser zoom',
+  wcag: '1.4.4',
   evaluate(el: DomElementStyle): RuleResult | null {
     if (px(el.fontSize ?? '16px') >= 10) return null;
     return {
       issue: `Text is ${el.fontSize} — too small to read at default zoom (min recommended 10 px)`,
       severity: 'minor',
-      wcag: '1.4.4',
+      wcag: this.wcag,
       recommendation: 'Use relative units (rem/em) and a minimum font size of 0.625rem (10 px).',
       context: { target: el.target },
     };

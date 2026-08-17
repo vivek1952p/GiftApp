@@ -45,13 +45,30 @@ export function axeTagToWcag(tag: string): string | null {
 }
 
 /** First valid WCAG success criterion found among an axe violation's tags, if any. */
-function firstWcag(tags: string[]): string | undefined {
+export function firstWcag(tags: string[]): string | undefined {
   for (const tag of tags) {
     const wcag = axeTagToWcag(tag);
     if (wcag) return wcag;
   }
   return undefined;
 }
+
+/**
+ * The subset of MergedReport that collectAllFindings actually reads. A
+ * MergedReport always satisfies this structurally, but callers that only
+ * have the per-source arrays (not a full MergedReport) can pass those
+ * directly instead of force-casting an incomplete object.
+ */
+export type FindingsSource = Pick<
+  MergedReport,
+  | 'uiaFindings'
+  | 'keyboardFindings'
+  | 'expectedFocusGaps'
+  | 'widgetFindings'
+  | 'focusManagementFindings'
+  | 'interactionFindings'
+  | 'screenReaderFindings'
+>;
 
 /**
  * Flatten axe-core plus every other scanner in a merged report into one
@@ -61,7 +78,7 @@ function firstWcag(tags: string[]): string | undefined {
  * label is built from their own identifying field (widget name, scenario,
  * role) prefixed by engine name.
  */
-export function collectAllFindings(summary: Summary, merged: MergedReport | null): NormalizedFinding[] {
+export function collectAllFindings(summary: Summary, merged: FindingsSource | null): NormalizedFinding[] {
   const out: NormalizedFinding[] = summary.violations.map((v) => ({
     key: `axe::${v.page}::${v.ruleId}::${v.target}`,
     page: v.page,

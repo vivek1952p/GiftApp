@@ -45,6 +45,8 @@ export interface UiaRule {
   readonly id: string;
   readonly description: string;
   readonly source: 'uia';
+  /** The single WCAG success criterion this rule always reports (see RuleResult.wcag). */
+  readonly wcag: string;
   evaluate(el: _FlatUiaElement): RuleResult | null;
 }
 
@@ -53,6 +55,7 @@ export interface DomRule {
   readonly id: string;
   readonly description: string;
   readonly source: 'dom';
+  readonly wcag: string;
   evaluate(el: DomElementStyle, page: string, url: string): RuleResult | null;
 }
 
@@ -61,6 +64,7 @@ export interface AxTreeRule {
   readonly id: string;
   readonly description: string;
   readonly source: 'ax-tree';
+  readonly wcag: string;
   evaluate(node: A11yTreeNode, page: string, url: string): RuleResult | null;
 }
 
@@ -69,6 +73,7 @@ export interface AriaPatternRule {
   readonly id: string;
   readonly description: string;
   readonly source: 'aria-pattern';
+  readonly wcag: string;
   evaluatePage(tree: A11yTreeNode | null, page: string, url: string): RuleResult[];
 }
 

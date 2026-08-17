@@ -67,6 +67,7 @@ export function prioritize(finding: MergedFinding, ctx: PriorityContext): Priori
     finding.verifiedIn.playwrightTree === 'confirmed',
     finding.verifiedIn.uia === 'confirmed',
     finding.verifiedIn.dom === 'confirmed',
+    finding.verifiedIn.screenReader === 'confirmed',
   ].filter(Boolean).length;
   if (confirmations >= 2) priority = bump(priority);
 

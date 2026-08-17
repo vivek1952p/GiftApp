@@ -186,7 +186,12 @@ function buildUnnamedReachedByTag(kbPage: KeyboardPageResult): Map<string, numbe
  */
 function hasSubstringMatch(axName: string, tabNames: Iterable<string>): boolean {
   const ax = norm(axName);
-  if (!ax) return true; // unnamed elements not checked here
+  // collectTabNavigable only ever pushes named nodes into axByName (see its
+  // "Only collect named elements" filter above), so this should be
+  // unreachable today — but failing OPEN here would silently absorb a
+  // genuine "unreachable AND unnamed" gap (the worst case this engine
+  // exists to catch) if that filter is ever loosened. Fail closed instead.
+  if (!ax) return false;
   for (const t of tabNames) {
     if (t.includes(ax) || ax.includes(t)) return true;
   }

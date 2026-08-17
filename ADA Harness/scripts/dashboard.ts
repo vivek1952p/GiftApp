@@ -15,36 +15,21 @@ import path from 'path';
 import { collectAllFindings, groupCount, severityCountsOf } from './all-findings';
 import { adaConfig } from '../playwright/config';
 import { createLogger } from './logger';
+import { readJson } from './merge-report';
 import { computeScore } from './score';
 import type { MergedReport, Summary } from './types';
 
 const log = createLogger('dashboard');
-
-/** Read a summary file or return null when it does not exist. */
-function readSummary(file: string): Summary | null {
-  if (!fs.existsSync(file)) return null;
-  return JSON.parse(fs.readFileSync(file, 'utf-8')) as Summary;
-}
-
-/** Read the merged report or return null when it does not exist. */
-function readMerged(file: string): MergedReport | null {
-  if (!fs.existsSync(file)) return null;
-  try {
-    return JSON.parse(fs.readFileSync(file, 'utf-8')) as MergedReport;
-  } catch {
-    return null;
-  }
-}
 
 /**
  * Entry point: generate dashboard.md from the current summary + merged report.
  */
 function main(): void {
   try {
-    const summary = readSummary(adaConfig.paths.summary);
+    const summary = readJson<Summary>(adaConfig.paths.summary);
     if (!summary) throw new Error('summary.json not found. Run "npm run ada" first.');
 
-    const merged = readMerged(adaConfig.paths.merged);
+    const merged = readJson<MergedReport>(adaConfig.paths.merged);
     const allFindings = collectAllFindings(summary, merged);
     const allSeverity = severityCountsOf(allFindings);
     const score = computeScore(allSeverity);

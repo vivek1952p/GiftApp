@@ -68,7 +68,6 @@ it so the user chooses what to fix before any source modifications occur.
    | `findings` (axe) | `ruleId: label`, `select-name` | Forms |
    | `uiaFindings` | `ruleId: uia-image-name`, `ax-image-alt` | Images |
    | `uiaFindings` | `ruleId: uia-input-name`, `ax-interactive-name` | Accessible Names |
-   | `uiaFindings` | `ruleId: dom-color-contrast` | Color Contrast |
    | `uiaFindings` | `ruleId: uia-disabled-interactive` | Widget Behaviour |
    | `expectedFocusGaps` | issue text contains "never reached during Tab traversal" | Expected Focus |
    | `expectedFocusGaps` | issue text contains "no accessible name" | Accessible Names |

@@ -21,6 +21,7 @@
 import fs from 'fs';
 import path from 'path';
 import { adaConfig } from '../playwright/config';
+import { baseControlType } from './accessibility-rule-engine/uia-parser';
 import { collectAllFindings, severityCountsOf } from './all-findings';
 import { createLogger } from './logger';
 import type {
@@ -90,17 +91,11 @@ export const NAME_RULES: Record<string, { ariaRoles: string[]; uiaRoles: string[
 /**
  * Map an axe rule id to the UIA base control type(s) the Rule Engine would flag
  * for the SAME problem, used to correlate axe findings with uia-findings.json.
+ * Derived from NAME_RULES so the two tables can never drift apart.
  */
-export const AXE_TO_UIA_BASETYPE: Record<string, string[]> = {
-  'image-alt': ['Image'],
-  'button-name': ['Button'],
-  'input-button-name': ['Button'],
-  'aria-command-name': ['Button'],
-  'aria-toggle-field-name': ['Button', 'CheckBox'],
-  'link-name': ['Hyperlink'],
-  label: ['Edit', 'ComboBox', 'CheckBox', 'RadioButton'],
-  'select-name': ['ComboBox'],
-};
+export const AXE_TO_UIA_BASETYPE: Record<string, string[]> = Object.fromEntries(
+  Object.entries(NAME_RULES).map(([ruleId, spec]) => [ruleId, spec.uiaRoles])
+);
 
 /** True when a node's accessible name is missing/blank. */
 export function hasNoName(name?: string): boolean {
@@ -235,20 +230,20 @@ export function matchesUiaRuleEngine(v: SummaryViolation, uiaFindingKeys: Set<st
 }
 
 /**
- * Rule Engine findings on the given page that describe the SAME "missing
- * accessible name" problem as the given axe ruleId — `ax-*` findings (sourced
- * from the Playwright AX-tree, whose `controlType` holds a lowercase ARIA
- * role) matched via NAME_RULES, and `uia-*` findings (sourced from real
- * Windows UI Automation, whose `controlType` holds a PascalCase base type
- * like "ButtonControl") matched via AXE_TO_UIA_BASETYPE.
+ * Rule Engine findings (already narrowed to one page — see the
+ * page-indexed map built in markDuplicateRuleEngineFindings) that describe
+ * the SAME "missing accessible name" problem as the given axe ruleId —
+ * `ax-*` findings (sourced from the Playwright AX-tree, whose `controlType`
+ * holds a lowercase ARIA role) matched via NAME_RULES, and `uia-*` findings
+ * (sourced from real Windows UI Automation, whose `controlType` holds a
+ * PascalCase base type like "ButtonControl") matched via AXE_TO_UIA_BASETYPE.
  */
-function corroboratingRuleEngineFindings(ruleId: string, page: string, uiaFindings: UiaFinding[]): UiaFinding[] {
+function corroboratingRuleEngineFindings(ruleId: string, pageFindings: UiaFinding[]): UiaFinding[] {
   const ariaRoles = NAME_RULES[ruleId]?.ariaRoles ?? [];
   const baseTypes = AXE_TO_UIA_BASETYPE[ruleId] ?? [];
-  return uiaFindings.filter((f) => {
-    if (f.page !== page) return false;
+  return pageFindings.filter((f) => {
     if (f.ruleId.startsWith('ax-')) return ariaRoles.includes(f.controlType);
-    if (f.ruleId.startsWith('uia-')) return baseTypes.includes(f.controlType.replace(/Control$/, ''));
+    if (f.ruleId.startsWith('uia-')) return baseTypes.includes(baseControlType(f.controlType));
     return false;
   });
 }
@@ -285,8 +280,17 @@ export function markDuplicateRuleEngineFindings(
     entry.count += 1;
     countByPageRule.set(key, entry);
   }
+  // Index once by page so each page/rule pair below filters only that
+  // page's findings instead of rescanning the full uiaFindings array.
+  const findingsByPage = new Map<string, UiaFinding[]>();
+  for (const f of uiaFindings) {
+    const list = findingsByPage.get(f.page);
+    if (list) list.push(f);
+    else findingsByPage.set(f.page, [f]);
+  }
+
   for (const { page, ruleId, count } of countByPageRule.values()) {
-    const candidates = corroboratingRuleEngineFindings(ruleId, page, uiaFindings);
+    const candidates = corroboratingRuleEngineFindings(ruleId, findingsByPage.get(page) ?? []);
     const bySource = [
       candidates.filter((f) => f.ruleId.startsWith('ax-')),
       candidates.filter((f) => f.ruleId.startsWith('uia-')),
@@ -298,12 +302,25 @@ export function markDuplicateRuleEngineFindings(
   return uiaFindings.map((f) => (claimed.has(f) ? { ...f, duplicateOfAxe: true } : f));
 }
 
-/** HTML tag/role (as recorded by expected-focus-engine.ts) -> axe ruleIds covering the same missing-name family. */
+/**
+ * `gap.role` -> axe ruleIds covering the same missing-name family. Check 1
+ * gaps (see expected-focus-engine.ts) record an ARIA role from the AX tree
+ * (e.g. "link", "textbox", "combobox"); Check 2/3 gaps record an HTML tag
+ * from the keyboard scan (e.g. "input", "select", "a") instead. Both key
+ * shapes are merged into one table here so dedup works for gaps from every
+ * check, not just tag-shaped ones. The ARIA-role half is derived from
+ * NAME_RULES so it can't drift out of sync with the axe correlation above;
+ * only the HTML tags that don't already coincide with an ARIA role name
+ * (input/textarea/select/a) need a hardcoded entry.
+ */
 const FOCUS_GAP_ROLE_TO_AXE_RULES: Record<string, string[]> = {
+  ...Object.entries(NAME_RULES).reduce<Record<string, string[]>>((acc, [ruleId, spec]) => {
+    for (const role of spec.ariaRoles) acc[role] = [...(acc[role] ?? []), ruleId];
+    return acc;
+  }, {}),
   input: ['label', 'select-name'],
   textarea: ['label'],
   select: ['label', 'select-name'],
-  button: ['button-name', 'input-button-name', 'aria-command-name'],
   a: ['link-name'],
 };
 
@@ -387,7 +404,7 @@ function main(): void {
       expectedFocusReport?.allGaps ?? []
     );
     const uiaFindingKeys = new Set<string>(
-      uiaFindings.map((f) => `${f.page}::${(f.controlType || '').replace(/Control$/, '')}`)
+      uiaFindings.map((f) => `${f.page}::${baseControlType(f.controlType)}`)
     );
 
     const findings: MergedFinding[] = summary.violations.map((v) => {
@@ -437,7 +454,7 @@ function main(): void {
       focusManagementFindings,
       interactionFindings,
       screenReaderFindings,
-    } as MergedReport);
+    });
     const allSeverityCounts = severityCountsOf(allFindings);
 
     const merged: MergedReport = {
@@ -471,9 +488,12 @@ function main(): void {
         uiaNodeCount,
         uiaAvailable,
         domElementsCaptured,
-        uiaRuleFindingCount: uiaFindings.length,
+        // Excludes duplicateOfAxe entries so this matches how totalFindings
+        // is computed (collectAllFindings skips them too) — otherwise the
+        // dashboard's per-engine rows silently stop summing to its total.
+        uiaRuleFindingCount: uiaFindings.filter((f) => !f.duplicateOfAxe).length,
         keyboardFindingCount: keyboardFindings.length,
-        expectedFocusGapCount: expectedFocusGaps.length,
+        expectedFocusGapCount: expectedFocusGaps.filter((g) => !g.duplicateOfAxe).length,
         widgetFindingCount: widgetFindings.length,
         focusManagementFindingCount: focusManagementFindings.length,
         interactionFindingCount: interactionFindings.length,

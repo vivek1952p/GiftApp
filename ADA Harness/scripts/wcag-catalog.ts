@@ -18,6 +18,19 @@
  * ============================================================================
  */
 
+import {
+  allAriaPatternRules,
+  allAxTreeRules,
+  allDomRules,
+  allUiaRules,
+} from './accessibility-rule-engine/rules';
+import type { AnyRule } from './accessibility-rule-engine/types';
+
+/** Every WCAG success criterion at least one rule in a registry reports, deduplicated. */
+function wcagCapabilityOf(rules: AnyRule[]): string[] {
+  return [...new Set(rules.map((r) => r.wcag))];
+}
+
 export interface WcagCriterion {
   id: string;
   name: string;
@@ -90,7 +103,10 @@ export const WCAG_AA_CRITERIA: WcagCriterion[] = [
  *   - axe-core: axe's own publicly documented WCAG 2.1 A/AA rule coverage
  *     (https://github.com/dequelabs/axe-core/blob/develop/doc/rule-descriptions.md),
  *     restricted to the criteria its bundled ruleset commonly maps to.
- *   - ax-tree / uia / dom / aria-pattern: scripts/accessibility-rule-engine/rules/*.ts
+ *   - ax-tree / uia / dom / aria-pattern: derived below from each rule's own
+ *     static `wcag` field in scripts/accessibility-rule-engine/rules/*.ts, so
+ *     adding, removing, or re-mapping a rule can't silently desync this table
+ *     the way the old hand-typed arrays could (and once did).
  *   - keyboard: playwright/accessibility.spec.ts (buildKeyboardFindings)
  *   - expected-focus / widget-behavior / focus-management / interaction-prediction:
  *     each engine's own scripts/*-engine.ts
@@ -132,10 +148,10 @@ export const CAPABILITY: Record<string, string[]> = {
     '4.1.2',
     '4.1.3',
   ],
-  'ax-tree': ['1.1.1', '1.3.1', '2.4.6', '4.1.2'],
-  uia: ['1.1.1', '1.3.1', '2.1.1', '2.4.4', '4.1.2'],
-  dom: ['1.4.3', '1.4.4'],
-  'aria-pattern': ['1.3.1', '2.1.2'],
+  'ax-tree': wcagCapabilityOf(allAxTreeRules),
+  uia: wcagCapabilityOf(allUiaRules),
+  dom: wcagCapabilityOf(allDomRules),
+  'aria-pattern': wcagCapabilityOf(allAriaPatternRules),
   keyboard: ['2.1.1', '2.4.3'],
   'expected-focus': ['2.1.1', '2.4.3', '4.1.2'],
   'widget-behavior': ['2.1.1', '2.1.2'],
